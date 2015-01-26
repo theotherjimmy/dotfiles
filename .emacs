@@ -1,3 +1,5 @@
+(messages-buffer)
+
 (require 'color-theme)
 (require 'zenburn)
 (zenburn)
@@ -17,7 +19,7 @@
   (interactive)
   (if (and delete-selection-mode transient-mark-mode mark-active)
       (setq deactivation-mark t)
-    (when (get-buffer "*Completions*") (delete-windows-on "*Completions"))
+    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
     (abort-recursive-edit)))
 (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
@@ -27,6 +29,8 @@
 (global-set-key [escape] 'keyboard-quit)
 
 (require 'package)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
@@ -45,17 +49,45 @@
 
 (evil-mode 1)
 
+;; programming languages support
+
+;; ros!?
 (add-to-list 'load-path "/u/jimmy/.emacs.d/site-lisp/rosemacs")
 (require 'rosemacs)
 (invoke-rosemacs)
 
+;; stumpwm (common lisp)
 (add-to-list 'load-path "/u/jimmy/.emacs.d/site-lisp")
 (require 'stumpwm-mode)
 
+;; common lisp
 (setq inferior-lisp-program "sbcl") 
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/slime/")
 (require 'slime)
 
+;; jade
+(add-to-list 'load-path "~/.emacs.d/site-lisp/jade-mode")
+(require 'sws-mode)
+(require 'jade-mode)
+(add-to-list 'auto-mode-alist '("\\.styl$" . sws-mode))
+(add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
+
+;; haskell
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+
+;; matlab/octave
+(setq auto-mode-alist (cons '("\\.m$" . octave-mode)
+			    auto-mode-alist))
+
+;;latex
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
+
+
+;; slime setup (with ros support)
 (slime-setup '(slime-fancy slime-asdf slime-ros))
 
 (define-key evil-normal-state-map ";" ros-keymap)
@@ -68,11 +100,6 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp/jade-mode")
-(require 'sws-mode)
-(require 'jade-mode)
-(add-to-list 'auto-mode-alist '("\\.styl$" . sws-mode))
-(add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
 
 (defun c-lineup-arglist-tabs-only (ignored)
   "Line up argument lists by tabs, not spaces"
