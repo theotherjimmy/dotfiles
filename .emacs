@@ -9,7 +9,6 @@
 
 (require 'undo-tree)
 (require 'evil)
-(define-key evil-normal-state-map "q" 'lgrep) 
 (define-key evil-normal-state-map "Q" 'compile) 
 (define-key evil-normal-state-map "'" 'vc-dir) 
 (define-key evil-normal-state-map "\"" 'vc-next-action) 
@@ -50,6 +49,11 @@
 (evil-mode 1)
 
 ;; programming languages support
+
+;; C
+(require 'xcscope)
+(cscope-setup)
+(define-key evil-normal-state-map "q" cscope-list-entry-keymap)
 
 ;; ros!?
 (add-to-list 'load-path "/u/jimmy/.emacs.d/site-lisp/rosemacs")
