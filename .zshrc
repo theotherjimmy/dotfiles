@@ -63,6 +63,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH:~/.cabal/bin:/usr/NX/bin
 
 # # Preferred editor for local and remote sessions
 export EDITOR='emacsclient -c'
+export RUBBER='rubber'
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
