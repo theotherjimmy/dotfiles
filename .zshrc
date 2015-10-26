@@ -80,7 +80,10 @@ alias :e=$EDITOR
 alias :b='cd -'
 alias l='ls -color'
 alias rgrep='grep -r'
+alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 
 export WINEARCH=win32
 
 [[ $TERM == "dumb" ]] && unsetopt zle && export PS1='$ '
+
+[[ $TERM != "dumb" ]] && figlet -r "`hostname` >>= Arch"
