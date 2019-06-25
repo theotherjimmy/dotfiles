@@ -13,3 +13,5 @@ useful as it allows me to edit the configuration in both locations.
 * `dunst` - Notification Daemon
 * `fish` - Shell
 * `SpaceVim.d` - NeoVim configuration using the SpaceVim project; [upstream](https://github.com/SpaceVim/SpaceVim)
+* `userChrome.css` - Styling of the UI of firefox browser, "chrome". Removes
+  the tab bar at the top, as I use tree-styl-tabs.

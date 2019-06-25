@@ -4,6 +4,11 @@ cd ${BASEDIR}
 
 ln -sf ${PWD}/xinitrc ${HOME}/.xinitrc
 
+for profile in $(echo ${HOME}/.mozilla/firefox/*.default) ; do
+  mkdir -p ${profile}/chrome
+  ln -sf ${PWD}/userChrome.css ${profile}/chrome/userChrome.css
+done
+
 mkdir -p ${HOME}/.config
 
 XDG_DIRECTORIES="\
