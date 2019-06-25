@@ -6,15 +6,18 @@ ln -sf ${PWD}/xinitrc ${HOME}/.xinitrc
 
 mkdir -p ${HOME}/.config
 
-if [ -d ${HOME}/.config/alacritty ] ; then
-  mv ${HOME}/.config/alacritty ${HOME}/.config/alacritty.bak ;
-fi
-ln -sf ${PWD}/alacritty ${HOME}/.config/alacritty
+XDG_DIRECTORIES="\
+  alacritty\
+  fish\
+  dunst\
+  "
 
-if [ -d ${HOME}/.config/fish ] ; then
-  mv ${HOME}/.config/fish ${HOME}/.config/fish.bak ;
-fi
-ln -sf ${PWD}/fish ${HOME}/.config/fish
+for dir in $XDG_DIRECTORIES ; do
+  if [ -d ${HOME}/.config/${dir} ] ; then
+    mv ${HOME}/.config/${dir} ${HOME}/.config/${dir}.bak ;
+  fi
+  ln -sf ${PWD}/${dir} ${HOME}/.config/${dir} ;
+done
 
 if [ -d ${HOME}/.SpaceVim.d ] ; then
     mv ${HOME}/.SpaceVim.d ${HOME}/.SpaceVim.d.bak ;
