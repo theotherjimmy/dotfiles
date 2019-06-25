@@ -11,6 +11,11 @@ if [ -d ${HOME}/.config/alacritty ] ; then
 fi
 ln -sf ${PWD}/alacritty ${HOME}/.config/alacritty
 
+if [ -d ${HOME}/.config/fish ] ; then
+  mv ${HOME}/.config/fish ${HOME}/.config/fish.bak ;
+fi
+ln -sf ${PWD}/fish ${HOME}/.config/fish
+
 if [ -d ${HOME}/.SpaceVim.d ] ; then
     mv ${HOME}/.SpaceVim.d ${HOME}/.SpaceVim.d.bak ;
 fi
