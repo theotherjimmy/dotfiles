@@ -1,2 +1,6 @@
 **/ignore*
 service/*/supervise
+service/*/log/current
+service/*/log/lock
+service/*/log/*.u
+service/*/log/supervise
