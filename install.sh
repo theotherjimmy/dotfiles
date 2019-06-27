@@ -32,4 +32,4 @@ ln -sf ${PWD}/SpaceVim.d ${HOME}/.SpaceVim.d
 # make runsvdir services dir
 
 mkdir -p ${HOME}/.local
-ln -sf ${PWD}/service ${HOME}/.local/service
+ln -sf ${PWD}/service ${HOME}/.local
