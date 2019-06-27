@@ -15,9 +15,11 @@ useful as it allows me to edit the configuration in both locations.
 * `SpaceVim.d` - NeoVim configuration using the SpaceVim project; [upstream](https://github.com/SpaceVim/SpaceVim)
 * `userChrome.css` - Styling of the UI of firefox browser, "chrome". Removes
   the tab bar at the top, as I use tree-styl-tabs.
+* `service` - Services started as part of an Xorg session
 
 ## Required Archlinux Packages
 An incomplete list of archlinux packages includes:
+ * `aur/runit-systemd`, the basis of daemon starting within `xinitrc`
  * `aur/xinit-xsession`, so that you can login with gdm, etc. and run `~/.xinitrc`
  * `noto-font-*` the font used in these configs
  * `alacritty`

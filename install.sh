@@ -28,3 +28,8 @@ if [ -d ${HOME}/.SpaceVim.d ] ; then
     mv ${HOME}/.SpaceVim.d ${HOME}/.SpaceVim.d.bak ;
 fi
 ln -sf ${PWD}/SpaceVim.d ${HOME}/.SpaceVim.d
+
+# make runsvdir services dir
+
+mkdir -p ${HOME}/.local
+ln -sf ${PWD}/service ${HOME}/.local/service
