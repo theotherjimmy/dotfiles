@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+exec dunst 2>&1
