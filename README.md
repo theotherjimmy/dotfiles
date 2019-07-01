@@ -23,6 +23,7 @@ An incomplete list of archlinux packages includes:
  * `aur/runit-systemd`, the basis of daemon starting within `xinitrc`
  * `aur/xinit-xsession`, so that you can login with gdm, etc. and run `~/.xinitrc`
  * `noto-font-*` the font used in these configs
+ * `unclutter`, to remove the mouse pointer when not in use
  * `alacritty`
  * `fish`
  * `neovim`
