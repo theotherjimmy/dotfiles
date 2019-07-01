@@ -15,6 +15,7 @@ XDG_DIRECTORIES="\
   alacritty\
   fish\
   dunst\
+  polybar\
   "
 
 for dir in $XDG_DIRECTORIES ; do
