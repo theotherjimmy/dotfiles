@@ -19,6 +19,7 @@ useful as it allows me to edit the configuration in both locations.
 
 ## Required Archlinux Packages
 An incomplete list of archlinux packages includes:
+ * `aur/polybar`, the bottom-of-my-wm bar
  * `aur/runit-systemd`, the basis of daemon starting within `xinitrc`
  * `aur/xinit-xsession`, so that you can login with gdm, etc. and run `~/.xinitrc`
  * `noto-font-*` the font used in these configs
