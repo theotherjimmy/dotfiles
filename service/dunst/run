@@ -1,2 +1,7 @@
 #!/usr/bin/bash
-exec dunst 2>&1
+# Use a custom version of dunst, if we have built it
+if [ -x $HOME/src/void/dunst/dunst ] ; then
+  exec $HOME/src/void/dunst/dunst 2>&1
+else
+  exec dunst 2>&1
+fi
