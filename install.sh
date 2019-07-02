@@ -8,7 +8,7 @@ function link {
 
 link ${PWD}/xinitrc ${HOME}/.xinitrc
 
-for profile in $(echo ${HOME}/.mozilla/firefox/*.default) ; do
+for profile in $(echo ${HOME}/.mozilla/firefox/*default ) ; do
   mkdir -p ${profile}/chrome
   link ${PWD}/userChrome.css ${profile}/chrome/userChrome.css
 done
