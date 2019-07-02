@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 alacritty &
-xev &
-feh --bg-max Pictures/bg.png
+if [ -r $HOME/Pictures/$(hostname).png ] ; then
+  feh --bg-max $HOME/Pictures/$(hostname).png
+else
+  feh --bg-max $HOME/Pictures/bg.png
+fi
+export MOZ_USE_XINPUT2=true
 exec runsvdir ${HOME}/.local/service
