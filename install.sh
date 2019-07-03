@@ -20,6 +20,7 @@ XDG_DIRECTORIES="\
   fish\
   dunst\
   polybar\
+  rofi\
   "
 
 for dir in $XDG_DIRECTORIES ; do
