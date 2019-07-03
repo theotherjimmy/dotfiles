@@ -10,7 +10,7 @@ useful as it allows me to edit the configuration in both locations.
 * `xinitrc` - X initialization script, using the `aur/xinit-xsession` archlinux
   package for login
 * `alacritty` - X11 and Wayland terminal; [upstream](https://github.com/jwilm/alacritty)
-* `dunst` - Notification Daemon
+* `dunst` - Notification Daemon; requires the [centering branch](https://github.com/dunst-project/dunst/tree/centering)
 * `fish` - Shell
 * `SpaceVim.d` - NeoVim configuration using the SpaceVim project; [upstream](https://github.com/SpaceVim/SpaceVim)
 * `userChrome.css` - Styling of the UI of firefox browser, "chrome". Removes
