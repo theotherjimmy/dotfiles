@@ -10,7 +10,7 @@ alert = #bd2c40
 [bar/main]
 monitor =
 width = 100%
-height = 2.0%
+height = 2.5%
 radius = 0.0
 fixed-center = false
 bottom = true
@@ -23,10 +23,10 @@ line-size = 2
 padding = 1
 module-margin = 1
 
-font-0 = "Noto Sans Mono:size=10"
-font-1 = "Noto Sans Mono:size=10"
-font-2 = "Noto Sans Symbols:size=10"
-font-3 = "Noto Sans Symbols2:size=10"
+font-0 = "Noto Sans Mono:size=12"
+font-1 = "Noto Sans Mono:size=12"
+font-2 = "Noto Sans Symbols:size=12"
+font-3 = "Noto Sans Symbols2:size=12"
 
 modules-left = date ewmh
 modules-center = xwindow
