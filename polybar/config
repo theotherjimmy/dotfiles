@@ -10,9 +10,9 @@ alert = #bd2c40
 [bar/main]
 monitor =
 width = 100%
-height = 2.5%
+height = 35
 radius = 0.0
-fixed-center = false
+fixed-center = true
 bottom = true
 
 background = ${colors.background}
