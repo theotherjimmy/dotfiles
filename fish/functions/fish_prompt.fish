@@ -1,6 +1,3 @@
 function fish_prompt
-  set_color green
-  printf  ' '(prompt_pwd)
-  set_color normal
-  printf '> '
+  echo -n (set_color green)(prompt_pwd) (set_color normal)'❯ '
 end
