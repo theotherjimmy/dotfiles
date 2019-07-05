@@ -4,3 +4,4 @@ service/*/log/current
 service/*/log/lock
 service/*/log/*.u
 service/*/log/supervise
+fish/fish_variables
