@@ -27,3 +27,8 @@ An incomplete list of archlinux packages includes:
  * `alacritty`
  * `fish`
  * `neovim`
+
+## Wallpaper/Background
+
+I use the wallpaper from [Nightly Nordic](https://www.reddit.com/r/unixporn/comments/caiad9/awesomewm_nighty_nordic/)
+([direct link](https://mir-cdn.behance.net/v1/rendition/project_modules/fs/f585d480368685.5d22ffe9b8b5e.png))
