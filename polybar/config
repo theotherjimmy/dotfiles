@@ -140,8 +140,9 @@ label-full = " ☀ "
 type = internal/github
 token = ${file:/home/jimmy/.config/github/notifications.token}
 empty-notifications = false
-label = %{u#0099ff +u} 📫 %notifications% %{u-}
+label = 📫 %notifications%
 interval = 10
+label-underline = ${colors.blue}
 
 [settings]
 screenchange-reload = true
