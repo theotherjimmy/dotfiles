@@ -1,11 +1,16 @@
 [colors]
-background = #222
-background-alt = #444
-foreground = #dfdfdf
-foreground-alt = #888
-primary = #ffb52a
-secondary = #e60053
-alert = #bd2c40
+# Taken from Nord theme
+background = #2E3440
+foreground = #D8DEE9
+
+black = #3B4252
+red = #BF616A
+green = #A3BE8C
+yellow = #EBCB8B
+blue = #81A1C1
+magenta = #B48EAD
+cyan = #88C0D0
+white = #E5E9F0
 
 [bar/main]
 monitor =
@@ -50,22 +55,18 @@ enable-click = false
 enable-scroll = false
 
 label-active = " %name% "
-label-active-underline = #fba922
+label-active-underline = ${colors.yellow}
 
 label-occupied = " %name% "
-label-occupied-foreground = #ffaa00
-
 label-urgent = " %name% "
-label-urgent-underline = #9b0a20
-
 label-empty = " %name% "
 
 [module/cpu]
 type = internal/cpu
 interval = 2
 format-prefix = "💻 "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #f90000
+format-prefix-foreground = ${colors.foreground}
+format-underline = ${colors.red}
 label = %percentage:2%%
 
 [module/wlan]
@@ -74,7 +75,7 @@ interface = wlp59s0
 interval = 5.0
 
 format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #9f78e1
+format-connected-underline = ${colors.magenta}
 label-connected = %essid% %local_ip%
 
 label-disconnected =
@@ -90,9 +91,9 @@ type = internal/network
 interface = eno1
 interval = 3.0
 
-format-connected-underline = #55aa55
+format-connected-underline = ${colors.magenta}
 format-connected-prefix = "🖧 "
-format-connected-prefix-foreground = ${colors.foreground-alt}
+format-connected-prefix-foreground = ${colors.foreground}
 label-connected = %local_ip%
 
 format-disconnected =
@@ -105,8 +106,8 @@ date = "%a %d"
 time = %H:%M
 
 format-prefix =
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #0a6cf5
+format-prefix-foreground = ${colors.foreground}
+format-underline = ${colors.blue}
 
 label = %date% %time%
 
@@ -117,7 +118,7 @@ adapter = AC
 full-at = 98
 
 format-charging = <label-charging>
-format-charging-underline = #ffb52a
+format-charging-underline = ${colors.yellow}
 
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
@@ -129,7 +130,7 @@ ramp-capacity-0 = ⚋
 ramp-capacity-1 = ⚊
 ramp-capacity-2 = ⚍
 ramp-capacity-3 = ⚌
-ramp-capacity-foreground = ${colors.foreground-alt}
+ramp-capacity-foreground = ${colors.foreground}
 
 label-charging = ⚡ %percentage%%
 label-discharging = %percentage%%
