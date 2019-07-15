@@ -27,6 +27,7 @@ An incomplete list of archlinux packages includes:
  * `alacritty`
  * `fish`
  * `neovim`
+ * `skim`
 
 ## Wallpaper/Background
 
