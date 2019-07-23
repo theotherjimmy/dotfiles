@@ -33,7 +33,7 @@ font-1 = "Noto Sans Mono:size=12"
 font-2 = "Noto Sans Symbols:size=16"
 font-3 = "Noto Sans Symbols2:size=16"
 
-modules-right = ewmh date
+modules-right = ewmh date lock
 modules-center = xwindow
 modules-left = battery cpu github eth wlan
 
@@ -143,6 +143,14 @@ empty-notifications = false
 label = 📫 %notifications%
 interval = 10
 label-underline = ${colors.blue}
+
+[module/lock]
+type = custom/text
+content = 🔒
+content-foreground = ${colors.red}
+content-underline = ${colors.red}
+content-padding = 1
+click-left = slock
 
 [settings]
 screenchange-reload = true
