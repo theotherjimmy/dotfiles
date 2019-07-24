@@ -21,6 +21,7 @@ XDG_DIRECTORIES="\
   dunst\
   polybar\
   rofi\
+  zathura\
   "
 
 for dir in $XDG_DIRECTORIES ; do
