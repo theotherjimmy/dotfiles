@@ -12,8 +12,8 @@ clang2_placeholder_next = ''
 clang2_placeholder_prev = ''
 statusline_separator = 'nil'
 tabline = 'nil'
-colorscheme = "nord"
-colorscheme_bg = "dark"
+colorscheme = "gruvbox"
+colorscheme_bg = "light"
 
 [[layers]]
 name = "colorscheme"

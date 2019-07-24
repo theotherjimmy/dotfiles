@@ -1,16 +1,15 @@
 [colors]
-# Taken from Nord theme
-background = #2E3440
-foreground = #D8DEE9
+background = #fbf1c7
+foreground = #3c3836
 
-black = #3B4252
-red = #BF616A
-green = #A3BE8C
-yellow = #EBCB8B
-blue = #81A1C1
-magenta = #B48EAD
-cyan = #88C0D0
-white = #E5E9F0
+black =   #fbf1c7
+red =     #cc241d
+orange =   #d65d0e
+yellow =  #d79921
+blue =    #458588
+magenta = #b16286
+cyan =    #689d6a
+white =   #7c6f64
 
 [bar/main]
 monitor =
@@ -55,11 +54,12 @@ enable-click = false
 enable-scroll = false
 
 label-active = " %name% "
-label-active-underline = ${colors.yellow}
+label-active-underline = ${colors.orange}
 
 label-occupied = " %name% "
 label-urgent = " %name% "
 label-empty = " %name% "
+label-empty-foreground = ${colors.white}
 
 [module/cpu]
 type = internal/cpu
