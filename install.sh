@@ -40,3 +40,9 @@ link ${PWD}/SpaceVim.d ${HOME}/.SpaceVim.d
 
 mkdir -p ${HOME}/.local
 link ${PWD}/service ${HOME}/.local
+
+# make lockscreen background
+echo "Creating lockscreen background -> ${HOME}/.config/lock.png"
+convert -size 2560x1440 canvas:none -font "Noto-Sans-Mono-Bold" -pointsize 120\
+  -fill \#3c3836 -gravity center -draw "text 0,-250 \"$(id -un) @ $(hostname)\""\
+  ${HOME}/.config/lock.png
