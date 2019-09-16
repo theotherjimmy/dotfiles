@@ -1,0 +1,70 @@
+layouts:
+  - name: 3-column
+    type: ThreeColumn
+    padding: 5
+  - name: full screen
+    type: Stack
+groups:
+  - name: ♅
+    layout: 3-column
+  - name: ♆
+    layout: 3-column
+  - name: ♇
+    layout: 3-column
+  - name: ♈
+    layout: 3-column
+  - name: ♉
+    layout: 3-column
+  - name: ♊
+    layout: 3-column
+keys:
+  M-d: CloseFocused
+  M-l:
+    Focus:
+      - Center
+      - Right
+  M-S-l:
+    Swap:
+      - Center
+      - Right
+  M-h:
+    Focus:
+      - Center
+      - Left
+  M-S-h:
+    Swap:
+      - Center
+      - Left
+  M-j:
+    Focus:
+      - Center
+      - Down
+  M-S-j:
+    Swap:
+      - Center
+      - Down
+  M-k:
+    Focus:
+      - Center
+      - Up
+  M-S-k:
+    Swap:
+      - Center
+      - Up
+  M-down: GroupNext
+  M-S-down: MoveToNextGroup
+  M-up: GroupPrev
+  M-S-up: MoveToPrevGroup
+  M-enter: RotateCrtc
+  M-space: RotateLayout
+  M-tab: RotateFocus
+  M-p:
+    Spawn: [rofi, -show, run]
+  M-a:
+    Spawn: [amixer, -q, set, Master, 2%-]
+  M-S-a:
+    Spawn: [amixer, -q, set, Master, 2%+]
+  M-S-s:
+    Spawn: [xset, dpms, force, off]
+  M-c:
+    Spawn: [alacritty]
