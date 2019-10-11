@@ -65,6 +65,6 @@ keys:
   M-S-a:
     Spawn: [amixer, -q, set, Master, 2%+]
   M-S-s:
-    Spawn: [xset, dpms, force, off]
+    Spawn: [xset, s, activate]
   M-c:
     Spawn: [alacritty]
