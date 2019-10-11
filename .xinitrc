@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-alacritty &
 if [ -r $HOME/Pictures/$(hostname).png ] ; then
   feh --bg-max $HOME/Pictures/$(hostname).png
 else
