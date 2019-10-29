@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 git clone --bare git@github.com:theotherjimmy/dotfiles.git .cfg
 function config {
-   /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME $@
+   git --git-dir=$HOME/.cfg/ --work-tree=$HOME $@
 }
 
 mkdir -p .config-backup
