@@ -22,18 +22,9 @@ name = "incsearch"
 [[layers]]
 name = "lang#c"
 [[layers]]
-name = "lang#go"
-[[layers]]
-name = "lang#haskell"
-[[layers]]
-name = "lang#javascript"
-[[layers]]
 name = "lang#rust"
 [[layers]]
 name = "lang#vim"
-[[layers]]
-name = "lsp"
-filetypes = ["rust"]
 [[layers]]
 name = "shell"
 

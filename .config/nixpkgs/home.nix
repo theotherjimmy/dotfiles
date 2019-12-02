@@ -29,7 +29,31 @@ let colors = pre: {
 in {
   programs.home-manager.enable = true;
   home.packages = with pkgs; [
-    atop bc dunst exa file 
+    atop
+    bc
+    linuxPackages.bpftrace
+    exa
+    fd
+    file
+    firefox
+    git
+    gnumake
+    git-hub
+    git-review
+    i3status-rust
+    libnotify
+    mupdf
+    nixfmt
+    nix-index
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    patchelf
+    pv
+    ripgrep
+    rofi
+    watchexec
+    xwayland
   ];
   programs.alacritty = {
     enable = true;

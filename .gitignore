@@ -1,7 +1,3 @@
-**/ignore*
-service/*/supervise
-service/*/log/current
-service/*/log/lock
-service/*/log/*.u
-service/*/log/supervise
-fish/fish_variables
+.direnv.d
+.envrc
+shell.nix
