@@ -32,6 +32,7 @@ in {
     atop
     bc
     linuxPackages.bpftrace
+    direnv
     exa
     fd
     file
@@ -49,6 +50,7 @@ in {
     noto-fonts-cjk
     noto-fonts-emoji
     patchelf
+    procs
     pv
     ripgrep
     rofi
@@ -227,6 +229,7 @@ in {
     };
   };
   services.keepassx.enable = true;
+  services.lorri.enable = true;
   services.redshift = {
     enable = true;
     brightness.day = "0.9";
