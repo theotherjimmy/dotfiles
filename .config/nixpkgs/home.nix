@@ -154,6 +154,10 @@ in {
     enable = true;
     enableFishIntegration = true;
   };
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacsGit-nox;
+  };
   programs.firefox = {
     enable = true;
     profiles.me = {
@@ -228,6 +232,7 @@ in {
       };
     };
   };
+  services.emacs.enable = true;
   services.keepassx.enable = true;
   services.lorri.enable = true;
   services.redshift = {
