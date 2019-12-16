@@ -20,6 +20,7 @@ with { colors = import ./colors.nix; }; {
     gnumake
     git-hub
     git-review
+    git-series
     i3status-rust
     libnotify
     mupdf
