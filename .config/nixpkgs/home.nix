@@ -7,7 +7,11 @@ with { colors = import ./colors.nix; }; {
     bc
     linuxPackages.bpftrace
     direnv
-    (pkgs.writers.writeBashBin "edit" "exec emacsclient -c $@")
+    (
+      writers.writeBashBin
+        "edit"
+        "exec env TERM=alacritty-direct emacsclient -c $@"
+    )
     exa
     fd
     file
