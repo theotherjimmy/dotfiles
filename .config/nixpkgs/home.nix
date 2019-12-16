@@ -19,7 +19,7 @@ with { colors = import ./colors.nix; }; {
     i3status-rust
     libnotify
     mupdf
-    nixfmt
+    nixpkgs-fmt
     nix-index
     noto-fonts
     noto-fonts-cjk
