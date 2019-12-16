@@ -177,39 +177,36 @@ with { colors = import ./colors.nix; }; {
   programs.jq.enable = true;
   programs.man.enable = true;
   programs.skim.enable = true;
-  services.dunst = let
-    col = colors "#";
-  in
-    {
-      enable = true;
-      settings = {
-        global = {
-          geometry = "500x5-0+20";
-          font = "Noto Sans Mono 10";
-          sort = true;
-          alignment = "left";
-          show_age_threshold = 60;
-          word_wrap = true;
-          stack_duplicates = true;
-          startup_notification = true;
-          format = "<b>%s</b>\\n%b";
-          frame_width = 3;
-          frame_color = col.normal.white;
-        };
-        urgency_low = {
-          background = col.primary.background;
-          foreground = col.normal.yellow;
-        };
-        urgency_normal = {
-          background = col.primary.background;
-          foreground = col.normal.cyan;
-        };
-        urgency_critical = {
-          background = col.primary.background;
-          foreground = col.bright.red;
-        };
+  services.dunst = with colors "#"; {
+    enable = true;
+    settings = {
+      global = {
+        geometry = "500x5-0+20";
+        font = "Noto Sans Mono 10";
+        sort = true;
+        alignment = "left";
+        show_age_threshold = 60;
+        word_wrap = true;
+        stack_duplicates = true;
+        startup_notification = true;
+        format = "<b>%s</b>\\n%b";
+        frame_width = 3;
+        frame_color = normal.white;
+      };
+      urgency_low = {
+        background = primary.background;
+        foreground = normal.yellow;
+      };
+      urgency_normal = {
+        background = primary.background;
+        foreground = normal.cyan;
+      };
+      urgency_critical = {
+        background = primary.background;
+        foreground = bright.red;
       };
     };
+  };
   services.emacs.enable = true;
   services.keepassx.enable = true;
   services.lorri.enable = true;
