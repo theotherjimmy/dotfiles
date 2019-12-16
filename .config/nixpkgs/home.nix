@@ -41,14 +41,8 @@ with { colors = import ./colors.nix; }; {
     enable = true;
     settings = {
       window = {
-        dimensions = {
-          lines = 0;
-          columns = 0;
-        };
-        padding = {
-          x = 5;
-          y = 5;
-        };
+        dimensions = { lines = 0; columns = 0; };
+        padding = { x = 5; y = 5; };
         dynamic_padding = true;
         decorations = "none";
       };
@@ -56,25 +50,17 @@ with { colors = import ./colors.nix; }; {
       font = {
         normal.family = "Noto Sans Mono";
         size = 11.0;
-        offset = {
-          x = 0;
-          y = 0;
-        };
+        offset = { x = 0; y = 0; };
       };
       draw_bold_text_with_bright_colors = true;
       colors = colors "0x";
       visual_bell.duration = 0;
       background_opacity = 1.0;
-      mouse_bindings = [
-        { mouse = "Middle"; action = "PasteSelection"; }
-      ];
+      mouse_bindings = [ { mouse = "Middle"; action = "PasteSelection"; } ];
       mouse.url.launcher = "xdg-open";
       dynamic_title = true;
       live_config_reload = true;
-      shell = {
-        program = "fish";
-        args = [ "--login" ];
-      };
+      shell = { program = "fish"; args = [ "--login" ]; };
       key_bindings = [
         { key = "V"; mods = "Control|Shift"; action = "Paste"; }
         { key = "C"; mods = "Control|Shift"; action = "Copy"; }
