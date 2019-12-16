@@ -1,40 +1,13 @@
 { config, pkgs, ... }:
 
-let colors = pre: {
-      primary = {
-        background = "${pre}fbf1c7";
-        foreground = "${pre}3c3836";
-      };
-      normal = {
-        black =   "${pre}fbf1c7";
-        red =     "${pre}cc241d";
-        green =   "${pre}98971a";
-        yellow =  "${pre}d79921";
-        blue =    "${pre}458588";
-        magenta = "${pre}b16286";
-        cyan =    "${pre}d65d0e";
-        white =   "${pre}7c6f64";
-      };
-      bright = {
-        black =   "${pre}928374";
-        red =     "${pre}9d0006";
-        green =   "${pre}79740e";
-        yellow =  "${pre}b57614";
-        blue =    "${pre}076678";
-        magenta = "${pre}8f3f71";
-        cyan =    "${pre}af3a03";
-        white =   "${pre}3c3836";
-      };
-  };
-  edit = pkgs.writers.writeBashBin "edit" "exec emacsclient -c $@";
-in {
+with { colors = import ./colors.nix; }; {
   programs.home-manager.enable = true;
   home.packages = with pkgs; [
     atop
     bc
     linuxPackages.bpftrace
     direnv
-    edit
+    (pkgs.writers.writeBashBin "edit" "exec emacsclient -c $@")
     exa
     fd
     file
@@ -71,7 +44,7 @@ in {
           x = 5;
           y = 5;
         };
-        dynamic_padding = true; 
+        dynamic_padding = true;
         decorations = "none";
       };
       tabspaces = 8;
