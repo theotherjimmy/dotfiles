@@ -48,7 +48,7 @@ with { colors = import ./colors.nix; }; {
         decorations = "none";
       };
       tabspaces = 8;
-      font= {
+      font = {
         normal.family = "Noto Sans Mono";
         size = 11.0;
         offset = {
@@ -59,9 +59,9 @@ with { colors = import ./colors.nix; }; {
       draw_bold_text_with_bright_colors = true;
       colors = colors "0x";
       visual_bell.duration = 0;
-      background_opacity= 1.0;
+      background_opacity = 1.0;
       mouse_bindings = [
-        { mouse = "Middle"; action= "PasteSelection"; }
+        { mouse = "Middle"; action = "PasteSelection"; }
       ];
       mouse.url.launcher = "xdg-open";
       dynamic_title = true;
@@ -121,10 +121,6 @@ with { colors = import ./colors.nix; }; {
       ];
     };
   };
-  programs.broot = {
-    enable = true;
-    enableFishIntegration = true;
-  };
   programs.direnv = {
     enable = true;
     enableFishIntegration = true;
@@ -162,8 +158,16 @@ with { colors = import ./colors.nix; }; {
   programs.htop = {
     enable = true;
     fields = [
-      "PID" "USER" "M_SIZE" "M_RESIDENT" "M_SHARE" "STATE" "PERCENT_CPU"
-      "PERCENT_MEM" "TIME" "COMM"
+      "PID"
+      "USER"
+      "M_SIZE"
+      "M_RESIDENT"
+      "M_SHARE"
+      "STATE"
+      "PERCENT_CPU"
+      "PERCENT_MEM"
+      "TIME"
+      "COMM"
     ];
     hideUserlandThreads = true;
     highlightBaseName = true;
@@ -173,36 +177,39 @@ with { colors = import ./colors.nix; }; {
   programs.jq.enable = true;
   programs.man.enable = true;
   programs.skim.enable = true;
-  services.dunst = let col = colors "#"; in {
-    enable = true;
-    settings = {
-      global = {
-        geometry = "500x5-0+20";
-        font = "Noto Sans Mono 10";
-        sort = true;
-        alignment = "left";
-        show_age_threshold = 60;
-        word_wrap = true;
-        stack_duplicates = true;
-        startup_notification = true;
-        format = "<b>%s</b>\\n%b";
-        frame_width = 3;
-        frame_color = col.normal.white;
-      };
-      urgency_low = {
-        background = col.primary.background;
-        foreground = col.normal.yellow;
-      };
-      urgency_normal = {
-        background = col.primary.background;
-        foreground = col.normal.cyan;
-      };
-      urgency_critical = {
-        background = col.primary.background;
-        foreground = col.bright.red;
+  services.dunst = let
+    col = colors "#";
+  in
+    {
+      enable = true;
+      settings = {
+        global = {
+          geometry = "500x5-0+20";
+          font = "Noto Sans Mono 10";
+          sort = true;
+          alignment = "left";
+          show_age_threshold = 60;
+          word_wrap = true;
+          stack_duplicates = true;
+          startup_notification = true;
+          format = "<b>%s</b>\\n%b";
+          frame_width = 3;
+          frame_color = col.normal.white;
+        };
+        urgency_low = {
+          background = col.primary.background;
+          foreground = col.normal.yellow;
+        };
+        urgency_normal = {
+          background = col.primary.background;
+          foreground = col.normal.cyan;
+        };
+        urgency_critical = {
+          background = col.primary.background;
+          foreground = col.bright.red;
+        };
       };
     };
-  };
   services.emacs.enable = true;
   services.keepassx.enable = true;
   services.lorri.enable = true;
