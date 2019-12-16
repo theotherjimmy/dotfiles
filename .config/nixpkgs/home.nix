@@ -57,7 +57,7 @@ with { colors = import ./colors.nix; }; {
       visual_bell.duration = 0;
       background_opacity = 1.0;
       mouse_bindings = [ { mouse = "Middle"; action = "PasteSelection"; } ];
-      mouse.url.launcher = "xdg-open";
+      mouse.url.launcher = "firefox";
       dynamic_title = true;
       live_config_reload = true;
       shell = { program = "fish"; args = [ "--login" ]; };
