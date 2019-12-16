@@ -26,6 +26,7 @@ let colors = pre: {
         white =   "${pre}3c3836";
       };
   };
+  edit = pkgs.writers.writeBashBin "edit" "exec emacsclient -c $@";
 in {
   programs.home-manager.enable = true;
   home.packages = with pkgs; [
@@ -33,6 +34,7 @@ in {
     bc
     linuxPackages.bpftrace
     direnv
+    edit
     exa
     fd
     file
@@ -78,7 +80,7 @@ in {
         size = 11.0;
         offset = {
           x = 0;
-          y = -2;
+          y = 0;
         };
       };
       draw_bold_text_with_bright_colors = true;
@@ -192,15 +194,11 @@ in {
     ];
     hideUserlandThreads = true;
     highlightBaseName = true;
-    meters.left = [ "AllCPUs" "Memory" ]; 
+    meters.left = [ "AllCPUs" "Memory" ];
     treeView = true;
   };
   programs.jq.enable = true;
   programs.man.enable = true;
-  programs.neovim = {
-    enable = true;
-    withRuby = false;
-  };
   programs.skim.enable = true;
   services.dunst = let col = colors "#"; in {
     enable = true;
@@ -243,4 +241,13 @@ in {
     longitude = "-97.7407611";
   };
   services.udiskie.enable = true;
+  xdg.configFile.emacs = {
+    recursive = true;
+    source = pkgs.fetchFromGitHub {
+      owner = "syl20bnr";
+      repo = "spacemacs";
+      rev = "26b8fe0c317915b622825877eb5e5bdae88fb2b2";
+      sha256 = "00cfm6caaz85rwlrbs8rm2878wgnph6342i9688w4dji3dgyz3rz";
+    };
+  };
 }
