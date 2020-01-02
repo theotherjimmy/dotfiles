@@ -48,6 +48,7 @@ with rec {
     ripgrep
     rofi
     watchexec
+    xe
     xwayland
   ];
   programs.alacritty = {
