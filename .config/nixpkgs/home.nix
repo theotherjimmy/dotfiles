@@ -135,11 +135,6 @@ with rec {
   };
   programs.firefox = {
     enable = true;
-    profiles.me = {
-      id = 1;
-      isDefault = true;
-      userChrome = "#TabsToolbar { visibility: collapse !important; }";
-    };
   };
   programs.fish = {
     enable = true;
