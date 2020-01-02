@@ -1,6 +1,18 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-with { colors = import ./colors.nix; }; {
+with rec {
+  colors = import ./colors.nix;
+  lorri-src = pkgs.fetchFromGitHub {
+      owner = "target";
+      repo = "lorri";
+      rev = "7ff97e14e8ecbd84a8c35ed8cb2885691a827d7a";
+      sha256 = "1hv2pll7f0lm7ndygb01019ivhvzjr3nycs4p7x1ndbks6dz5j5n";
+  };
+  mylorri = import "${lorri-src}/default.nix" {
+    inherit pkgs;
+    src = lorri-src;
+  };
+}; {
   programs.home-manager.enable = true;
   home.packages = with pkgs; [
     atop
@@ -23,6 +35,7 @@ with { colors = import ./colors.nix; }; {
     git-series
     i3status-rust
     libnotify
+    mylorri
     mupdf
     nixpkgs-fmt
     nix-index
@@ -200,7 +213,6 @@ with { colors = import ./colors.nix; }; {
   };
   services.emacs.enable = true;
   services.keepassx.enable = true;
-  services.lorri.enable = true;
   services.redshift = {
     enable = true;
     brightness.day = "0.9";
@@ -209,6 +221,45 @@ with { colors = import ./colors.nix; }; {
     longitude = "-97.7407611";
   };
   services.udiskie.enable = true;
+  # coppied from lorri module to avoid duplicating the lorri package.
+  # This would be much easier if `services.lorri.package` was an option.
+  systemd.user = {
+    services.lorri = {
+      Unit = {
+        Description = "lorri build daemon";
+        Requires = "lorri.socket";
+        After = "lorri.socket";
+        RefuseManualStart = true;
+      };
+
+      Service = {
+        ExecStart = "${mylorri}/bin/lorri daemon";
+        PrivateTmp = true;
+        ProtectSystem = "strict";
+        ProtectHome = "read-only";
+        Restart = "on-failure";
+        Environment =
+          let path = with pkgs; lib.makeSearchPath "bin" [ nix gnutar gzip ];
+          in "PATH=${path}";
+      };
+    };
+
+    sockets.lorri = {
+      Unit = {
+        Description = "Socket for lorri build daemon";
+      };
+
+      Socket = {
+        ListenStream = "%t/lorri/daemon.socket";
+        RuntimeDirectory = "lorri";
+      };
+
+      Install = {
+        WantedBy = [ "sockets.target" ];
+      };
+    };
+  };
+
   xdg.configFile.emacs = {
     recursive = true;
     source = pkgs.fetchFromGitHub {
