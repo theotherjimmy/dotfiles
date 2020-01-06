@@ -210,6 +210,7 @@ with rec {
   services.emacs.enable = true;
   services.keepassx.enable = true;
   services.redshift = {
+    package = pkgs.redshift-wayland;
     enable = true;
     brightness.day = "0.9";
     brightness.night = "0.6";
