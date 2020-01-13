@@ -35,6 +35,7 @@ with rec {
     git-review
     git-series
     i3status-rust
+    keepass
     libnotify
     mako
     mylorri
@@ -180,7 +181,6 @@ with rec {
   programs.man.enable = true;
   programs.skim.enable = true;
   services.emacs.enable = true;
-  services.keepassx.enable = true;
   services.redshift = {
     package = pkgs.redshift-wayland;
     enable = true;
