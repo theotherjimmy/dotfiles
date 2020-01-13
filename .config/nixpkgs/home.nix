@@ -246,6 +246,8 @@ with rec {
   };
 
   xdg.configFile.emacs = {
+    # don't make the directory read only so that impure melpa can still happen
+    # for now
     recursive = true;
     source = pkgs.fetchFromGitHub {
       owner = "syl20bnr";
