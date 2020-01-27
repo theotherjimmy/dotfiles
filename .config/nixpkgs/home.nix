@@ -3,16 +3,22 @@
 with { colors = import ./colors.nix; }; {
   imports = [ ./mako.nix ];
   programs.home-manager.enable = true;
-  home.packages = with pkgs; [
+  home.packages = with pkgs // {
+   edit = pkgs.writers.writeBashBin
+    "edit"
+    "exec env TERM=alacritty-direct emacsclient -c $@";
+   swaystart = pkgs.writers.writeBashBin
+    "startsway"
+    ''
+      systemctl --user import-environment
+      exec systemctl --user start sway.service
+    '';
+  }; [
     atop
     bc
     linuxPackages.bpftrace
     direnv
-    (
-      writers.writeBashBin
-        "edit"
-        "exec env TERM=alacritty-direct emacsclient -c $@"
-    )
+    edit
     exa
     fd
     file
@@ -37,6 +43,7 @@ with { colors = import ./colors.nix; }; {
     pv
     ripgrep
     rofi
+    swaystart
     watchexec
     xe
     xwayland
@@ -122,7 +129,7 @@ with { colors = import ./colors.nix; }; {
   };
   programs.emacs = {
     enable = true;
-    package = pkgs.emacsGit-nox;
+    package = pkgs.emacs-nox;
   };
   programs.firefox = {
     enable = true;
@@ -170,7 +177,7 @@ with { colors = import ./colors.nix; }; {
   services.lorri.enable = true;
   services.emacs.enable = true;
   services.redshift = {
-    package = pkgs.redshift-wayland;
+    package = pkgs.redshift-wlr;
     enable = true;
     brightness.day = "0.9";
     brightness.night = "0.6";
@@ -197,43 +204,33 @@ with { colors = import ./colors.nix; }; {
   # coppied from lorri module to avoid duplicating the lorri package.
   # This would be much easier if `services.lorri.package` was an option.
   systemd.user = {
-    services.lorri = {
+    services.sway = {
       Unit = {
-        Description = "lorri build daemon";
-        Requires = "lorri.socket";
-        After = "lorri.socket";
-        RefuseManualStart = true;
+        description = "Sway - Wayland window manager";
+        documentation = [ "man:sway(5)" ];
+        bindsTo = [ "graphical-session.target" ];
+        wants = [ "graphical-session-pre.target" ];
+        after = [ "graphical-session-pre.target" ];
       };
-
       Service = {
-        ExecStart = "${mylorri}/bin/lorri daemon";
-        PrivateTmp = true;
-        ProtectSystem = "strict";
-        ProtectHome = "read-only";
+        Type = "simple";
+        ExecStart = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.sway}/bin/sway --debug";
         Restart = "on-failure";
-        Environment =
-          let path = with pkgs; lib.makeSearchPath "bin" [ nix gnutar gzip ];
-          in "PATH=${path}";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
       };
     };
 
-    sockets.lorri = {
-      Unit = {
-        Description = "Socket for lorri build daemon";
-      };
-
-      Socket = {
-        ListenStream = "%t/lorri/daemon.socket";
-        RuntimeDirectory = "lorri";
-      };
-
-      Install = {
-        WantedBy = [ "sockets.target" ];
-      };
+    targets.sway-session.Unit = {
+      description = "Sway compositor session";
+      documentation = [ "man:systemd.special(7)" ];
+      bindsTo = [ "graphical-session.target" ];
+      wants = [ "graphical-session-pre.target" ];
+      after = [ "graphical-session-pre.target" ];
     };
   };
 
-  xdg.configFile.emacs = {
+  home.file.".emacs.d" = {
     # don't make the directory read only so that impure melpa can still happen
     # for now
     recursive = true;

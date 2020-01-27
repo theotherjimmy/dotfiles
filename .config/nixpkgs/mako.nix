@@ -1,13 +1,6 @@
 { config, lib, pkgs, ... }:
 
-with lib;
-let
-  mk-config = {generic, criteria, ...}: pkgs.writeText "mako-config" ''
-    ${lib.generators.toKeyValue {} generic}
-    ${lib.generators.toINI {} criteria}
-  '';
-  cfg = config.services.mako;
-in{
+with lib // { cfg = config.services.mako; }; {
   options.services.mako = {
     enable = mkOption {
       type = types.bool;
@@ -36,13 +29,20 @@ in{
       Install.WantedBy = [ "graphical-session.target" ];
 
       Service = {
-        ExecStart = "${pkgs.mako}/bin/mako -c ${mk-config cfg}";
+        ExecStart = "${pkgs.mako}/bin/mako";
         BusName = "org.freedesktop.Notifications";
         PrivateTmp = true;
         ProtectSystem = "strict";
         ProtectHome = "read-only";
         Restart = "on-failure";
       };
+    };
+    xdg.configFile.mako = {
+      target = "mako/config";
+      text = ''
+        ${generators.toKeyValue {} cfg.generic}
+        ${generators.toINI {} cfg.criteria}
+      '';
     };
   };
 }
