@@ -1,18 +1,6 @@
 { config, lib, pkgs, ... }:
 
-with rec {
-  colors = import ./colors.nix;
-  lorri-src = pkgs.fetchFromGitHub {
-      owner = "target";
-      repo = "lorri";
-      rev = "7ff97e14e8ecbd84a8c35ed8cb2885691a827d7a";
-      sha256 = "1hv2pll7f0lm7ndygb01019ivhvzjr3nycs4p7x1ndbks6dz5j5n";
-  };
-  mylorri = import "${lorri-src}/default.nix" {
-    inherit pkgs;
-    src = lorri-src;
-  };
-}; {
+with { colors = import ./colors.nix; }; {
   imports = [ ./mako.nix ];
   programs.home-manager.enable = true;
   home.packages = with pkgs; [
@@ -38,7 +26,6 @@ with rec {
     keepass
     libnotify
     mako
-    mylorri
     mupdf
     nixpkgs-fmt
     nix-index
@@ -180,6 +167,7 @@ with rec {
   programs.jq.enable = true;
   programs.man.enable = true;
   programs.skim.enable = true;
+  services.lorri.enable = true;
   services.emacs.enable = true;
   services.redshift = {
     package = pkgs.redshift-wayland;
