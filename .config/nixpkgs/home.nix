@@ -230,6 +230,17 @@ with { colors = import ./colors.nix; }; {
     };
   };
 
+  xdg.configFile.backgrouund = {
+    target = "bg.png";
+    source = pkgs.runCommand "background.png" {
+      src = pkgs.writeText "bg-svg" (import ./nix-snowflake.svg.nix (with colors "#"; {
+        dark = bright.red;
+        light = normal.cyan;
+      }));
+      buildInputs = [pkgs.imagemagick pkgs.potrace];
+    } "convert -background none $src $out";
+  };
+
   home.file.".emacs.d" = {
     # don't make the directory read only so that impure melpa can still happen
     # for now
