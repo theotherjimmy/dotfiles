@@ -8,11 +8,17 @@ input type:keyboard {
   xkb_options "caps:escape"
 }
 
+input type:touchpad {
+  dwt enabled
+  natural_scroll enabled
+  middle_emulation enabled
+}
+
 set $mod Mod1
 
 exec swayidle -w\
-  before-sleep 'loginctl lock-session'\
-  timeout 300 'loginctl lock-session'\
+  before-sleep 'loginctl lock-session auto'\
+  timeout 300 'loginctl lock-session auto'\
   timeout 600 'swaymsg "output * dpms off"'\
   resume 'swaymsg "output * dpms on"'\
   lock 'swaylock -f'
