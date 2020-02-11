@@ -115,7 +115,7 @@ mode "resize" {
 }
 
 bindsym $mod+e mode "resize"
-bindsym $mod+Shift+s exec loginctl lock-session
+bindsym $mod+Shift+s exec loginctl lock-session auto
 
 default_border normal 2
 titlebar_border_thickness 2
