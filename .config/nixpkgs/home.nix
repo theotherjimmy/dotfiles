@@ -47,6 +47,7 @@ with { colors = import ./colors.nix; }; {
     xe
     xwayland
   ];
+  fonts.fontconfig.enable = true;
   programs.alacritty = {
     enable = true;
     settings = {
