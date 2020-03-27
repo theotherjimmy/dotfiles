@@ -1,6 +1,15 @@
 { config, lib, pkgs, ... }:
 
-with { colors = import ./colors.nix; }; {
+with rec {
+  colors = import ./colors.nix;
+  bg-image = pkgs.runCommand "background.png" {
+    src = pkgs.writeText "bg-svg" (import ./nix-snowflake.svg.nix (with colors "#"; {
+      dark = normal.red;
+      light = normal.cyan;
+    }));
+    buildInputs = [pkgs.imagemagick pkgs.potrace];
+  } "convert -background none $src $out";
+}; {
   imports = [
     ./mako.nix
     ./swaylock.nix
@@ -230,17 +239,6 @@ with { colors = import ./colors.nix; }; {
     };
   };
 
-  xdg.configFile.background = {
-    target = "bg.png";
-    source = pkgs.runCommand "background.png" {
-      src = pkgs.writeText "bg-svg" (import ./nix-snowflake.svg.nix (with colors "#"; {
-        dark = normal.red;
-        light = normal.cyan;
-      }));
-      buildInputs = [pkgs.imagemagick pkgs.potrace];
-    } "convert -background none $src $out";
-  };
-
   home.file.".emacs.d" = {
     # don't make the directory read only so that impure melpa can still happen
     # for now
@@ -364,7 +362,7 @@ with { colors = import ./colors.nix; }; {
       "${modifier}+Shift+bracketright" = "move container to workspace number ${ws10}";
     };
     output."*" = {
-      bg = "../bg.png center ${primary.bg-soft}";
+      bg = "${bg-image} center ${primary.bg-soft}";
     };
     window = {
       border = 2;
@@ -379,7 +377,7 @@ with { colors = import ./colors.nix; }; {
   '';
   programs.swaylock = with colors ""; {
     enable = true;
-    image = "/home/jimmy/.config/bg.png";
+    image = "${bg-image}";
     scaling = "center";
     color = primary.bg-soft;
   };
