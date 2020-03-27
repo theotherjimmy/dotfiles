@@ -28,7 +28,6 @@ with { colors = import ./colors.nix; }; {
     git-hub
     git-review
     git-series
-    i3status-rust
     keepass
     libnotify
     mako
@@ -36,8 +35,6 @@ with { colors = import ./colors.nix; }; {
     nixpkgs-fmt
     nix-index
     noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
     patchelf
     procs
     pv
@@ -226,36 +223,8 @@ with { colors = import ./colors.nix; }; {
       "urgency=low".border-color = normal.yellow;
     };
   };
-  # coppied from lorri module to avoid duplicating the lorri package.
-  # This would be much easier if `services.lorri.package` was an option.
-  systemd.user = {
-    services.sway = {
-      Unit = {
-        description = "Sway - Wayland window manager";
-        documentation = [ "man:sway(5)" ];
-        bindsTo = [ "graphical-session.target" ];
-        wants = [ "graphical-session-pre.target" ];
-        after = [ "graphical-session-pre.target" ];
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.sway}/bin/sway --debug";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
 
-    targets.sway-session.Unit = {
-      description = "Sway compositor session";
-      documentation = [ "man:systemd.special(7)" ];
-      bindsTo = [ "graphical-session.target" ];
-      wants = [ "graphical-session-pre.target" ];
-      after = [ "graphical-session-pre.target" ];
-    };
-  };
-
-  xdg.configFile.backgrouund = {
+  xdg.configFile.background = {
     target = "bg.png";
     source = pkgs.runCommand "background.png" {
       src = pkgs.writeText "bg-svg" (import ./nix-snowflake.svg.nix (with colors "#"; {
@@ -277,4 +246,129 @@ with { colors = import ./colors.nix; }; {
       sha256 = "00cfm6caaz85rwlrbs8rm2878wgnph6342i9688w4dji3dgyz3rz";
     };
   };
+  wayland.windowManager.sway.enable = true;
+  wayland.windowManager.sway.config = with colors "#"; {
+    bars = [{
+      position = "top";
+      statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs .config/sway/status.toml";
+      workspaceNumbers = false;
+      fonts = [ "noto sans mono 11" ];
+      colors = let mkWorkspace =
+        border: {
+          inherit border;
+          inherit (primary) background;
+          text = primary.foreground;
+        };
+      in {
+        inherit (primary) background;
+        statusline = primary.foreground;
+        focusedWorkspace = mkWorkspace bright.red;
+        inactiveWorkspace = mkWorkspace primary.background;
+        urgentWorkspace = mkWorkspace normal.cyan;
+      };
+    }];
+    colors = let mkColors =
+      border: {
+        inherit (primary) background;
+        text = primary.foreground;
+        inherit border;
+        childBorder = border;
+        indicator = border;
+      };
+    in {
+      inherit (primary) background;
+      focused = mkColors normal.cyan;
+      focusedInactive = mkColors primary.background;
+      unfocused = mkColors primary.background;
+    };
+    focus.followMouse = false;
+    fonts = [ "noto sans mono 11" ];
+    gaps = {
+      inner = 10;
+      outer = 10;
+      smartBorders = "on";
+      smartGaps = true;
+    };
+    input."type:keyboard" = {
+      xkb_layout = "us";
+      xkb_variant = "dvp";
+      xkb_options = "caps:escape";
+    };
+    input."type:touchpad" = {
+      dwt = "enabled";
+      natural_scroll = "enabled";
+      middle_emulation = "enabled";
+    };
+    keybindings = let
+      modifier = "Mod1";
+      ws1 = "1:#";
+      ws2 = "2:[";
+      ws3 = "3:{";
+      ws4 = "4:}";
+      ws5 = "5:(";
+      ws6 = "6:=";
+      ws7 = "7:*";
+      ws8 = "8:)";
+      ws9 = "9:+";
+      ws10 = "10:]";
+    in {
+      "${modifier}+c" = "exec alacritty";
+      "${modifier}+Shift+semicolon" = "kill";
+      "${modifier}+p" = "exec rofi -show run";
+      "${modifier}+h" = "focus left";
+      "${modifier}+j" = "focus down";
+      "${modifier}+k" = "focus up";
+      "${modifier}+l" = "focus right";
+      "${modifier}+Shift+h" = "move left";
+      "${modifier}+Shift+j" = "move down";
+      "${modifier}+Shift+k" = "move up";
+      "${modifier}+Shift+l" = "move right";
+      "${modifier}+d" = "split h";
+      "${modifier}+v" = "split v";
+      "${modifier}+u" = "fullscreen toggle";
+      "${modifier}+w" = "workspace back_and_forth";
+      "${modifier}+o" = "layout stacking";
+      "${modifier}+period" = "layout toggle split";
+
+      "${modifier}+Shift+r" = "reload";
+      "${modifier}+Shift+p" = "restart";
+      "${modifier}+Shift+period" = ''exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit sway' 'swaymsg exit'"'';
+      "${modifier}+Shift+s" = "exec loginctl lock-session auto";
+      # switch to workspace
+      "${modifier}+ampersand" = "workspace number ${ws1}";
+      "${modifier}+bracketleft" = "workspace number ${ws2}";
+      "${modifier}+braceleft" ="workspace number ${ws3}";
+      "${modifier}+braceright" = "workspace number ${ws4}";
+      "${modifier}+parenleft" = "workspace number ${ws5}";
+      "${modifier}+equal" = "workspace number ${ws6}";
+      "${modifier}+asterisk" = "workspace number ${ws7}";
+      "${modifier}+parenright" = "workspace number ${ws8}";
+      "${modifier}+plus" = "workspace number ${ws9}";
+      "${modifier}+bracketright" = "workspace number ${ws10}";
+      # move focused container to workspace
+      "${modifier}+Shift+ampersand" = "move container to workspace number ${ws1}";
+      "${modifier}+Shift+bracketleft" = "move container to workspace number ${ws2}";
+      "${modifier}+Shift+braceleft" = "move container to workspace number ${ws3}";
+      "${modifier}+Shift+braceright" = "move container to workspace number ${ws4}";
+      "${modifier}+Shift+parenleft" = "move container to workspace number ${ws5}";
+      "${modifier}+Shift+equal" = "move container to workspace number ${ws6}";
+      "${modifier}+Shift+asterisk" = "move container to workspace number ${ws7}";
+      "${modifier}+Shift+parenright" = "move container to workspace number ${ws8}";
+      "${modifier}+Shift+plus" = "move container to workspace number ${ws9}";
+      "${modifier}+Shift+bracketright" = "move container to workspace number ${ws10}";
+    };
+    output."*" = {
+      bg = "../bg.png center ${primary.bg-soft}";
+    };
+    window = {
+      border = 2;
+      titlebar = true;
+    };
+  };
+  wayland.windowManager.sway.extraConfig = ''
+    titlebar_border_thickness 2
+    seat * hide_cursor 1000
+    title_align center
+    for_window [shell=".*"] title_format "%title :: %shell"
+  '';
 }

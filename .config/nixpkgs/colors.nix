@@ -2,6 +2,7 @@ pre: {
   primary = {
     background = "${pre}fbf1c7";
     foreground = "${pre}3c3836";
+    bg-soft = "${pre}f2e5bc";
   };
   normal = {
     black = "${pre}fbf1c7";
