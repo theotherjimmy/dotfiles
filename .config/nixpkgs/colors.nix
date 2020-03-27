@@ -1,11 +1,11 @@
 pre: {
   primary = {
-    background = "${pre}fbf1c7";
-    foreground = "${pre}3c3836";
-    bg-soft = "${pre}f2e5bc";
+    background = "${pre}282828";
+    foreground = "${pre}ebdbb2";
+    bg-soft = "${pre}32302f";
   };
   normal = {
-    black = "${pre}fbf1c7";
+    black = "${pre}282828";
     red = "${pre}cc241d";
     green = "${pre}98971a";
     yellow = "${pre}d79921";
@@ -16,12 +16,12 @@ pre: {
   };
   bright = {
     black = "${pre}928374";
-    red = "${pre}9d0006";
-    green = "${pre}79740e";
-    yellow = "${pre}b57614";
-    blue = "${pre}076678";
-    magenta = "${pre}8f3f71";
-    cyan = "${pre}af3a03";
-    white = "${pre}3c3836";
+    red = "${pre}fb4934";
+    green = "${pre}b8bb26";
+    yellow = "${pre}fabd2f";
+    blue = "${pre}83a598";
+    magenta = "${pre}d3869b";
+    cyan = "${pre}fe8019";
+    white = "${pre}ebdbb2";
   };
 }
