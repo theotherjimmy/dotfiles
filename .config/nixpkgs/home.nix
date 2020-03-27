@@ -1,7 +1,10 @@
 { config, lib, pkgs, ... }:
 
 with { colors = import ./colors.nix; }; {
-  imports = [ ./mako.nix ];
+  imports = [
+    ./mako.nix
+    ./swaylock.nix
+  ];
   programs.home-manager.enable = true;
   home.packages = with pkgs // {
    edit = pkgs.writers.writeBashBin
@@ -374,4 +377,10 @@ with { colors = import ./colors.nix; }; {
     title_align center
     for_window [shell=".*"] title_format "%title :: %shell"
   '';
+  programs.swaylock = with colors ""; {
+    enable = true;
+    image = "/home/jimmy/.config/bg.png";
+    scaling = "center";
+    color = primary.bg-soft;
+  };
 }
