@@ -40,8 +40,10 @@ with { colors = import ./colors.nix; }; {
     pv
     ripgrep
     rofi
+    screen
     swaystart
     watchexec
+    wl-clipboard
     xe
     xwayland
   ];
