@@ -231,7 +231,7 @@ with { colors = import ./colors.nix; }; {
     target = "bg.png";
     source = pkgs.runCommand "background.png" {
       src = pkgs.writeText "bg-svg" (import ./nix-snowflake.svg.nix (with colors "#"; {
-        dark = bright.red;
+        dark = normal.red;
         light = normal.cyan;
       }));
       buildInputs = [pkgs.imagemagick pkgs.potrace];
