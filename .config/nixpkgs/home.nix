@@ -381,4 +381,47 @@ with rec {
     scaling = "center";
     color = primary.bg-soft;
   };
+  programs.rofi = {
+    enable = true;
+    borderWidth = 2;
+    font = "Noto Sans Mono 11";
+    terminal = "${pkgs.alacritty}/bin/alacritty";
+    lines = 20;
+    separator = "solid";
+    colors = with colors "#"; {
+      window = {
+        inherit (primary) background;
+        border = normal.white;
+        separator = normal.white;
+      };
+      rows = {
+        active = {
+          background = normal.yellow;
+          backgroundAlt = normal.yellow;
+          foreground = primary.background;
+          highlight = {
+            background = bright.yellow;
+            foreground = primary.background;
+          };
+        };
+        urgent = {
+          background = normal.red;
+          backgroundAlt = normal.red;
+          foreground = primary.background;
+          highlight = {
+            background = bright.red;
+            foreground = primary.background;
+          };
+        };
+        normal = {
+          inherit (primary) background foreground;
+          backgroundAlt = primary.bg-soft;
+          highlight = {
+            inherit (primary) foreground;
+            background = normal.white;
+          };
+        };
+      };
+    };
+  };
 }
