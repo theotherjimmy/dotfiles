@@ -1,6 +1,12 @@
 { config, lib, pkgs, ... }:
 
-with rec {
+let
+  font = rec {
+    name = "Hack";
+    em = 11;
+    px = 16;
+    emstr = "${name} ${toString em}";
+  };
   colors = import ./colors.nix;
   bg-image = pkgs.runCommand "background.png" {
     src = pkgs.writeText "bg-svg" (import ./nix-snowflake.svg.nix (with colors "#"; {
@@ -9,116 +15,11 @@ with rec {
     }));
     buildInputs = [pkgs.imagemagick pkgs.potrace];
   } "convert -background none $src $out";
-  wm-config = with colors "#"; {
-    bars = [{
-      position = "top";
-      statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs .config/sway/status.toml";
-      workspaceNumbers = false;
-      fonts = [ "noto sans mono 11" ];
-      colors = let mkWorkspace =
-        border: {
-          inherit border;
-          inherit (primary) background;
-          text = primary.foreground;
-        };
-      in {
-        inherit (primary) background;
-        statusline = primary.foreground;
-        focusedWorkspace = mkWorkspace bright.red;
-        inactiveWorkspace = mkWorkspace primary.background;
-        urgentWorkspace = mkWorkspace normal.cyan;
-      };
-    }];
-    colors = let mkColors =
-      border: {
-        inherit (primary) background;
-        text = primary.foreground;
-        inherit border;
-        childBorder = border;
-        indicator = border;
-      };
-    in {
-      inherit (primary) background;
-      focused = mkColors normal.cyan;
-      focusedInactive = mkColors primary.background;
-      unfocused = mkColors primary.background;
-    };
-    focus.followMouse = false;
-    fonts = [ "noto sans mono 11" ];
-    gaps = {
-      inner = 10;
-      outer = 10;
-      smartBorders = "on";
-      smartGaps = true;
-    };
-    keybindings = let
-      modifier = "Mod1";
-      ws1 = "1:#";
-      ws2 = "2:[";
-      ws3 = "3:{";
-      ws4 = "4:}";
-      ws5 = "5:(";
-      ws6 = "6:=";
-      ws7 = "7:*";
-      ws8 = "8:)";
-      ws9 = "9:+";
-      ws10 = "10:]";
-    in {
-      "${modifier}+c" = "exec alacritty";
-      "${modifier}+Shift+semicolon" = "kill";
-      "${modifier}+p" = "exec rofi -show run";
-      "${modifier}+h" = "focus left";
-      "${modifier}+j" = "focus down";
-      "${modifier}+k" = "focus up";
-      "${modifier}+l" = "focus right";
-      "${modifier}+Shift+h" = "move left";
-      "${modifier}+Shift+j" = "move down";
-      "${modifier}+Shift+k" = "move up";
-      "${modifier}+Shift+l" = "move right";
-      "${modifier}+d" = "split h";
-      "${modifier}+v" = "split v";
-      "${modifier}+u" = "fullscreen toggle";
-      "${modifier}+w" = "workspace back_and_forth";
-      "${modifier}+o" = "layout tabbed";
-      "${modifier}+period" = "layout toggle split";
-
-      "${modifier}+Shift+r" = "reload";
-      "${modifier}+Shift+p" = "restart";
-      "${modifier}+Shift+period" = ''exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit sway' 'swaymsg exit'"'';
-      "${modifier}+Shift+s" = "exec loginctl lock-session auto";
-      # switch to workspace
-      "${modifier}+ampersand" = "workspace number ${ws1}";
-      "${modifier}+bracketleft" = "workspace number ${ws2}";
-      "${modifier}+braceleft" ="workspace number ${ws3}";
-      "${modifier}+braceright" = "workspace number ${ws4}";
-      "${modifier}+parenleft" = "workspace number ${ws5}";
-      "${modifier}+equal" = "workspace number ${ws6}";
-      "${modifier}+asterisk" = "workspace number ${ws7}";
-      "${modifier}+parenright" = "workspace number ${ws8}";
-      "${modifier}+plus" = "workspace number ${ws9}";
-      "${modifier}+bracketright" = "workspace number ${ws10}";
-      # move focused container to workspace
-      "${modifier}+Shift+ampersand" = "move container to workspace number ${ws1}";
-      "${modifier}+Shift+bracketleft" = "move container to workspace number ${ws2}";
-      "${modifier}+Shift+braceleft" = "move container to workspace number ${ws3}";
-      "${modifier}+Shift+braceright" = "move container to workspace number ${ws4}";
-      "${modifier}+Shift+parenleft" = "move container to workspace number ${ws5}";
-      "${modifier}+Shift+equal" = "move container to workspace number ${ws6}";
-      "${modifier}+Shift+asterisk" = "move container to workspace number ${ws7}";
-      "${modifier}+Shift+parenright" = "move container to workspace number ${ws8}";
-      "${modifier}+Shift+plus" = "move container to workspace number ${ws9}";
-      "${modifier}+Shift+bracketright" = "move container to workspace number ${ws10}";
-    };
-    window = {
-      border = 2;
-      titlebar = true;
-    };
+  dwm = pkgs.callPackage /home/jimbri01/src/nix/dwm/package.nix {
+    inherit colors font;
   };
-}; {
-  imports = [
-    ./mako.nix
-    ./swaylock.nix
-  ];
+in {
+  imports = [ ];
   programs.home-manager.enable = true;
   home.packages = with pkgs // rec {
     edit = pkgs.writers.writeBashBin "edit" ''
@@ -166,7 +67,6 @@ with rec {
     just
     keepass
     libnotify
-    mako
     mupdf
     nixpkgs-fmt
     nix-index
@@ -182,11 +82,13 @@ with rec {
     ripgrep
     rofi
     screen
-    swaystart
+    tmux
     watchexec
     wl-clipboard
+    xclip
     xe
     xwayland
+    xorg.xdpyinfo
   ];
   fonts.fontconfig.enable = true;
   programs.alacritty = {
@@ -198,10 +100,9 @@ with rec {
         dynamic_padding = true;
         decorations = "none";
       };
-      tabspaces = 8;
       font = {
-        normal.family = "Noto Sans Mono";
-        size = 11.0;
+        normal.family = font.name;
+        size = font.em;
         offset = { x = 0; y = 0; };
       };
       draw_bold_text_with_bright_colors = true;
@@ -315,7 +216,7 @@ with rec {
   programs.termite = with colors "#"; {
     enable = true;
     cursorColor = primary.foreground;
-    font = "Noto Sans Mono 11";
+    font = font.emstr;
     foregroundColor = primary.foreground;
     backgroundColor = primary.background;
     colorsExtra = ''
@@ -337,6 +238,182 @@ with rec {
       color15 = ${bright.white}
     '';
   };
+  programs.zathura = {
+    enable = true;
+    options = with colors "#"; {
+      font = font.emstr;
+      guioptions = "cs";
+      adjust-open = "width";
+      incremental-search = "false";
+      recolor = "true";
+      recolor-reverse-video = "false";
+      statusbar-home-tilde = "true";
+      selection-clipboard = "primary";
+
+      completion-fg = primary.foreground;
+      completion-bg = primary.bg-soft;
+      completion-group-fg = primary.foreground;
+      completion-group-bg = primary.background;
+      completion-highlight-bg = bright.blue;
+      completion-highlight-fg = primary.foreground;
+      default-fg = primary.foreground;
+      default-bg = primary.background;
+      inputbar-fg = primary.foreground;
+      inputbar-bg = primary.background;
+      notification-bg = primary.background;
+      notification-fg = primary.foreground;
+      notification-error-bg = primary.background;
+      notification-error-fg = normal.red;
+      notification-warning-bg = primary.background;
+      notification-warning-fg = normal.yellow;
+      tabbar-bg = primary.background;
+      tabbar-fg = normal.blue;
+      tabbar-focus-bg = normal.white;
+      tabbar-focus-fg = primary.background;
+      statusbar-bg = primary.bg-soft;
+      statusbar-fg = primary.foreground;
+      highlight-color = normal.yellow;
+      highlight-active-color = primary.foreground;
+      recolor-darkcolor = primary.foreground;
+      recolor-lightcolor = primary.background;
+      render-loading-bg = primary.background;
+      render-loading-fg = primary.foreground;
+      index-bg = primary.background;
+      index-fg = primary.foreground;
+      index-active-bg = primary.bg-soft;
+      index-active-fg = normal.green;
+    };
+  };
+  services.polybar = with colors "#"; {
+    enable = true;
+    script = "polybar main &";
+    config = {
+      "bar/main" = {
+        width = "100%";
+        height = 35;
+        radius = 0;
+        fixed-center = true;
+        bottom = false;
+        background = primary.background;
+        foreground = primary.foreground;
+
+        border-size = 0;
+        line-size = 2;
+        padding = 1;
+        module-margin = 1;
+
+        font-0 = "${font.name}:size=${toString font.em}";
+        font-1 = "${font.name}:size=${toString font.em}";
+        font-2 = "Noto Sans Symbols:size=16";
+        font-3 = "Noto Sans Symbols2:size=16";
+
+        modules-right = "ewmh date";
+        modules-center = "xwindow";
+        modules-left = "battery cpu eth wlan";
+
+        tray-position = "right";
+        tray-padding = 2;
+        tray-maxsize = 24;
+        override-redirect = true;
+      };
+      "global/wm".margin-top = 0;
+      "module/xwindow" = {
+        type = "internal/xwindow";
+        label = "%title:0:100:...%";
+        format-underline = normal.cyan;
+      };
+      "module/ewmh" = {
+        type = "internal/xworkspaces";
+        pin-workspaces = false;
+        enable-click = false;
+        enable-scroll = false;
+
+        label-active = " %name% ";
+        label-active-underline = normal.red;
+
+        label-occupied = " %name% ";
+        label-urgent = " %name% ";
+        label-empty = " %name% ";
+        label-empty-foreground = normal.white;
+      };
+      "module/cpu" = {
+        type = "internal/cpu";
+        interval = 2;
+        format-prefix = "💻 ";
+        format-prefix-foreground = primary.foreground;
+        format-underline = normal.red;
+        label = "%percentage:2%%";
+      };
+      "module/wlan" =  {
+        type = "internal/network";
+        interface = "wlp59s0";
+        interval = 5;
+        format-connected = "<ramp-signal> <label-connected>";
+        format-connected-underline = normal.magenta;
+        label-connected = "%essid%";
+        label-disconnected = "";
+        ramp-signal-0 = "🌧";
+        ramp-signal-1 = "🌦";
+        ramp-signal-2 = "🌥";
+        ramp-signal-3 = "🌤";
+        ramp-signal-4 = "🌣";
+      };
+      "module/eth" = {
+        type = "internal/network";
+        interface = "eno1";
+        interval = 5;
+        format-connected-underline = normal.magenta;
+        format-connected-prefix = "🖧 ";
+        format-connected-prefix-foreground = primary.foreground;
+        label-connected = "%local_ip%";
+        format-disconnected = "";
+      };
+      "module/date" = {
+        type = "internal/date";
+        interval = 5;
+        date = "%a %d";
+        time = "%H:%M";
+        format-prefix = "";
+        format-prefix-foreground = primary.foreground;
+        format-underline = normal.blue;
+        label = "%date% %time%";
+      };
+      "module/battery" = {
+        type = "internal/battery";
+        battery = "BAT0";
+        adapter = "AC";
+        full-at = 98;
+        format-charging = "%percentage%%";
+        format-charging-underline = normal.yellow;
+        format-discharging = "%percentage%%";
+        format-discharging-underline = normal.yellow;
+        format-full = " ☀ ";
+        format-full-underline = normal.green;
+        ramp-capacity-0 = "⚋";
+        ramp-capacity-1 = "⚊";
+        ramp-capacity-2 = "⚍";
+        ramp-capacity-3 = "⚌";
+        ramp-capacity-foreground = primary.foreground;
+      };
+      settings.screenchange-reload = true;
+    };
+  };
+  services.picom.enable = true;
+  services.unclutter.enable = true;
+  systemd.user.services.background = {
+    Unit = {
+      Description = "Set the background for an X session";
+      After = [ "graphical-session-pre.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = with colors "#"; 
+        "${pkgs.feh}/bin/feh --bg-center --image-bg ${primary.bg-soft} ${bg-image}";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
   services.lorri.enable = true;
   services.emacs.enable = true;
   services.redshift = {
@@ -348,23 +425,32 @@ with rec {
     longitude = "-97.7407611";
   };
   services.udiskie.enable = true;
-  services.mako = with colors "#"; {
+  services.dunst = {
     enable = true;
-    generic =  {
-      font="Noto Sans Mono 10";
-      border-size = 3;
-      padding = 10;
-      default-timeout = 5000;
-      background-color = primary.background;
-      text-color = primary.foreground;
-      border-color = normal.red;
-    };
-    criteria = {
-      "urgency=high".border-color = bright.red;
-      "urgency=low".border-color = normal.yellow;
+    settings = with colors "#"; {
+      global = {
+        geometry = "500x5-0+20";
+        padding = 10;
+        frame_width = 2;
+        frame_color = normal.cyan;
+        font = font.emstr;
+        align = "left";
+        word_wrap = true;
+      };
+      urgency_low = {
+        inherit (primary) foreground background;
+        frame_color = normal.yellow;
+      };
+      urgency_medium = {
+        inherit (primary) foreground background;
+        frame_color = normal.cyan;
+      };
+      urgency_high = {
+        inherit (primary) foreground background;
+        frame_color = normal.red;
+      };
     };
   };
-
   home.file.".emacs.d" = {
     # don't make the directory read only so that impure melpa can still happen
     # for now
@@ -376,54 +462,17 @@ with rec {
       sha256 = "00cfm6caaz85rwlrbs8rm2878wgnph6342i9688w4dji3dgyz3rz";
     };
   };
-  wayland.windowManager.sway.config = wm-config // {
-    input = {
-      "type:keyboard" = {
-        xkb_layout = "us";
-        xkb_variant = "dvp";
-        xkb_options = "caps:escape";
-      };
-      "type:touchpad" = {
-        dwt = "enabled";
-        natural_scroll = "enabled";
-        middle_emulation = "enabled";
-      };
-    };
-    output."*" = with colors "#"; {
-      bg = "${bg-image} center ${primary.bg-soft}";
-    };
+  xsession.enable = true;
+  home.keyboard = {
+    layout = "us";
+    variant = "dvp";
+    options = ["caps:escape"];
   };
-  wayland.windowManager.sway.enable = true;
-  wayland.windowManager.sway.extraConfig = ''
-    titlebar_border_thickness 2
-    seat * hide_cursor 1000
-    title_align center
-    for_window [shell=".*"] title_format "%title :: %shell"
-  '';
-  xsession.windowManager.i3 = {
-    enable = true;
-    extraConfig = ''
-      default_border normal 2
-      title_align center
-      for_window [class="^.*"] border normal 2
-    '';
-    config = wm-config // {
-      startup = [{
-        command = "${pkgs.feh}/bin/feh --bg-center -B ${(colors "#").primary.bg-soft} ${bg-image}";
-        always = true;
-      }];
-    };
-  };
-  programs.swaylock = with colors ""; {
-    enable = true;
-    image = "${bg-image}";
-    scaling = "center";
-    color = primary.bg-soft;
-  };
+  xsession.windowManager.command = "${dwm}/bin/dwm";
   programs.rofi = {
     enable = true;
     borderWidth = 2;
-    font = "Noto Sans Mono 11";
+    font = font.emstr;
     terminal = "${pkgs.alacritty}/bin/alacritty";
     lines = 20;
     separator = "solid";
