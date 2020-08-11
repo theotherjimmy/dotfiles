@@ -120,15 +120,29 @@ with rec {
     ./swaylock.nix
   ];
   programs.home-manager.enable = true;
-  home.packages = with pkgs // {
-   edit = pkgs.writers.writeBashBin
-    "edit"
-    "exec env TERM=alacritty-direct emacsclient -c $@";
-   swaystart = pkgs.writers.writeBashBin
-    "startsway"
-    ''
-      systemctl --user import-environment
-      exec systemctl --user start sway.service
+  home.packages = with pkgs // rec {
+    edit = pkgs.writers.writeBashBin "edit" ''
+      if [[ -n $NVIM_LISTEN_ADDRESS ]] ; then
+        exec nvr $@
+      else
+        exec nvim $@
+      fi
+    '';
+    edit-wait = pkgs.writers.writeBashBin "edit-wait" ''
+      if [[ -n $NVIM_LISTEN_ADDRESS ]] ; then
+        exec nvr --remote-wait $@
+      else
+        exec nvim $@
+      fi
+    '';
+    git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
+      rev=$(git rev-parse --abbrev-ref HEAD)
+      if [ "HEAD" == $rev ] ; then
+        echo "Error: detached HEAD; Refusing to push an ip review"
+        exit 1
+      else
+        git push arm $rev:refs/for/master/$rev
+      fi
     '';
   }; [
     atop
@@ -136,21 +150,31 @@ with rec {
     linuxPackages.bpftrace
     direnv
     edit
+    edit-wait
     exa
     fd
     file
     firefox
+    fractal
+    fzf #Note: remove this when Spacevim can call skim
     git
     gnumake
     git-hub
+    git-ip-review
     git-review
     git-series
+    just
     keepass
     libnotify
     mako
     mupdf
     nixpkgs-fmt
     nix-index
+    nix-prefetch-scripts
+    neovim
+    neovim-remote
+    hack-font
+    (nerdfonts.override {fonts = ["Hack"];})
     noto-fonts
     patchelf
     procs
@@ -244,10 +268,6 @@ with rec {
     enable = true;
     enableFishIntegration = true;
   };
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs-nox;
-  };
   programs.firefox = {
     enable = true;
   };
@@ -265,6 +285,7 @@ with rec {
       ds = "diff --staged";
       ap = "add -p";
     };
+    extraConfig.core.editor = "edit-wait";
     ignores = [ ".direnv.d" ".envrc" "shell.nix" ];
     userEmail = "theotherjimmy@gmail.com";
     userName = "Jimmy Brisson";
