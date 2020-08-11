@@ -81,6 +81,10 @@ in {
     hack-font
     (nerdfonts.override {fonts = ["Hack"];})
     noto-fonts
+    noto-fonts-emoji
+    noto-fonts-cjk
+    noto-fonts-extra
+    openconnect
     patchelf
     procs
     pv
@@ -445,7 +449,7 @@ in {
     Install.WantedBy = [ "graphical-session.target" ];
   };
   services.lorri.enable = true;
-  services.emacs.enable = true;
+  services.network-manager-applet.enable = true;
   services.redshift = {
     package = pkgs.redshift-wlr;
     enable = true;
