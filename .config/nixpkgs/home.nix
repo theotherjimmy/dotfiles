@@ -542,4 +542,37 @@ in {
       };
     };
   };
+  gtk.enable = true;
+  gtk.iconTheme.name = "Adwaita";
+  gtk.iconTheme.package = pkgs.gnome3.adwaita-icon-theme;
+  gtk.theme.name = "oomox-gruvbox";
+  gtk.theme.package = pkgs.stdenv.mkDerivation rec {
+    pname = "oomox-gruvbox";
+    version = "master";
+
+    src = pkgs.fetchFromGitHub {
+      owner  = "3ximus";
+      repo   = pname;
+      rev    = "fda45c127bd5ed3cdd2dfcc6c396e7aef99abd8e";
+      sha256 = "1vlgsp7hgf96bzlj54rimmimzhpchh3z3a4fll71wxghr3gpv27d";
+    };
+
+    nativeBuildInputs = with pkgs; [
+      pkgconfig
+      sassc
+      optipng
+      librsvg
+      inkscape
+      gtk3
+    ];
+
+    propagatedUserEnvPkgs = [ pkgs.gtk-engine-murrine ];
+
+    enableParallelBuilding = false;
+
+    installPhase = ''
+      mkdir -p $out/share/themes/${pname}
+      cp -a . $out/share/themes/${pname}
+    '';
+  };
 }
