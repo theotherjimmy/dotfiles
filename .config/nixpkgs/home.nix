@@ -46,6 +46,9 @@ in {
       fi
     '';
   }; [
+    aspell
+    acpilight
+    apitrace
     atop
     bc
     linuxPackages.bpftrace
@@ -68,7 +71,9 @@ in {
     keepass
     libnotify
     mupdf
+    niv
     nixpkgs-fmt
+    nix-top
     nix-index
     nix-prefetch-scripts
     neovim
@@ -79,6 +84,7 @@ in {
     patchelf
     procs
     pv
+    usbutils
     ripgrep
     rofi
     screen
@@ -87,6 +93,7 @@ in {
     wl-clipboard
     xclip
     xe
+    xmlstarlet
     xwayland
     xorg.xdpyinfo
   ];
@@ -178,6 +185,29 @@ in {
       ls = "exa";
       pd = "prevd";
       nd = "nextd";
+      j = "just";
+    };
+  };
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      add_newline = false;
+      prompt_order = [
+        "directory"
+        "nix_shell"
+        "git_branch"
+        "git_state"
+        "cmd_duration"
+        "line_break"
+        "character"
+      ];
+      scan_timeout = 6;
+      cmd_duration.min_time = 10;
+      cmd_duration.show_milliseconds = true;
+      character.symbol = "➜";
+      directory.truncation_length = 1;
+      directory.fish_style_pwd_dir_length = 1;
     };
   };
   programs.git = {
