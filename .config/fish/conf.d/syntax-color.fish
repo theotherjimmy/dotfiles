@@ -12,3 +12,19 @@ set fish_color_search_match brwhite
 set fish_color_operator brcyan
 set fish_color_escape yellow
 set fish_color_autosuggestion brblack
+
+# start blink
+export LESS_TERMCAP_mb=(set_color magenta)
+# start bold
+export LESS_TERMCAP_md=(set_color blue)
+# start standout (reverse)
+export LESS_TERMCAP_so=(set_color yellow)
+# start underline
+export LESS_TERMCAP_us=(set_color -i red)
+
+# stop bold
+export LESS_TERMCAP_me=(set_color normal)
+# stop standout (reverse)
+export LESS_TERMCAP_se=(set_color normal)
+# stop underline
+export LESS_TERMCAP_ue=(set_color normal)
