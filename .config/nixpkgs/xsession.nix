@@ -1,14 +1,11 @@
 { config, lib, pkgs, ... }:
 
 let
-  colors = config.colors.fn;
-  dwm = pkgs.callPackage /home/jimbri01/src/nix/dwm/package.nix {
-    inherit colors;
-    inherit (config) font;
-  };
+  colors = config.colors.fn "#";
+  bar-height = 35;
   bg-image = pkgs.runCommand "background.png" {
     src = pkgs.writeText "bg-svg" (
-      import ./nix-snowflake.svg.nix (with colors "#"; {
+      import ./nix-snowflake.svg.nix (with colors; {
         dark = normal.red;
         light = normal.cyan;
       })
@@ -16,20 +13,53 @@ let
     buildInputs = [pkgs.imagemagick pkgs.potrace];
   } "convert -background none $src $out";
   inherit (lib) mkOption types mkIf;
-in { 
-  options.xsession.background.enable = mkOption {
-    type = types.bool;
-    default = false;
-    description = "Set the background image at Xsession startup";
+  oneShot = desc: exec: {
+    Unit = {
+      Description = desc;
+      After = [ "graphical-session-pre.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = exec;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
   };
-  config.xsession.windowManager.command = "${dwm}/bin/dwm"; 
-  config.services.polybar = with colors "#"; {
+  xmonad-config =
+    let
+      ghcWithPackages = pkgs.haskellPackages.ghcWithPackages;
+      packages = self: [
+        self.xmonad-contrib
+        self.xmonad-extras
+        self.megaparsec
+        self.void
+      ];
+      xmonadAndPackages = self: [ self.xmonad ] ++ packages self;
+      xmonadEnv = ghcWithPackages xmonadAndPackages;
+      configured = pkgs.writers.writeHaskellBin "xmonad" {
+        ghc = pkgs.haskellPackages.ghc;
+        libraries = xmonadAndPackages pkgs.haskellPackages;
+      } (import ./xmonad.hs.nix colors);
+    in
+      pkgs.runCommandLocal "xmonad" {
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+      } ''
+        install -D ${xmonadEnv}/share/man/man1/xmonad.1.gz $out/share/man/man1/xmonad.1.gz
+        makeWrapper ${configured}/bin/xmonad $out/bin/xmonad \
+          --set NIX_GHC "${xmonadEnv}/bin/ghc" \
+          --set XMONAD_XMESSAGE "${pkgs.xorg.xmessage}/bin/xmessage"
+      '';
+in {
+  imports = [ ./autorandr.nix ];
+  config.xsession.windowManager.command = "systemd-cat -t xmonad -- ${xmonad-config}/bin/xmonad";
+  config.services.polybar = with colors; {
     enable = true;
     script = "polybar main &";
     config = {
       "bar/main" = {
         width = "100%";
-        height = 35;
+        height = bar-height;
         radius = 0;
         fixed-center = true;
         bottom = false;
@@ -137,9 +167,7 @@ in {
       settings.screenchange-reload = true;
     };
   };
-  config.services.picom.enable = true;
   config.services.unclutter.enable = true;
-  config.services.network-manager-applet.enable = true;
   config.services.redshift = {
     package = pkgs.redshift-wlr;
     enable = true;
@@ -151,9 +179,9 @@ in {
   config.services.udiskie.enable = true;
   config.services.dunst = {
     enable = true;
-    settings = with colors "#"; {
+    settings = with colors; {
       global = {
-        geometry = "500x5-0+20";
+        geometry = "500x5-0+${toString bar-height}";
         padding = 10;
         frame_width = 2;
         frame_color = normal.cyan;
@@ -175,18 +203,12 @@ in {
       };
     };
   };
-  config.systemd.user.services.background = mkIf config.xsession.background.enable {
-    Unit = {
-      Description = "Set the background for an X session";
-      After = [ "graphical-session-pre.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = with colors "#"; 
-        "${pkgs.feh}/bin/feh --bg-center --image-bg ${primary.bg-soft} ${bg-image}";
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
+  config.systemd.user.services.background = oneShot
+    "Set the background for an X session"
+    "${pkgs.feh}/bin/feh --bg-center --image-bg ${colors.primary.bg-soft} ${bg-image}";
+  config.systemd.user.services.autorandr = mkIf config.programs.autorandr.enable (
+    oneShot
+      "Automatically configure screen geometry at startup"
+      "${pkgs.autorandr}/bin/autorandr --change"
+  );
 }

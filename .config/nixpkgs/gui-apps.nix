@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let 
+let
   colors = config.colors.fn;
 in {
   programs.alacritty = {
@@ -10,6 +10,7 @@ in {
         dimensions = { lines = 0; columns = 0; };
         padding = { x = 5; y = 5; };
         dynamic_padding = true;
+        dynamic_title = true;
         decorations = "none";
       };
       font = {
@@ -19,11 +20,10 @@ in {
       };
       draw_bold_text_with_bright_colors = true;
       colors = colors "0x";
-      visual_bell.duration = 0;
+      bell.duration = 0;
       background_opacity = 1.0;
       mouse_bindings = [ { mouse = "Middle"; action = "PasteSelection"; } ];
       mouse.url.launcher = "firefox";
-      dynamic_title = true;
       live_config_reload = true;
       shell = { program = "fish"; args = [ "--login" ]; };
       key_bindings = [
@@ -36,7 +36,7 @@ in {
         { key = "Insert"; mods = "Shift"; action = "PasteSelection"; }
         { key = "Key0"; mods = "Control"; action = "ResetFontSize"; }
         { key = "Equals"; mods = "Control"; action = "IncreaseFontSize"; }
-        { key = "Subtract"; mods = "Control"; action = "DecreaseFontSize"; }
+        { key = "Minus"; mods = "Control"; action = "DecreaseFontSize"; }
         { key = "L"; mods = "Control"; action = "ClearLogNotice"; }
         { key = "L"; mods = "Control"; chars = "\\x0c"; }
         { key = "Home"; chars = "\\x1bOH"; mode = "AppCursor"; }
@@ -148,6 +148,12 @@ in {
       index-active-fg = normal.green;
     };
   };
+  programs.doom-emacs= {
+    enable = true;
+    doomPrivateDir = ./doom-emacs/doom.d;
+    emacsPackage = pkgs.emacs;
+  };
+  services.emacs.enable = true;
   programs.firefox = {
     enable = true;
   };
@@ -197,9 +203,9 @@ in {
   gtk.enable = true;
   gtk.iconTheme.name = "Adwaita";
   gtk.iconTheme.package = pkgs.gnome3.adwaita-icon-theme;
-  gtk.theme.name = "oomox-gruvbox";
+  gtk.theme.name = "gruvbox-gtk";
   gtk.theme.package = pkgs.stdenv.mkDerivation rec {
-    pname = "oomox-gruvbox";
+    pname = "gruvbox-gtk";
     version = "master";
 
     src = pkgs.fetchFromGitHub {

@@ -42,29 +42,13 @@
       ds = "diff --staged";
       ap = "add -p";
     };
-    extraConfig.core.editor = "edit-wait";
+    extraConfig = {
+      core.editor = "edit";
+      pull.rebase = true;
+    };
     ignores = [ ".direnv.d" ".envrc" "shell.nix" ];
     userEmail = "theotherjimmy@gmail.com";
     userName = "Jimmy Brisson";
-  };
-  programs.htop = {
-    enable = true;
-    fields = [
-      "PID"
-      "USER"
-      "M_SIZE"
-      "M_RESIDENT"
-      "M_SHARE"
-      "STATE"
-      "PERCENT_CPU"
-      "PERCENT_MEM"
-      "TIME"
-      "COMM"
-    ];
-    hideUserlandThreads = true;
-    highlightBaseName = true;
-    meters.left = [ "AllCPUs" "Memory" ];
-    treeView = true;
   };
   programs.jq.enable = true;
   programs.man.enable = true;
@@ -72,17 +56,10 @@
   services.lorri.enable = true;
   home.packages = with pkgs // rec {
     edit = pkgs.writers.writeBashBin "edit" ''
-      if [[ -n $NVIM_LISTEN_ADDRESS ]] ; then
-        exec nvr $@
+      if [[ -v INSIDE_EMACS ]] ; then
+        exec emacsclient $@
       else
-        exec nvim $@
-      fi
-    '';
-    edit-wait = pkgs.writers.writeBashBin "edit-wait" ''
-      if [[ -n $NVIM_LISTEN_ADDRESS ]] ; then
-        exec nvr --remote-wait $@
-      else
-        exec nvim $@
+        exec emacsclient -c $@
       fi
     '';
     git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
@@ -96,20 +73,19 @@
     '';
   }; [
     aspell
+    aspellDicts.en
     acpilight
     apitrace
     atop
-    bc
     linuxPackages.bpftrace
+    cargo-flamegraph
     direnv
     edit
-    edit-wait
     exa
     fd
     file
     firefox
     fractal
-    fzf #Note: remove this when Spacevim can call skim
     git
     gnumake
     git-hub
@@ -120,6 +96,7 @@
     keepass
     libnotify
     mupdf
+    networkmanagerapplet
     niv
     nixpkgs-fmt
     nix-top
