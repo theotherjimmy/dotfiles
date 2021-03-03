@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-export MONITOR=DP-1
-exec polybar main 2>&1

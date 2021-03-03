@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-
-exec redshift -l 30.3126259:-97.7407611 -b 0.6:0.9

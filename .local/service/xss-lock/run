@@ -1,2 +1,0 @@
-#!/usr/bin/bash
-exec xss-lock -- i3lock -n -c fbf1c7 -i ${HOME}/.config/lock.png

@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-cd ${HOME}
-exec ${HOME}/.cargo/bin/lanta
