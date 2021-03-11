@@ -9,8 +9,6 @@
     enable = true;
     shellAliases = {
       ls = "exa";
-      pd = "prevd";
-      nd = "nextd";
       j = "just";
       sv = "systemctl --user";
     };
@@ -115,7 +113,6 @@
     aspellDicts.en
     acpilight
     apitrace
-    atop
     linuxPackages.bpftrace
     cargo-flamegraph
     direnv
