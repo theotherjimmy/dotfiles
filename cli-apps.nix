@@ -11,6 +11,7 @@
       ls = "exa";
       j = "just";
       sv = "systemctl --user";
+      psme = "ps xf -o pid,%mem,%cpu,stat,rss,args | less -S";
     };
     interactiveShellInit = ''
       set fish_color_normal normal
