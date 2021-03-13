@@ -34,7 +34,10 @@
             ./cli-apps.nix
           ];
           colors.theme = "gruvbox-dark";
-          nixpkgs.overlays = [ emacs-overlay.overlay ];
+          nixpkgs.overlays = [
+            emacs-overlay.overlay
+            (final: super: { inherit (self.packages."${super.system}") xmonitor; })
+          ];
           xsession.enable = true;
           systemd.user.startServices = true;
           home.keyboard = {
@@ -47,6 +50,7 @@
       };
     in {
       packages.x86_64-linux.home-config = home-config.activationPackage;
+      packages.x86_64-linux.xmonitor = pkgs.callPackage ./pkgs/xmonitor.nix {};
       defaultApp.x86_64-linux = {
         type = "app";
         program = "${self.packages.x86_64-linux.home-config}/activate";

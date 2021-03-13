@@ -211,4 +211,5 @@ in {
       "Automatically configure screen geometry at startup"
       "${pkgs.autorandr}/bin/autorandr --change"
   );
+  config.home.packages = [ pkgs.xmonitor ];
 }
