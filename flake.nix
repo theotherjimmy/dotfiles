@@ -36,7 +36,7 @@
           colors.theme = "gruvbox-dark";
           nixpkgs.overlays = [
             emacs-overlay.overlay
-            (final: super: { inherit (self.packages."${super.system}") xmonitor; })
+            (final: super: { inherit (self.packages."${super.system}") autorandr-rs; })
           ];
           xsession.enable = true;
           systemd.user.startServices = true;
@@ -50,7 +50,7 @@
       };
     in {
       packages.x86_64-linux.home-config = home-config.activationPackage;
-      packages.x86_64-linux.xmonitor = pkgs.callPackage ./pkgs/xmonitor.nix {};
+      packages.x86_64-linux.autorandr-rs = pkgs.callPackage ./pkgs/autorandr-rs.nix {};
       defaultApp.x86_64-linux = {
         type = "app";
         program = "${self.packages.x86_64-linux.home-config}/activate";

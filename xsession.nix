@@ -50,23 +50,13 @@ let
           --set NIX_GHC "${xmonadEnv}/bin/ghc" \
           --set XMONAD_XMESSAGE "${pkgs.xorg.xmessage}/bin/xmessage"
       '';
-  autorandr-rs = pkgs.rustPlatform.buildRustPackage rec {
-    name = "autorandr-rs";
-    src = pkgs.fetchFromGitHub {
-      owner = "theotherjimmy";
-      repo = name;
-      rev = "51a705e3a3761d32b9e068f48fc34722ca3d2ab7";
-      hash = "sha256-ryK7/VYxo/ssMBYmGCJBk7sz+pp2MNPhHJx9LNcm6Lc=";
-    };
-    cargoHash = "sha256-Rb81EXPqb7ydz5FA8AHwjnNIxp0Mr8vVRPx0sGIXqyY=";
-    nativeBuildInputs = [ pkgs.scdoc pkgs.installShellFiles ];
-    preFixup = ''
-      installManPage $releaseDir/build/${name}-*/out/${name}.1
-      installManPage $releaseDir/build/${name}-*/out/${name}.5
-    '';
-  };
 in {
-  imports = [ ./autorandr.nix ];
+  imports = [ ./modules/autorandr-rs.nix ];
+  config.services.autorandr-rs = {
+    enable = true;
+    config = ./monitors.toml;
+    enableNotifications = true;
+  };
   config.xsession.windowManager.command = "systemd-cat -t xmonad -- ${xmonad-config}/bin/xmonad";
   config.services.polybar = with colors; {
     enable = true;
@@ -221,10 +211,8 @@ in {
   config.systemd.user.services.background = oneShot
     "Set the background for an X session"
     "${pkgs.feh}/bin/feh --bg-center --image-bg ${colors.primary.bg-soft} ${bg-image}";
-  config.systemd.user.services.autorandr = mkIf config.programs.autorandr.enable (
-    oneShot
-      "Automatically configure screen geometry at startup"
-      "${pkgs.autorandr}/bin/autorandr --change"
-  );
-  config.home.packages = [ autorandr-rs ];
+  config.home.packages = [
+    # Mostly for the man files.
+    pkgs.autorandr-rs
+  ];
 }
