@@ -53,19 +53,12 @@
     enableFishIntegration = true;
     settings = {
       add_newline = false;
-      prompt_order = [
-        "directory"
-        "nix_shell"
-        "git_branch"
-        "git_state"
-        "cmd_duration"
-        "line_break"
-        "character"
-      ];
+      format = "$directory$cmd_duration$line_break$character";
       scan_timeout = 6;
       cmd_duration.min_time = 10;
       cmd_duration.show_milliseconds = true;
-      character.symbol = "➜";
+      character.success_symbol = "[➜](green)";
+      character.error_symbol = "[➜](red)";
       directory.truncation_length = 1;
       directory.fish_style_pwd_dir_length = 1;
     };
