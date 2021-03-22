@@ -81,9 +81,9 @@ in {
         font-2 = "Noto Sans Symbols:size=16";
         font-3 = "Noto Sans Symbols2:size=16";
 
-        modules-right = "ewmh date";
-        modules-center = "xwindow";
-        modules-left = "battery cpu eth wlan";
+        modules-right = "cpu date";
+        modules-center = "ewmh";
+        modules-left = "battery eth wlan";
 
         tray-position = "right";
         tray-padding = 2;
@@ -91,11 +91,6 @@ in {
         override-redirect = true;
       };
       "global/wm".margin-top = 0;
-      "module/xwindow" = {
-        type = "internal/xwindow";
-        label = "%title:0:100:...%";
-        format-underline = normal.cyan;
-      };
       "module/ewmh" = {
         type = "internal/xworkspaces";
         pin-workspaces = false;
