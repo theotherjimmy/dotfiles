@@ -6,8 +6,8 @@ let
   bg-image = pkgs.runCommand "background.png" {
     src = pkgs.writeText "bg-svg" (
       import ./nix-snowflake.svg.nix (with colors; {
-        dark = normal.red;
-        light = normal.cyan;
+        dark = normal.blue;
+        light = bright.blue;
       })
     );
     buildInputs = [pkgs.imagemagick pkgs.potrace];
