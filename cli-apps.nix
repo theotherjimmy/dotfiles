@@ -152,6 +152,7 @@
     wl-clipboard
     xclip
     xe
+    xh
     xmlstarlet
     xwayland
     xorg.xdpyinfo
