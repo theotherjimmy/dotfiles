@@ -13,19 +13,6 @@ let
     buildInputs = [pkgs.imagemagick pkgs.potrace];
   } "convert -background none $src $out";
   inherit (lib) mkOption types mkIf;
-  oneShot = desc: exec: {
-    Unit = {
-      Description = desc;
-      After = [ "graphical-session-pre.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = exec;
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
   xmonad-config =
     let
       ghcWithPackages = pkgs.haskellPackages.ghcWithPackages;
@@ -201,9 +188,19 @@ in {
       };
     };
   };
-  config.systemd.user.services.background = oneShot
-    "Set the background for an X session"
-    "${pkgs.feh}/bin/feh --bg-center --image-bg ${colors.primary.bg-soft} ${bg-image}";
+  config.systemd.user.services.background = {
+    Unit = {
+      Description = "Set the background for an X session";
+      After = [ "graphical-session-pre.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.feh}/bin/feh --bg-center --image-bg ${colors.primary.bg-soft} ${bg-image}";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
   config.home.packages = [
     # Mostly for the man files.
     pkgs.autorandr-rs
