@@ -171,8 +171,6 @@ in {
   config.services.redshift = {
     package = pkgs.redshift-wlr;
     enable = true;
-    brightness.day = "0.9";
-    brightness.night = "0.6";
     latitude = "30.3126259";
     longitude = "-97.7407611";
   };
