@@ -113,11 +113,11 @@ in {
       selection-clipboard = "primary";
 
       completion-fg = primary.foreground;
-      completion-bg = primary.bg-soft;
+      completion-bg = primary.background;
       completion-group-fg = primary.foreground;
-      completion-group-bg = primary.background;
-      completion-highlight-bg = bright.blue;
-      completion-highlight-fg = primary.foreground;
+      completion-group-bg = primary.bg-soft;
+      completion-highlight-fg = normal.green;
+      completion-highlight-bg = primary.bg-soft;
       default-fg = primary.foreground;
       default-bg = primary.background;
       inputbar-fg = primary.foreground;
@@ -128,10 +128,6 @@ in {
       notification-error-fg = normal.red;
       notification-warning-bg = primary.background;
       notification-warning-fg = normal.yellow;
-      tabbar-bg = primary.background;
-      tabbar-fg = normal.blue;
-      tabbar-focus-bg = normal.white;
-      tabbar-focus-fg = primary.background;
       statusbar-bg = primary.bg-soft;
       statusbar-fg = primary.foreground;
       highlight-color = normal.yellow;
