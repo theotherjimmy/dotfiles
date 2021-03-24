@@ -40,20 +40,14 @@ let
 in {
   imports = [
     ./modules/autorandr-rs.nix
-    ./modules/xidlehook.nix
   ];
   config.services.autorandr-rs = {
     enable = true;
     config = ./monitors.toml;
   };
-  config.services.xidlehook = {
+  config.services.screen-locker = {
     enable = true;
-    not-when-fullscreen = true;
-    not-when-audio = true;
-    timers = [
-      {minutes = 5; hook-on = ''xset dpms force off''; }
-      {minutes = 15; hook-on = ''systemctl suspend''; }
-    ];
+    lockCmd = "${pkgs.xtrlock-pam}/bin/xtrlock-pam";
   };
   config.xsession.windowManager.command = "systemd-cat -t xmonad -- ${xmonad-config}/bin/xmonad";
   config.services.polybar = with colors; {
