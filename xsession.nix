@@ -49,6 +49,11 @@ in {
     enable = true;
     lockCmd = "${pkgs.xtrlock-pam}/bin/xtrlock-pam";
   };
+  config.services.pulseeffects = {
+    enable = true;
+    # Anything with "legacy" in the name is sus
+    package = pkgs.pulseeffects-legacy;
+  };
   config.xsession.windowManager.command = "systemd-cat -t xmonad -- ${xmonad-config}/bin/xmonad";
   config.services.polybar = with colors; {
     enable = true;
