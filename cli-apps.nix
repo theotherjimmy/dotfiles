@@ -116,6 +116,7 @@
     cargo-flamegraph
     direnv
     edit
+    entr
     exa
     fd
     file
@@ -148,7 +149,6 @@
     ripgrep
     screen
     tmux
-    watchexec
     wl-clipboard
     xclip
     xe
