@@ -41,7 +41,7 @@ in {
   imports = [
     ./modules/autorandr-rs.nix
   ];
-  config.services.autorandr-rs = {
+  config.services.autorandrd = {
     enable = true;
     config = ./monitors.toml;
   };
@@ -212,7 +212,6 @@ in {
     Install.WantedBy = [ "graphical-session.target" ];
   };
   config.home.packages = [
-    # Mostly for the man files.
     pkgs.autorandr-rs
   ];
 }
