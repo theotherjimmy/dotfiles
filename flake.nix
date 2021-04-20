@@ -32,6 +32,7 @@
             ./font.nix
             ./gui-apps.nix
             ./cli-apps.nix
+            ./email.nix
           ];
           colors.theme = "gruvbox-dark";
           nixpkgs.overlays = [
