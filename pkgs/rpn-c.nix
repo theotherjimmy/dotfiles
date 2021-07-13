@@ -1,11 +1,15 @@
-{rustPlatform, fetchFromGitHub, lib}:
+{rustPlatform, fetchFromGitHub, rust-bin}:
 
 rustPlatform.buildRustPackage rec {
-  name = "rpn-c";
+  name = "rcalc";
   src = fetchFromGitHub {
-    owner = "KayJay7";
+    owner = "theotherjimmy";
     repo = name;
-    rev = "54bb4f6e3acf9b0e261a401750b7d8c1ddc6fc8d";
+    rev = "b57bbe405afe27995f4bccf8740d32ea2e7670d7";
+    hash = "sha256-rFHSk/kM2PIRyaRyx6f7R13FlB5WJHEO3kbb3S1kFxg=";
   };
-  cargoHash = lib.fakehash;
+  cargoHash = "sha256-hYO0zEynBCt5esi824PxguikwU59SeXp9xhk8Iqwmo8=";
+  nativeBuildInputs = [
+    rust-bin.nightly."2021-03-23".rust
+  ];
 }

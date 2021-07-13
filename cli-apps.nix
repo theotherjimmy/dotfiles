@@ -75,6 +75,119 @@
       directory.fish_style_pwd_dir_length = 1;
     };
   };
+  programs.kakoune = {
+    enable = true;
+    config = {
+      colorScheme = "gruvbox";
+      numberLines = {
+        enable = true;
+        highlightCursor = true;
+        relative = true;
+      };
+      showMatching = true;
+      showWhitespace.enable = true;
+      ui.assistant = "none";
+      wrapLines = {
+        enable = true;
+        indent = true;
+        marker = "⏎";
+        word = true;
+      };
+      keyMappings = [
+        {
+          key = "<space>";
+          mode = "normal";
+          effect = ",";
+          docstring = "leader";
+        }
+        {
+          key = "<backspace>";
+          mode = "normal";
+          effect = "<space>";
+          docstring = "clear selection to only keep the main one";
+        }
+        {
+          key = "<a-backspace>";
+          mode = "normal";
+          effect = "<a-space>";
+          docstring = "clear the main selection";
+        }
+        {
+          key = "<space>";
+          mode = "user";
+          effect = ":fzf-mode<ret>f";
+          docstring = "open a file with a fuzzy finder";
+        }
+        {
+          key = "b";
+          mode = "user";
+          effect = ":enter-user-mode buffer<ret>";
+          docstring = "Buffer actions";
+        }
+        {
+          key = "s";
+          mode = "user";
+          effect = ":enter-user-mode spell<ret>";
+          docstring = "Spell check actions";
+        }
+        {
+          key = "b";
+          mode = "buffer";
+          effect = ":fzf-mode<ret>b";
+          docstring = "fuzzy jump to a buffer";
+        }
+        {
+          key = "d";
+          mode = "buffer";
+          effect = ":db<ret>";
+          docstring = "delete the current buffer";
+        }
+        {
+          key = "n";
+          mode = "buffer";
+          effect = ":bn<ret>";
+          docstring = "move to the next buffer";
+        }
+        {
+          key = "p";
+          mode = "buffer";
+          effect = ":bp<ret>";
+          docstring = "move to the previous buffer";
+        }
+        {
+          key = "f";
+          mode = "buffer";
+          effect = ":format-buffer<ret>";
+          docstring = "auto-format the current buffer";
+        }
+        {
+          key = "s";
+          mode = "spell";
+          effect = ":spell<ret>";
+          docstring = "spell check the current buffer";
+        }
+        {
+          key = "n";
+          mode = "spell";
+          effect = ":spell-next<ret>";
+          docstring = "jump to the next spelling mistake";
+        }
+        {
+          key = "c";
+          mode = "spell";
+          effect = ":spell-clear<ret>";
+          docstring = "clear spell check highlighting";
+        }
+      ];
+    };
+    plugins = with pkgs.kakounePlugins; [
+      kak-fzf
+    ];
+    extraConfig = ''
+      set-option global fzf_implementation 'sk'
+      set-option global fzf_file_command 'fd'
+    '';
+  };
   programs.git = {
     enable = true;
     aliases = {
@@ -99,10 +212,15 @@
   services.lorri.enable = true;
   home.packages = with pkgs // rec {
     edit = pkgs.writers.writeBashBin "edit" ''
-      if [[ -v INSIDE_EMACS ]] ; then
-        exec emacsclient $@
+      ws=$(${pkgs.wmctrl}/bin/wmctrl -d | awk '$2 == "*" {print $9}')
+      if [[ $ws != "" ]] ; then
+        if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
+          exec kak -c $ws $@
+        else
+          exec kak -s $ws $@
+        fi
       else
-        exec emacsclient -c $@
+        exec kak $@
       fi
     '';
     git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
@@ -117,8 +235,6 @@
   }; [
     aspell
     aspellDicts.en
-    acpilight
-    apitrace
     linuxPackages.bpftrace
     cargo-flamegraph
     direnv
@@ -127,41 +243,23 @@
     exa
     fd
     file
-    firefox
-    fractal
     git
-    gnumake
     git-hub
     git-ip-review
     git-review
     git-series
     just
-    keepass
     libnotify
-    mupdf
-    networkmanagerapplet
-    niv
     nixpkgs-fmt
     nix-top
-    nix-index
-    nix-prefetch-scripts
-    neovim
-    neovim-remote
-    hack-font
-    openconnect
     patchelf
     procs
     pv
     usbutils
     ripgrep
+    rpn-c
     screen
     tmux
-    wl-clipboard
-    xclip
     xe
-    xh
-    xmlstarlet
-    xwayland
-    xorg.xdpyinfo
   ];
 }

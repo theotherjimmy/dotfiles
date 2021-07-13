@@ -8,25 +8,27 @@
     home-manager.url   = "github:rycee/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    emacs-overlay.url = "github:nix-community/emacs-overlay/master";
-    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-doom-emacs.url = "github:vlaci/nix-doom-emacs/master";
-    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
-    nix-doom-emacs.inputs.emacs-overlay.follows = "emacs-overlay";
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, emacs-overlay, nix-doom-emacs }:
+  outputs = { self, nixpkgs, home-manager, rust-overlay }:
     let
+      overlays = [
+        rust-overlay.overlay
+        (final: super: { inherit (self.packages."${super.system}") autorandr-rs rpn-c; })
+      ];
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        inherit overlays;
+      };
       home-config = home-manager.lib.homeManagerConfiguration {
         homeDirectory = "/home/jimbri01";
         username = "jimbri01";
         inherit system pkgs;
         configuration = { config, lib, pkgs, ... }: {
           imports = [
-            nix-doom-emacs.hmModule
             ./colors.nix
             ./xsession.nix
             ./font.nix
@@ -35,10 +37,7 @@
             ./email.nix
           ];
           colors.theme = "gruvbox-dark";
-          nixpkgs.overlays = [
-            emacs-overlay.overlay
-            (final: super: { inherit (self.packages."${super.system}") autorandr-rs; })
-          ];
+          nixpkgs.overlays = overlays;
           xsession.enable = true;
           systemd.user.startServices = true;
           home.keyboard = {
@@ -46,12 +45,12 @@
             variant = "dvp";
             options = ["caps:escape"];
           };
-          home.stateVersion = "21.03";
         };
       };
     in {
       packages.x86_64-linux.home-config = home-config.activationPackage;
       packages.x86_64-linux.autorandr-rs = pkgs.callPackage ./pkgs/autorandr-rs.nix {};
+      packages.x86_64-linux.rpn-c = pkgs.callPackage ./pkgs/rpn-c.nix {};
       defaultApp.x86_64-linux = {
         type = "app";
         program = "${self.packages.x86_64-linux.home-config}/activate";

@@ -7,7 +7,7 @@ let
     src = pkgs.writeText "bg-svg" (
       import ./nix-snowflake.svg.nix (with colors; {
         dark = normal.blue;
-        light = bright.blue;
+        light = bright.black;
       })
     );
     buildInputs = [pkgs.imagemagick pkgs.potrace];
@@ -16,13 +16,13 @@ let
   xmonad-config =
     let
       ghcWithPackages = pkgs.haskellPackages.ghcWithPackages;
-      packages = self: [
+      xmonadAndPackages = self: [
+        self.xmonad
         self.xmonad-contrib
         self.xmonad-extras
         self.megaparsec
         self.void
       ];
-      xmonadAndPackages = self: [ self.xmonad ] ++ packages self;
       xmonadEnv = ghcWithPackages xmonadAndPackages;
       configured = pkgs.writers.writeHaskellBin "xmonad" {
         ghc = pkgs.haskellPackages.ghc;
@@ -171,7 +171,6 @@ in {
     latitude = "30.3126259";
     longitude = "-97.7407611";
   };
-  config.services.udiskie.enable = true;
   config.services.dunst = {
     enable = true;
     settings = with colors; {
@@ -211,7 +210,14 @@ in {
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
-  config.home.packages = [
-    pkgs.autorandr-rs
+  config.home.packages = with pkgs; [
+    autorandr-rs
+    firefox
+    hack-font
+    keepass
+    mupdf
+    xclip
+    xorg.xdpyinfo
+    fractal
   ];
 }

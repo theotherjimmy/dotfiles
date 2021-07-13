@@ -8,7 +8,7 @@ rustPlatform.buildRustPackage rec {
     rev = "d9698f00839c84620c5d93d51807d0d0e5ca633d";
     hash = "sha256-pUbaUoMu7NZQ7Wy7/TGEcqqMCweUFVcJEEk6zxIaMfk=";
   };
-  cargoHash = "sha256-Jtal66/wlp1Vb5MLfqNZAYuCv917BH5wj3W7SD7TapI=";
+  cargoHash = "sha256-esTVrs2+vd6bcKqjBMEPJLy+QXlv5XWNuy4amo9epbs=";
   nativeBuildInputs = [ scdoc installShellFiles ];
   preFixup = ''
     installManPage $releaseDir/build/${name}-*/out/autorandrd.1

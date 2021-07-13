@@ -142,12 +142,6 @@ in {
       index-active-fg = normal.green;
     };
   };
-  programs.doom-emacs= {
-    enable = true;
-    doomPrivateDir = ./doom-emacs/doom.d;
-    emacsPackage = pkgs.emacs;
-  };
-  services.emacs.enable = true;
   programs.firefox = {
     enable = true;
   };

@@ -14,4 +14,5 @@
   programs.lieer.enable = true;
   services.lieer.enable = true;
   programs.notmuch.enable = true;
+  programs.notmuch.new.tags = [ ];
 }

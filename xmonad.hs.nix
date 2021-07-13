@@ -92,18 +92,6 @@ showtermSsh termCommand (DirSpec remotes dir) =
                             ++ "; bash --login\'")
   ++ "\""
 
-showEmacsRemotes :: [Remote] -> String
-showEmacsRemotes rs = intercalate "|" $ map showEmacsRemote rs
-  where showEmacsRemote (Remote host Nothing) = "ssh:" ++ host
-        showEmacsRemote (Remote host (Just port)) =
-          "ssh:" ++ host ++ "#" ++ port
-
-showEmacsSsh :: String -> DirSpec -> String
-showEmacsSsh emacsCmd (DirSpec [] "") = emacsCmd
-showEmacsSsh emacsCmd (DirSpec [] dir) = emacsCmd ++ " " ++ dir
-showEmacsSsh emacsCmd (DirSpec remotes dir) =
-  emacsCmd ++ " \"/" ++ showEmacsRemotes remotes ++ ":" ++ dir ++ "\""
-
 showEnvSsh :: String -> DirSpec -> String
 showEnvSsh cmd (DirSpec _ "") = cmd
 showEnvSsh cmd (DirSpec _ dir) = "env -C " ++ dir ++ " " ++ cmd
@@ -116,9 +104,6 @@ remThing showfn termCommand =
 
 remTerm :: String -> X ()
 remTerm = remThing showtermSsh
-
-remEmacs :: String -> X ()
-remEmacs = remThing showEmacsSsh
 
 remSpawn :: String -> X ()
 remSpawn = remThing showEnvSsh
@@ -163,10 +148,6 @@ mykeys (XConfig {XMonad.modMask = modm}) = M.fromList
         -- # Terminal --
         , ((0, xK_c), spawn "alacritty")
         , ((modm, xK_c), remTerm "alacritty")
-
-        -- # Editor --
-        , ((0, xK_e), spawn "emacsclient -c")
-        , ((modm, xK_e), remEmacs "emacsclient -c")
 
         -- # Run CMD --
         , ((0, xK_p), spawn "rofi -show run")
