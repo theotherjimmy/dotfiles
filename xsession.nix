@@ -2,7 +2,7 @@
 
 let
   colors = config.colors.fn "#";
-  bar-height = 35;
+  bar-height = 28;
   bg-image = pkgs.runCommand "background.png" {
     src = pkgs.writeText "bg-svg" (
       import ./nix-snowflake.svg.nix (with colors; {
@@ -58,19 +58,19 @@ in {
   config.services.polybar = with colors; {
     enable = true;
     script = "polybar main &";
-    config = {
+    config = let line = "background"; in {
       "bar/main" = {
         width = "100%";
         height = bar-height;
         radius = 0;
         fixed-center = true;
-        bottom = false;
+        bottom = true;
         background = primary.background;
         foreground = primary.foreground;
 
         border-size = 0;
         line-size = 2;
-        padding = 1;
+        padding = 0;
         module-margin = 1;
 
         font-0 = "${config.font.name}:size=${toString config.font.em}";
@@ -95,7 +95,8 @@ in {
         enable-scroll = false;
 
         label-active = " %name% ";
-        label-active-underline = normal.red;
+        "label-active-${line}" = normal.yellow;
+        label-active-foreground = primary.background;
 
         label-occupied = " %name% ";
         label-urgent = " %name% ";
@@ -105,18 +106,18 @@ in {
       "module/cpu" = {
         type = "internal/cpu";
         interval = 2;
-        format-prefix = "💻 ";
-        format-prefix-foreground = primary.foreground;
-        format-underline = normal.red;
-        label = "%percentage:2%%";
+        "format-${line}" = normal.red;
+        format-foreground = primary.background;
+        label = " cpu %percentage:2%% ";
       };
       "module/wlan" =  {
         type = "internal/network";
         interface = "wlp59s0";
         interval = 5;
         format-connected = "<ramp-signal> <label-connected>";
-        format-connected-underline = normal.magenta;
-        label-connected = "%essid%";
+        "format-connected-${line}" = normal.magenta;
+        format-connected-foreground = primary.background;
+        label-connected = " %essid% ";
         label-disconnected = "";
         ramp-signal-0 = "🌧";
         ramp-signal-1 = "🌦";
@@ -128,10 +129,9 @@ in {
         type = "internal/network";
         interface = "eno1";
         interval = 5;
-        format-connected-underline = normal.magenta;
-        format-connected-prefix = "🖧 ";
-        format-connected-prefix-foreground = primary.foreground;
-        label-connected = "%local_ip%";
+        "format-connected-${line}" = normal.magenta;
+        format-connected-foreground = primary.background;
+        label-connected = " eth %local_ip% ";
         format-disconnected = "";
       };
       "module/date" = {
@@ -139,10 +139,9 @@ in {
         interval = 5;
         date = "%a %d";
         time = "%H:%M";
-        format-prefix = "";
-        format-prefix-foreground = primary.foreground;
-        format-underline = normal.blue;
-        label = "%date% %time%";
+        "format-${line}" = normal.blue;
+        format-foreground = primary.background;
+        label = " %date% %time% ";
       };
       "module/battery" = {
         type = "internal/battery";
@@ -150,11 +149,13 @@ in {
         adapter = "AC";
         full-at = 98;
         format-charging = "%percentage%%";
-        format-charging-underline = normal.yellow;
+        "format-charging-${line}" = normal.yellow;
+        format-charging-foreground = primary.background;
         format-discharging = "%percentage%%";
-        format-discharging-underline = normal.yellow;
+        "format-discharging-${line}" = normal.yellow;
+        format-discharging-foreground = primary.background;
         format-full = " ☀ ";
-        format-full-underline = normal.green;
+        "format-full-${line}" = normal.green;
         ramp-capacity-0 = "⚋";
         ramp-capacity-1 = "⚊";
         ramp-capacity-2 = "⚍";
