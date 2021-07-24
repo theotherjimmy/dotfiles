@@ -13,6 +13,15 @@ let
     buildInputs = [pkgs.imagemagick pkgs.potrace];
   } "convert -background none $src $out";
   inherit (lib) mkOption types mkIf;
+  ws-switch = let
+    wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
+    rofi = "${pkgs.rofi}/bin/rofi";
+  in pkgs.writers.writeBashBin "rofi-switch-workspaces" ''
+       ${wmctrl} -d \
+         | awk '{ print $1 " " $9}' \
+         | ${rofi} -dmenu -p Workspace \
+         | awk '{ system("${wmctrl} -s " $1) }'
+  '';
   xmonad-config =
     let
       ghcWithPackages = pkgs.haskellPackages.ghcWithPackages;
@@ -220,5 +229,6 @@ in {
     xclip
     xorg.xdpyinfo
     fractal
+    ws-switch
   ];
 }

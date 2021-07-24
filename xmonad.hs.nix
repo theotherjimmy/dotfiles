@@ -154,7 +154,7 @@ mykeys (XConfig {XMonad.modMask = modm}) = M.fromList
         , ((modm, xK_p), remSpawn "rofi -show run")
 
           -- Groups --
-        , ((modm, xK_g), myGridselectWorkspace gsConfigWS W.greedyView)
+        , ((modm, xK_g), spawn "rofi-switch-workspaces")
         , ((modm .|. shiftMask, xK_g), myGridselectWorkspace gsConfigWS
                                         (\ws -> W.greedyView ws . W.shift ws))
         , ((0, xK_g), submap . M.fromList $
