@@ -36,7 +36,7 @@
             ./cli-apps.nix
             ./email.nix
           ];
-          colors.theme = "gruvbox-dark";
+          colors.theme = "nord-dark";
           nixpkgs.overlays = overlays;
           xsession.enable = true;
           systemd.user.startServices = true;
