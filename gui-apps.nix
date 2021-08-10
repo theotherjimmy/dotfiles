@@ -73,31 +73,6 @@ in {
       ];
     };
   };
-  programs.termite = with colors "#"; {
-    enable = true;
-    cursorColor = primary.foreground;
-    font = config.font.emstr;
-    foregroundColor = primary.foreground;
-    backgroundColor = primary.background;
-    colorsExtra = ''
-      color0 = ${normal.black}
-      color8 = ${bright.black}
-      color1 = ${normal.red}
-      color9 = ${bright.red}
-      color2 = ${normal.green}
-      color10 = ${bright.green}
-      color3 = ${normal.yellow}
-      color11 = ${bright.yellow}
-      color4 = ${normal.blue}
-      color12 = ${bright.blue}
-      color5 = ${normal.magenta}
-      color13 = ${bright.magenta}
-      color6 = ${normal.cyan}
-      color14 = ${bright.cyan}
-      color7 = ${normal.white}
-      color15 = ${bright.white}
-    '';
-  };
   programs.zathura = {
     enable = true;
     options = with colors "#"; {
