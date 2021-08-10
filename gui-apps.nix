@@ -128,8 +128,8 @@ in {
     colors = with colors "#"; {
       window = {
         inherit (primary) background;
-        border = normal.white;
-        separator = normal.white;
+        border = normal.magenta;
+        separator = normal.magenta;
       };
       rows = {
         active = {
@@ -154,8 +154,8 @@ in {
           inherit (primary) background foreground;
           backgroundAlt = primary.bg-soft;
           highlight = {
-            inherit (primary) foreground;
-            background = normal.white;
+            foreground = normal.green;
+            background = primary.background;
           };
         };
       };
