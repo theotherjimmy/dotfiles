@@ -24,7 +24,6 @@ in {
       background_opacity = 1.0;
       mouse_bindings = [ { mouse = "Middle"; action = "PasteSelection"; } ];
       live_config_reload = true;
-      shell = { program = "fish"; args = [ "--login" ]; };
       key_bindings = [
         { key = "V"; mods = "Control|Shift"; action = "Paste"; }
         { key = "C"; mods = "Control|Shift"; action = "Copy"; }
