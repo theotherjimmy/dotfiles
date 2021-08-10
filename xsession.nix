@@ -19,33 +19,42 @@ let
   in pkgs.writers.writeBashBin "rofi-switch-workspaces" ''
        ${wmctrl} -d \
          | awk '{ print $1 " " $9}' \
-         | ${rofi} -dmenu -p Workspace \
+         | ${rofi} -dmenu -i -p 'Switch to Workspace' \
          | awk '{ system("${wmctrl} -s " $1) }'
   '';
-  xmonad-config =
-    let
-      ghcWithPackages = pkgs.haskellPackages.ghcWithPackages;
-      xmonadAndPackages = self: [
-        self.xmonad
-        self.xmonad-contrib
-        self.xmonad-extras
-        self.megaparsec
-        self.void
-      ];
-      xmonadEnv = ghcWithPackages xmonadAndPackages;
-      configured = pkgs.writers.writeHaskellBin "xmonad" {
-        ghc = pkgs.haskellPackages.ghc;
-        libraries = xmonadAndPackages pkgs.haskellPackages;
-      } (import ./xmonad.hs.nix colors);
-    in
-      pkgs.runCommandLocal "xmonad" {
-        nativeBuildInputs = [ pkgs.makeWrapper ];
-      } ''
-        install -D ${xmonadEnv}/share/man/man1/xmonad.1.gz $out/share/man/man1/xmonad.1.gz
-        makeWrapper ${configured}/bin/xmonad $out/bin/xmonad \
-          --set NIX_GHC "${xmonadEnv}/bin/ghc" \
-          --set XMONAD_XMESSAGE "${pkgs.xorg.xmessage}/bin/xmessage"
-      '';
+  ws-move = let
+    xdotool = "${pkgs.xdotool}/bin/xdotool";
+    wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
+    rofi = "${pkgs.rofi}/bin/rofi";
+  in pkgs.writers.writeBashBin "rofi-move-workspaces" ''
+       ACTIVE_WINDOW=$(${xdotool} getactivewindow)
+       ${wmctrl} -d \
+         | awk '{ print $1 " " $9}' \
+         | ${rofi} -dmenu -i -p 'Move Foused Window to Workspace' \
+         | awk "{ system(\"${wmctrl} -i -r $ACTIVE_WINDOW -t \" \$1) }"
+  '';
+  ws-new = let
+    wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
+    rofi = "${pkgs.rofi}/bin/rofi";
+    lantactl = "$HOME/src/rust/lanta/target/release/lantactl";
+  in pkgs.writers.writeBashBin "rofi-new-workspace" ''
+       ${wmctrl} -d \
+         | awk '{ print $1 " " $9}' \
+         | ${rofi} -dmenu -i -p 'New Workspace' \
+         | awk ' NF == 2 { system("${lantactl} new " $2) }
+                 NF == 1 { system("${lantactl} new " $1) }'
+  '';
+  ws-rename = let
+    wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
+    rofi = "${pkgs.rofi}/bin/rofi";
+    lantactl = "$HOME/src/rust/lanta/target/release/lantactl";
+  in pkgs.writers.writeBashBin "rofi-rename-workspace" ''
+       ${wmctrl} -d \
+         | awk '{ print $1 " " $9}' \
+         | ${rofi} -dmenu -i -p 'Rename Workspace' \
+         | awk ' NF == 2 { system("${lantactl} rename " $2) }
+                 NF == 1 { system("${lantactl} rename " $1) }'
+  '';
 in {
   imports = [
     ./modules/autorandr-rs.nix
@@ -63,7 +72,7 @@ in {
     # Anything with "legacy" in the name is sus
     package = pkgs.pulseeffects-legacy;
   };
-  config.xsession.windowManager.command = "systemd-cat -t xmonad -- ${xmonad-config}/bin/xmonad";
+  config.xsession.windowManager.command = "systemd-cat -t wm -- $HOME/src/rust/lanta/target/release/lanta";
   config.services.polybar = with colors; {
     enable = true;
     script = "polybar main &";
@@ -230,5 +239,8 @@ in {
     xorg.xdpyinfo
     fractal
     ws-switch
+    ws-new
+    ws-rename
+    ws-move
   ];
 }
