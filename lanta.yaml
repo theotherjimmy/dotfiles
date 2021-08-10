@@ -1,0 +1,47 @@
+borders:
+  width: 2
+  focused-color: {{focus}}
+  normal-color: {{normal}}
+layouts:
+  - name: 3-column
+    type: ThreeColumn
+    padding: 0
+  - name: fullscreen
+    type: Stack
+keys:
+  M-d: CloseFocused
+  M-l:
+    Focus: Right
+  M-S-l:
+    Swap: Right
+  M-h:
+    Focus: Left
+  M-S-h:
+    Swap: Left
+  M-j:
+    Focus: Down
+  M-S-j:
+    Swap: Down
+  M-k:
+    Focus: Up
+  M-S-k:
+    Swap: Up
+  M-enter: RotateCrtc
+  M-S-enter: WindowToNextCrtc
+  M-space: RotateLayout
+  M-tab: RotateFocus
+  M-S-r: Restart
+  M-r:
+    Spawn: rofi-rename-workspace
+  M-g:
+    Spawn: rofi-switch-workspaces
+  M-S-g:
+    Spawn: rofi-move-workspaces
+  M-n:
+    Spawn: rofi-new-workspace
+  M-p:
+    Spawn: rofi -show drun
+  M-S-s:
+    Spawn: xset dpms force off
+  M-c:
+    Spawn: alacritty

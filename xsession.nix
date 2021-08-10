@@ -58,10 +58,25 @@ let
 in {
   imports = [
     ./modules/autorandr-rs.nix
+    ./modules/lanta.nix
   ];
   config.services.autorandrd = {
     enable = true;
     config = ./monitors.toml;
+  };
+  config.lanta = {
+    enable = true;
+    config = pkgs.stdenv.mkDerivation {
+      name = "lanta-config";
+      src = ./lanta.yaml;
+      unpackPhase = "true";
+      buildPhase = with config.colors.fn "0x"; ''
+        substitute $src $out \
+          --replace "{{focus}}" "${normal.green}" \
+          --replace "{{normal}}" "${primary.bg4}"
+      '';
+      installPhase = "true";
+    };
   };
   config.services.screen-locker = {
     enable = true;
@@ -72,7 +87,6 @@ in {
     # Anything with "legacy" in the name is sus
     package = pkgs.pulseeffects-legacy;
   };
-  config.xsession.windowManager.command = "systemd-cat -t wm -- $HOME/src/rust/lanta/target/release/lanta";
   config.services.polybar = with colors; {
     enable = true;
     script = "polybar main &";
