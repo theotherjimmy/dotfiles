@@ -45,7 +45,6 @@
   programs.kakoune = {
     enable = true;
     config = {
-      colorScheme = "gruvbox";
       numberLines = {
         enable = true;
         highlightCursor = true;
@@ -150,9 +149,56 @@
     plugins = with pkgs.kakounePlugins; [
       kak-fzf
     ];
-    extraConfig = ''
-      set-option global fzf_implementation 'sk'
-      set-option global fzf_file_command 'fd'
+    extraConfig = let
+      inherit (config.colors.fn "rgb:") normal primary bright;
+      fg_alpha = (config.colors.fn "rgba:").primary.foreground + "a0";
+      bg_alpha = (config.colors.fn "rgba:").primary.background + "a0";
+    in ''
+        face global value         ${normal.magenta}
+        face global type          ${normal.yellow}
+        face global variable      ${normal.blue}
+        face global module        ${normal.green}
+        face global function      ${primary.foreground}
+        face global string        ${normal.green}
+        face global keyword       ${normal.red}
+        face global operator      ${primary.foreground}
+        face global attribute     ${normal.cyan}
+        face global comment       ${normal.blue}+i
+        face global documentation comment
+        face global meta          ${normal.cyan}
+        face global builtin       ${primary.foreground}+b
+
+        face global title              ${normal.green}+b
+        face global header             ${normal.orange}
+        face global mono               ${primary.fg4}
+        face global block              ${normal.cyan}
+        face global link               ${normal.blue}+u
+        face global bullet             ${normal.yellow}
+        face global list               ${primary.foreground}
+        face global Default            ${primary.foreground},${primary.background}
+        face global PrimarySelection   ${fg_alpha},${normal.blue}+g
+        face global SecondarySelection ${bg_alpha},${normal.blue}+g
+        face global PrimaryCursor      ${primary.background},${primary.foreground}+fg
+        face global SecondaryCursor    ${primary.background},${primary.bg4}+fg
+        face global PrimaryCursorEol   ${primary.background},${primary.fg4}+fg
+        face global SecondaryCursorEol ${primary.background},${primary.bg2}+fg
+        face global LineNumbers        ${primary.bg4}
+        face global LineNumberCursor   ${normal.yellow},${primary.bg1}
+        face global LineNumbersWrapped ${primary.bg1}
+        face global MenuForeground     ${primary.bg2},${normal.blue}
+        face global MenuBackground     ${primary.foreground},${primary.bg2}
+        face global MenuInfo           ${primary.background}
+        face global Information        ${primary.background},${primary.foreground}
+        face global Error              ${primary.background},${normal.red}
+        face global StatusLine         ${primary.foreground},${primary.background}
+        face global StatusLineMode     ${normal.yellow}+b
+        face global StatusLineInfo     ${normal.magenta}
+        face global StatusLineValue    ${normal.red}
+        face global StatusCursor       ${primary.background},${primary.foreground}
+        face global Prompt             ${normal.yellow}
+        face global MatchingChar       ${primary.foreground},${primary.bg3}+b
+        face global BufferPadding      ${primary.bg2},${primary.background}
+        face global Whitespace         ${primary.bg2}+f
     '';
   };
   programs.git = {
