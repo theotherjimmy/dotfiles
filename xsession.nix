@@ -6,8 +6,8 @@ let
   bg-image = pkgs.runCommand "background.png" {
     src = pkgs.writeText "bg-svg" (
       import ./nix-snowflake.svg.nix (with colors; {
-        dark = normal.blue;
-        light = bright.black;
+        dark = normal.cyan;
+        light = bright.cyan;
       })
     );
     buildInputs = [pkgs.imagemagick pkgs.potrace];
@@ -104,7 +104,7 @@ in {
         enable-scroll = false;
 
         label-active = " %name% ";
-        "label-active-${line}" = normal.yellow;
+        "label-active-${line}" = normal.green;
         label-active-foreground = primary.background;
 
         label-occupied = " %name% ";
