@@ -188,6 +188,24 @@ in {
     propagatedUserEnvPkgs = [ pkgs.gtk-engine-murrine ];
 
     enableParallelBuilding = false;
+    patchPhase = with colors "#"; ''
+    for file in `find . -name '*.scss' -or -name '*.svg'` ; do
+      substituteInPlace $file \
+        --replace '#282828' '${primary.background}' \
+        --replace '#ebdbb2' '${primary.foreground}' \
+        --replace '#fbf1c7' '${primary.fg1}' \
+        --replace '#3c3836' '${primary.bg1}' \
+        --replace '#689d6a' '${normal.cyan}' \
+        --replace '$primary_caret_color: #1d2021' '$primary_caret_color: ${primary.foreground}' \
+        --replace '#1d2021' '${normal.black}' \
+        --replace '#03a9f4' '${normal.blue}' \
+        --replace '#ef6c00' '${normal.orange}' \
+        --replace '#673ab7' '${normal.magenta}' \
+        --replace '#f44336' '${normal.red}' \
+        --replace '#4caf50' '${normal.green}' \
+        --replace '#83a598' '${bright.blue}' ;
+    done
+    '';
 
     installPhase = ''
       mkdir -p $out/share/themes/${pname}
