@@ -248,7 +248,6 @@
   }; [
     aspell
     aspellDicts.en
-    linuxPackages.bpftrace
     cargo-flamegraph
     direnv
     edit

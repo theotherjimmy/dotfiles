@@ -10,6 +10,6 @@ rustPlatform.buildRustPackage rec {
   };
   cargoHash = "sha256-hYO0zEynBCt5esi824PxguikwU59SeXp9xhk8Iqwmo8=";
   nativeBuildInputs = [
-    rust-bin.nightly."2021-03-23".rust
+    rust-bin.nightly."2021-03-23".default
   ];
 }

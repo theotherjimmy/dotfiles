@@ -120,44 +120,96 @@ in {
   };
   programs.rofi = {
     enable = true;
-    borderWidth = 2;
     font = config.font.emstr;
     terminal = "${pkgs.alacritty}/bin/alacritty";
-    lines = 20;
     separator = "solid";
-    colors = with colors "#"; {
-      window = {
-        inherit (primary) background;
-        border = normal.magenta;
-        separator = normal.magenta;
+    theme = with { inherit (config.lib.formats.rasi) mkLiteral; } // colors "#"; {
+      "*" = {
+        background-color = mkLiteral primary.background;
+        border-color = normal.magenta;
       };
-      rows = {
-        active = {
-          background = normal.yellow;
-          backgroundAlt = normal.yellow;
-          foreground = primary.background;
-          highlight = {
-            background = bright.yellow;
-            foreground = primary.background;
-          };
-        };
-        urgent = {
-          background = normal.red;
-          backgroundAlt = normal.red;
-          foreground = primary.background;
-          highlight = {
-            background = bright.red;
-            foreground = primary.background;
-          };
-        };
-        normal = {
-          inherit (primary) background foreground;
-          backgroundAlt = primary.bg-soft;
-          highlight = {
-            foreground = normal.green;
-            background = primary.background;
-          };
-        };
+      window = {
+        border = 2;
+        padding = 2;
+        anchor = mkLiteral "center";
+      };
+      mainbox = {
+        border = 0;
+        padding = 0;
+      };
+      textbox = {
+        highlight = mkLiteral "bold italic";
+        text-color = mkLiteral primary.foreground;
+      };
+      listview = {
+        border = mkLiteral "2px solid 0 0";
+        padding = mkLiteral "2px 0 0";
+        border-color = mkLiteral normal.magenta;
+        spacing = mkLiteral "2px";
+        scrollbar = mkLiteral normal.magenta;
+        lines = 20;
+      };
+      element = {
+        border = 0;
+        padding = mkLiteral "2px";
+      };
+
+      "element.normal.normal" = {
+        text-color = mkLiteral primary.foreground;
+      };
+      "element.alternate.normal" = {
+        background-color = mkLiteral primary.bg-soft;
+        text-color = mkLiteral primary.foreground;
+      };
+      "element.selected.normal" = {
+        text-color = mkLiteral normal.green;
+      };
+
+      "element.normal.active" = {
+        background-color = mkLiteral normal.yellow;
+        text-color = mkLiteral primary.background;
+      };
+      "element.alternate.active" = {
+        background-color = mkLiteral normal.yellow;
+        text-color = mkLiteral primary.bg-soft;
+      };
+      "element.selected.active" = {
+        background-color = mkLiteral bright.yellow;
+        text-color = mkLiteral primary.background;
+      };
+
+      "element.normal.urgent" = {
+        background-color = mkLiteral normal.red;
+        text-color = mkLiteral primary.background;
+      };
+      "element.alternate.urgent" = {
+        background-color = mkLiteral normal.red;
+        text-color = mkLiteral primary.bg-soft;
+      };
+      "element.selected.urgent" = {
+        background-color = mkLiteral bright.red;
+        text-color = mkLiteral primary.background;
+      };
+      mode-switcher = {
+        border = mkLiteral "2px 0 0";
+        border-color = mkLiteral normal.magenta;
+      };
+      "case-indicater, entry, prompt, button" = {
+        spacing = 0;
+        text-color = mkLiteral primary.foreground;
+      };
+      "button.selected" = {
+        text-color = mkLiteral normal.green;
+      };
+      textbox-prompt-sep = {
+        expand = false;
+        str = ";";
+        text-color = mkLiteral normal.magenta;
+        margin = mkLiteral "0 0.3em 0 0";
+      };
+      "element-text, element-icon" = {
+        background-color = mkLiteral "inherit";
+        text-color = mkLiteral "inherit";
       };
     };
   };
