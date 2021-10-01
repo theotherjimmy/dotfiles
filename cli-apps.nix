@@ -28,18 +28,10 @@
     settings = {
       add_newline = false;
       format = lib.concatStrings [
-        "$directory"
-        "$cmd_duration"
-        "$line_break"
         "$character"
       ];
-      scan_timeout = 6;
-      cmd_duration.min_time = 10;
-      cmd_duration.show_milliseconds = true;
-      character.success_symbol = "[➜](green)";
-      character.error_symbol = "[➜](red)";
-      directory.truncation_length = 1;
-      directory.fish_style_pwd_dir_length = 1;
+      character.success_symbol = "[;](green)";
+      character.error_symbol = "[;](red)";
     };
   };
   programs.kakoune = {
