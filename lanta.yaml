@@ -44,4 +44,4 @@ keys:
   M-S-s:
     Spawn: xset dpms force off
   M-c:
-    Spawn: alacritty
+    Spawn: wezterm
