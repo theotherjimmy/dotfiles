@@ -243,6 +243,7 @@ in {
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
+  config.programs.obs-studio.enable = true;
   config.home.packages = with pkgs; [
     autorandr-rs
     firefox

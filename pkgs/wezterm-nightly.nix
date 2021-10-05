@@ -17,32 +17,27 @@
 , xcbutilwm
 , wayland
 , zlib
-  # Apple frameworks
-, CoreGraphics
-, Cocoa
-, Foundation
-, libiconv
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "wezterm";
-  version = "20210814-124438-54e29167";
+  version = "20211004-68418b8-nightly";
 
   outputs = [ "out" "terminfo" ];
 
   src = fetchFromGitHub {
     owner = "wez";
     repo = pname;
-    rev = version;
+    rev = "68418b89ee3ca50f7f99dd025f97f74b857baf84";
     fetchSubmodules = true;
-    sha256 = "sha256-6HXTftgAs6JMzOMCY+laN74in8xfjE8yJc5xSl9PQCE=";
+    sha256 = "sha256-0/Rq0ex0ekegNH6r4zavP1lBvH9YdVnjnOLBkMSsi1I=";
   };
 
   postPatch = ''
     echo ${version} > .tag
   '';
 
-  cargoSha256 = "sha256-yjTrWoqIKoRV4oZQ0mfTGrIGmm89AaKJd16WL1Ozhnw=";
+  cargoSha256 = "sha256-cZ+iV8Xt0lSczp1zcWoXbl3n0H5gdFu4ySluTT3ltKc=";
 
   nativeBuildInputs = [
     pkg-config
@@ -63,11 +58,6 @@ rustPlatform.buildRustPackage rec {
     xcbutilimage
     xcbutilkeysyms
     xcbutilwm # contains xcb-ewmh among others
-  ] ++ lib.optionals stdenv.isDarwin [
-    Cocoa
-    CoreGraphics
-    Foundation
-    libiconv
   ];
 
   postInstall = ''

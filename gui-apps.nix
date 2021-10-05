@@ -3,6 +3,42 @@
 let
   colors = config.colors.fn;
 in {
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "discord" "zoom"
+  ];
+  home.packages =  with pkgs; [ discord zoom-us wezterm-nightly ];
+  xdg.configFile."wezterm/wezterm.lua".text = with colors "#"; ''
+    local wezterm = require 'wezterm';
+    return {
+      colors = {
+        foreground = "${primary.foreground}",
+        background = "${primary.background}",
+        cursor_bg = "${primary.fg4}",
+        cursor_border = "${primary.fg4}",
+        cursor_fg = "${primary.background}",
+        selection_bg = "${primary.fg4}",
+        selection_fg = "${primary.bg4}",
+        ansi = {
+          "${normal.black}", "${normal.red}", "${normal.green}", "${normal.yellow}",
+          "${normal.blue}", "${normal.magenta}", "${normal.cyan}", "${normal.white}"
+        },
+        brights = {
+          "${bright.black}", "${bright.red}", "${bright.green}", "${bright.yellow}",
+          "${bright.blue}", "${bright.magenta}", "${bright.cyan}", "${bright.white}"
+        },
+      },
+      font = wezterm.font("${config.font.name}", {bold=false}),
+      font_size = 13,
+      dpi = 96.0,
+      enable_tab_bar = false,
+      window_padding = {
+        left = 5,
+        right = 5,
+        top = 5,
+        bottom = 5,
+      }
+    }
+  '';
   programs.alacritty = {
     enable = true;
     settings = {

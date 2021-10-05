@@ -19,6 +19,18 @@
       j = "just";
       sv = "systemctl --user";
       psme = "pstree -h -C age -U -T $USER";
+      icat = "wezterm imgcat";
+      isvg = "rsvg-convert | icat";
+      idot = with config.colors.fn "#";
+        ''dot -T png \
+          -Gbgcolor="${primary.background}" \
+          -Gcolor="${primary.foreground}" \
+          -Ncolor="${primary.foreground}" \
+          -Nfontcolor="${primary.foreground}" \
+          -Ecolor="${primary.foreground}" \
+          -Efontcolor="${primary.foreground}" \
+          | icat
+        '';
     };
     sessionVariables.EDITOR = "edit";
   };
@@ -252,6 +264,7 @@
     git-ip-review
     git-review
     git-series
+    graphviz
     just
     libnotify
     nixpkgs-fmt
