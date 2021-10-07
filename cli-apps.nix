@@ -33,18 +33,19 @@
         '';
     };
     sessionVariables.EDITOR = "edit";
-  };
-  programs.starship = {
-    enable = true;
-    enableBashIntegration = true;
-    settings = {
-      add_newline = false;
-      format = lib.concatStrings [
-        "$character"
-      ];
-      character.success_symbol = "[;](green)";
-      character.error_symbol = "[;](red)";
-    };
+    bashrcExtra = ''
+      export PS1='; $(tput sgr0)'
+      export PROMPT_COMMAND='if [[ $? != 0 ]] ; then tput setaf 5 ; fi'
+      export LESS_TERMCAP_mb=$(tput setaf 6) # cyan
+      export LESS_TERMCAP_md=$(tput setaf 2) # green
+      export LESS_TERMCAP_me=$(tput sgr0)
+      export LESS_TERMCAP_so=$(tput bold; tput setaf 3) # yellow
+      export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+      export LESS_TERMCAP_us=$(tput sitm; tput setaf 5) # magenta
+      export LESS_TERMCAP_ue=$(tput ritm; tput sgr0)
+      export LESS_TERMCAP_mr=$(tput rev)
+      export LESS_TERMCAP_mh=$(tput dim)
+    '';
   };
   programs.kakoune = {
     enable = true;
