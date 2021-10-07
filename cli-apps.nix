@@ -22,7 +22,7 @@
       icat = "wezterm imgcat";
       isvg = "rsvg-convert | icat";
       idot = with config.colors.fn "#";
-        ''dot -T png \
+        ''dot -T bmp \
           -Gbgcolor="${primary.background}" \
           -Gcolor="${primary.foreground}" \
           -Ncolor="${primary.foreground}" \
