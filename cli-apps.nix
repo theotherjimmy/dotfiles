@@ -17,6 +17,7 @@
     shellAliases = {
       ls = "exa";
       j = "just";
+      c = "cargo";
       sv = "systemctl --user";
       psme = "pstree -h -C age -U -T $USER";
       icat = "wezterm imgcat";
