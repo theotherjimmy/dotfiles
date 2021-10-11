@@ -87,8 +87,7 @@ in {
   programs.rofi = {
     enable = true;
     font = config.font.emstr;
-    terminal = "${pkgs.alacritty}/bin/alacritty";
-    separator = "solid";
+    terminal = "${pkgs.wezterm-nightly}/bin/wezterm";
     theme = with { inherit (config.lib.formats.rasi) mkLiteral; } // colors "#"; {
       "*" = {
         background-color = mkLiteral primary.background;
@@ -160,12 +159,18 @@ in {
         border = mkLiteral "2px 0 0";
         border-color = mkLiteral normal.magenta;
       };
-      "case-indicater, entry, prompt, button" = {
+      "case-indicator, entry, prompt, button" = {
         spacing = 0;
         text-color = mkLiteral primary.foreground;
       };
       "button.selected" = {
         text-color = mkLiteral normal.green;
+      };
+      inputbar = {
+        spacing = 0;
+        text-color = mkLiteral primary.foreground;
+        padding = mkLiteral "2px";
+        children = [ "prompt" "textbox-prompt-sep" "entry" "case-indicator" ];
       };
       textbox-prompt-sep = {
         expand = false;
