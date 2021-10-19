@@ -28,16 +28,17 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "wez";
     repo = pname;
-    rev = "68418b89ee3ca50f7f99dd025f97f74b857baf84";
+    rev = "d461c1c0b6bfc016e24308737810a511bc52ff91";
     fetchSubmodules = true;
-    sha256 = "sha256-0/Rq0ex0ekegNH6r4zavP1lBvH9YdVnjnOLBkMSsi1I=";
+    sha256 = "sha256-jjmzwRhgTJOftJrL8sXbC5NCAnw6aBHigMwHCfhFJI4=";
   };
 
   postPatch = ''
     echo ${version} > .tag
   '';
 
-  cargoSha256 = "sha256-cZ+iV8Xt0lSczp1zcWoXbl3n0H5gdFu4ySluTT3ltKc=";
+  cargoSha256 = "sha256-CGk/kv+OuNUhLNu+jkEMrGil6nhGp2ESv8EcF0LDbYg=";
+  doCheck = false;
 
   nativeBuildInputs = [
     pkg-config
