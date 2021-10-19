@@ -78,10 +78,6 @@ in {
       installPhase = "true";
     };
   };
-  config.services.screen-locker = {
-    enable = true;
-    lockCmd = "${pkgs.xtrlock-pam}/bin/xtrlock-pam";
-  };
   config.services.pulseeffects = {
     enable = true;
     # Anything with "legacy" in the name is sus
