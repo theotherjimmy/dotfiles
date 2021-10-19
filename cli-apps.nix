@@ -35,8 +35,8 @@
     };
     sessionVariables.EDITOR = "edit";
     bashrcExtra = ''
-      export PS1='; $(tput sgr0)'
-      export PROMPT_COMMAND='if [[ $? != 0 ]] ; then tput setaf 5 ; fi'
+      export PS1='; \[$(tput sgr0)\]'
+      export PROMPT_COMMAND='if [[ $? != 0 ]] ; then echo -e -n "\001$(tput setaf 5)\002"; fi'
       export LESS_TERMCAP_mb=$(tput setaf 6) # cyan
       export LESS_TERMCAP_md=$(tput setaf 2) # green
       export LESS_TERMCAP_me=$(tput sgr0)
@@ -254,6 +254,7 @@
   }; [
     aspell
     aspellDicts.en
+    bashInteractive
     cargo-flamegraph
     direnv
     edit
