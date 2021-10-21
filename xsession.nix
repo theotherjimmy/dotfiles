@@ -62,7 +62,7 @@ in {
   ];
   config.services.autorandrd = {
     enable = true;
-    config = ./monitors.toml;
+    config = ./monitors.kdl;
   };
   config.lanta = {
     enable = true;

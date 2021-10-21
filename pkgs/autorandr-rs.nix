@@ -1,18 +1,19 @@
 {rustPlatform, fetchFromGitHub, scdoc, installShellFiles}:
 
 rustPlatform.buildRustPackage rec {
-  name = "autorandr-rs";
+  pname = "autorandr-rs";
+  version = "0.3.0";
   src = fetchFromGitHub {
     owner = "theotherjimmy";
-    repo = name;
-    rev = "d9698f00839c84620c5d93d51807d0d0e5ca633d";
-    hash = "sha256-pUbaUoMu7NZQ7Wy7/TGEcqqMCweUFVcJEEk6zxIaMfk=";
+    repo = pname;
+    rev = "564930af02c556f5615f446dcf33dea1d39fa347";
+    hash = "sha256-xPjQ97xUGFx874ojwBB6jiH9Rn0y/aVUTKTdh13PMIY=";
   };
-  cargoHash = "sha256-esTVrs2+vd6bcKqjBMEPJLy+QXlv5XWNuy4amo9epbs=";
+  cargoHash = "sha256-aEzw02J6Tw0K5kE5Cny/ktADzbJXbE2QEz7dP+7mrNE=";
   nativeBuildInputs = [ scdoc installShellFiles ];
   preFixup = ''
-    installManPage $releaseDir/build/${name}-*/out/autorandrd.1
-    installManPage $releaseDir/build/${name}-*/out/randr-edid.1
-    installManPage $releaseDir/build/${name}-*/out/autorandrd.5
+    installManPage $releaseDir/build/${pname}-*/out/autorandrd.1
+    installManPage $releaseDir/build/${pname}-*/out/randr-edid.1
+    installManPage $releaseDir/build/${pname}-*/out/autorandrd.5
   '';
 }
