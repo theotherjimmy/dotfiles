@@ -22,7 +22,7 @@
       psme = "pstree -h -C age -U -T $USER";
       icat = "wezterm imgcat";
       isvg = "rsvg-convert | icat";
-      idot = with config.colors.fn "#";
+      idot = let inherit (config.colors.fn "#") primary; in
         ''dot -T bmp \
           -Gbgcolor="${primary.background}" \
           -Gcolor="${primary.foreground}" \
@@ -152,8 +152,8 @@
         }
       ];
     };
-    plugins = with pkgs.kakounePlugins; [
-      kak-fzf
+    plugins = [
+      pkgs.kakounePlugins.kak-fzf
     ];
     extraConfig = let
       inherit (config.colors.fn "rgb:") normal primary bright;
@@ -229,7 +229,7 @@
     defaultCommand = "fd --type f || git ls-tree -r --name-only HEAD || rg --files || find .";
   };
   services.lorri.enable = true;
-  home.packages = with pkgs // rec {
+  home.packages = let
     edit = pkgs.writers.writeBashBin "edit" ''
       ws=$(${pkgs.wmctrl}/bin/wmctrl -d | awk '$2 == "*" {print $9}')
       if [[ $ws != "" ]] ; then
@@ -251,36 +251,36 @@
         git push arm $rev:refs/for/master/$rev
       fi
     '';
-  }; [
-    aspell
-    aspellDicts.en
-    bashInteractive
-    cargo-flamegraph
-    direnv
+  in [
     edit
-    entr
-    exa
-    fd
-    file
-    git
-    git-hub
     git-ip-review
-    git-review
-    git-series
-    graphviz
-    just
-    libnotify
-    nixpkgs-fmt
-    nix-top
-    patchelf
-    procs
-    pv
-    psmisc
-    usbutils
-    ripgrep
-    rpn-c
-    screen
-    tmux
-    xe
+    pkgs.aspell
+    pkgs.aspellDicts.en
+    pkgs.bashInteractive
+    pkgs.cargo-flamegraph
+    pkgs.direnv
+    pkgs.entr
+    pkgs.exa
+    pkgs.fd
+    pkgs.file
+    pkgs.git
+    pkgs.git-hub
+    pkgs.git-review
+    pkgs.git-series
+    pkgs.graphviz
+    pkgs.just
+    pkgs.libnotify
+    pkgs.nixpkgs-fmt
+    pkgs.nix-top
+    pkgs.patchelf
+    pkgs.procs
+    pkgs.pv
+    pkgs.psmisc
+    pkgs.usbutils
+    pkgs.ripgrep
+    pkgs.rpn-c
+    pkgs.screen
+    pkgs.tmux
+    pkgs.xe
   ];
 }

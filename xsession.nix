@@ -5,10 +5,10 @@ let
   bar-height = 28;
   bg-image = pkgs.runCommand "background.png" {
     src = pkgs.writeText "bg-svg" (
-      import ./nix-snowflake.svg.nix (with colors; {
-        dark = normal.cyan;
-        light = bright.cyan;
-      })
+      import ./nix-snowflake.svg.nix {
+        dark = colors.normal.cyan;
+        light = colors.bright.cyan;
+      }
     );
     buildInputs = [pkgs.imagemagick pkgs.potrace];
   } "convert -background none $src $out";
@@ -83,7 +83,7 @@ in {
     # Anything with "legacy" in the name is sus
     package = pkgs.pulseeffects-legacy;
   };
-  config.services.polybar = with colors; {
+  config.services.polybar = let inherit (colors) primary normal bright; in {
     enable = true;
     script = "polybar main &";
     config = let line = "background"; in {
@@ -200,7 +200,7 @@ in {
   };
   config.services.dunst = {
     enable = true;
-    settings = with colors; {
+    settings = let inherit (colors) primary normal; in {
       global = {
         geometry = "500x5-0+${toString bar-height}";
         padding = 10;
@@ -238,15 +238,15 @@ in {
     Install.WantedBy = [ "graphical-session.target" ];
   };
   config.programs.obs-studio.enable = true;
-  config.home.packages = with pkgs; [
-    autorandr-rs
-    firefox
-    hack-font
-    keepass
-    mupdf
-    xclip
-    xorg.xdpyinfo
-    fractal
+  config.home.packages = [
+    pkgs.autorandr-rs
+    pkgs.firefox
+    pkgs.hack-font
+    pkgs.keepass
+    pkgs.mupdf
+    pkgs.xclip
+    pkgs.xorg.xdpyinfo
+    pkgs.fractal
     ws-switch
     ws-new
     ws-rename

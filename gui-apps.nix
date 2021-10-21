@@ -3,11 +3,10 @@
 let
   colors = config.colors.fn;
 in {
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "discord" "zoom"
-  ];
-  home.packages =  with pkgs; [ discord zoom-us wezterm-nightly ];
-  xdg.configFile."wezterm/wezterm.lua".text = with colors "#"; ''
+  home.packages = [ pkgs.wezterm-nightly ];
+  xdg.configFile."wezterm/wezterm.lua".text = let
+    inherit (colors "#") primary normal bright;
+  in ''
     local wezterm = require 'wezterm';
     return {
       colors = {
@@ -41,7 +40,7 @@ in {
   '';
   programs.zathura = {
     enable = true;
-    options = with colors "#"; {
+    options = let inherit (colors "#") primary normal; in {
       font = config.font.emstr;
       guioptions = "cs";
       adjust-open = "width";
@@ -88,7 +87,10 @@ in {
     enable = true;
     font = config.font.emstr;
     terminal = "${pkgs.wezterm-nightly}/bin/wezterm";
-    theme = with { inherit (config.lib.formats.rasi) mkLiteral; } // colors "#"; {
+    theme = let
+      inherit (config.lib.formats.rasi) mkLiteral;
+      inherit (colors "#") primary normal bright;
+    in {
       "*" = {
         background-color = mkLiteral primary.background;
         border-color = normal.magenta;
@@ -199,19 +201,19 @@ in {
       sha256 = "1vlgsp7hgf96bzlj54rimmimzhpchh3z3a4fll71wxghr3gpv27d";
     };
 
-    nativeBuildInputs = with pkgs; [
-      pkgconfig
-      sassc
-      optipng
-      librsvg
-      inkscape
-      gtk3
+    nativeBuildInputs = [
+      pkgs.pkgconfig
+      pkgs.sassc
+      pkgs.optipng
+      pkgs.librsvg
+      pkgs.inkscape
+      pkgs.gtk3
     ];
 
     propagatedUserEnvPkgs = [ pkgs.gtk-engine-murrine ];
 
     enableParallelBuilding = false;
-    patchPhase = with colors "#"; ''
+    patchPhase = let inherit (colors "#") primary normal bright; in ''
     for file in `find . -name '*.scss' -or -name '*.svg'` ; do
       substituteInPlace $file \
         --replace '#282828' '${primary.background}' \

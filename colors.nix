@@ -105,7 +105,7 @@ let
     };
   };
 in {
-  options.colors = with lib; {
+  options.colors = let inherit (lib) types mkOption; in {
     theme = mkOption { type = types.enum (builtins.attrNames colorthemes); };
     fn = mkOption { };
   };
