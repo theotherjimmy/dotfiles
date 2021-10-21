@@ -1,3 +1,4 @@
+// Desktop
 monitor "Work-Down" product="Acer K272HUL" serial="T0SAA0014200"
 monitor "Work-Up" product="S27D850" serial="HCJH901332"
 
@@ -13,4 +14,18 @@ layout "Work-Lower-Only" {
 layout "Work-Upper-Only" {
     matches "Work-Up"
     monitor "Work-Up" w=2560 h=1440 x=0 y=0 primary=true
+}
+
+// Laptop
+monitor "builtin" // Note: edid fails to parse, may not exist
+monitor "dock-monitor" product="ASUS PB278" serial="E5LMTF100243"
+
+layout "laptop-only" {
+    matches "builtin"
+    monitor "builtin" w=1920 h=1080 x=0 y=0 primary=true
+}
+layout "laptop-on-dock" {
+    matches "builtin" "dock-monitor"
+    monitor "builtin" w=1920 h=1080 x=320 y=1440
+    monitor "dock-monitor" w=2560 h=1440 x=0 y=0 primary=true
 }
