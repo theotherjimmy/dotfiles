@@ -17,8 +17,7 @@
       overlays = [
         rust-overlay.overlay
         (final: super: {
-          inherit (self.packages."${super.system}") autorandr-rs rpn-c wezterm-nightly;
-
+          inherit (self.packages."${super.system}") monitor-layout rpn-c wezterm-nightly;
         })
       ];
       system = "x86_64-linux";
@@ -52,7 +51,7 @@
       };
     in {
       packages.x86_64-linux.home-config = home-config.activationPackage;
-      packages.x86_64-linux.autorandr-rs = pkgs.callPackage ./pkgs/autorandr-rs.nix {};
+      packages.x86_64-linux.monitor-layout = pkgs.callPackage ./pkgs/monitor-layout.nix {};
       packages.x86_64-linux.rpn-c = pkgs.callPackage ./pkgs/rpn-c.nix {};
       packages.x86_64-linux.wezterm-nightly = pkgs.callPackage ./pkgs/wezterm-nightly.nix {};
       defaultApp.x86_64-linux = {

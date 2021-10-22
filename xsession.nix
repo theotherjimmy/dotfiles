@@ -239,10 +239,10 @@ in {
   };
   config.programs.obs-studio.enable = true;
   config.home.packages = [
-    pkgs.autorandr-rs
     pkgs.firefox
     pkgs.hack-font
     pkgs.keepass
+    pkgs.monitor-layout
     pkgs.mupdf
     pkgs.xclip
     pkgs.xorg.xdpyinfo
