@@ -16,7 +16,7 @@ let
         fg3 = "eceff4";
         fg4 = "eceff4";
       };
-      normal = {
+      bright = {
         black = "3b4252";
         red = "bf616a";
         green = "a3be8c";
@@ -26,9 +26,8 @@ let
         cyan = "88c0d0";
         orange = "d08770";
         white = "e5e9f0";
-        grey = "616e88";
       };
-      bright = {
+      normal = {
         black = "373e4d";
         red = "94545d";
         green = "809575";
@@ -38,6 +37,7 @@ let
         cyan = "6d96a5";
         orange = "d08770";
         white = "aeb3bb";
+        grey = "616e88";
       };
     };
     gruvbox-dark = {
