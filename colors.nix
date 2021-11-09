@@ -26,6 +26,7 @@ let
         cyan = "88c0d0";
         orange = "d08770";
         white = "e5e9f0";
+        grey = "616e88";
       };
       bright = {
         black = "373e4d";
@@ -63,6 +64,7 @@ let
         cyan = "689d6a";
         orange = "d65d0e";
         white = "7c6f64";
+        grey = "928374";
       };
       bright = {
         black = "928374";

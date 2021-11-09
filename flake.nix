@@ -17,7 +17,7 @@
       overlays = [
         rust-overlay.overlay
         (final: super: {
-          inherit (self.packages."${super.system}") monitor-layout rpn-c wezterm-nightly;
+          inherit (self.packages."${super.system}") monitor-layout rpn-c wezterm-nightly helix-nightly;
         })
       ];
       system = "x86_64-linux";
@@ -54,6 +54,7 @@
       packages.x86_64-linux.monitor-layout = pkgs.callPackage ./pkgs/monitor-layout.nix {};
       packages.x86_64-linux.rpn-c = pkgs.callPackage ./pkgs/rpn-c.nix {};
       packages.x86_64-linux.wezterm-nightly = pkgs.callPackage ./pkgs/wezterm-nightly.nix {};
+      packages.x86_64-linux.helix-nightly = pkgs.callPackage ./pkgs/helix-editor.nix {};
       defaultApp.x86_64-linux = {
         type = "app";
         program = "${self.packages.x86_64-linux.home-config}/activate";
