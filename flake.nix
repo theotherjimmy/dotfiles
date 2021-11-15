@@ -5,22 +5,27 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/master";
 
-    home-manager.url   = "github:rycee/home-manager/master";
+    flake-utils.url = "github:numtide/flake-utils";
+
+    home-manager.url = "github:rycee/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    rust-overlay.inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = { self, nixpkgs, home-manager, rust-overlay }:
+  outputs = { self, nixpkgs, flake-utils, home-manager, rust-overlay }:
+  flake-utils.lib.eachDefaultSystem (system:
     let
-      overlays = [
-        rust-overlay.overlay
-        (final: super: {
-          inherit (self.packages."${super.system}") monitor-layout rpn-c wezterm-nightly helix-nightly;
-        })
-      ];
-      system = "x86_64-linux";
+      local-overlay = final: super: {
+        home-config = home-config.activationPackage;
+        monitor-layout = final.callPackage ./pkgs/monitor-layout.nix { };
+        rpn-c = final.callPackage ./pkgs/rpn-c.nix { };
+        wezterm-nightly = final.callPackage ./pkgs/wezterm-nightly.nix { };
+        helix-nightly = final.callPackage ./pkgs/helix-editor.nix { };
+      };
+      overlays = [ rust-overlay.overlay local-overlay ];
       pkgs = import nixpkgs {
         inherit system;
         inherit overlays;
@@ -45,19 +50,15 @@
           home.keyboard = {
             layout = "us";
             variant = "dvp";
-            options = ["caps:escape"];
+            options = [ "caps:escape" ];
           };
         };
       };
-    in {
-      packages.x86_64-linux.home-config = home-config.activationPackage;
-      packages.x86_64-linux.monitor-layout = pkgs.callPackage ./pkgs/monitor-layout.nix {};
-      packages.x86_64-linux.rpn-c = pkgs.callPackage ./pkgs/rpn-c.nix {};
-      packages.x86_64-linux.wezterm-nightly = pkgs.callPackage ./pkgs/wezterm-nightly.nix {};
-      packages.x86_64-linux.helix-nightly = pkgs.callPackage ./pkgs/helix-editor.nix {};
-      defaultApp.x86_64-linux = {
+    in
+    {
+      defaultApp = {
         type = "app";
-        program = "${self.packages.x86_64-linux.home-config}/activate";
+        program = "${pkgs.home-config}/activate";
       };
-    };
+    });
 }
