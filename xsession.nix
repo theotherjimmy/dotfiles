@@ -13,6 +13,7 @@ let
     buildInputs = [pkgs.imagemagick pkgs.potrace];
   } "convert -background none $src $out";
   inherit (lib) mkOption types mkIf;
+  lanta = "$HOME/.cargo/bin/lanta";
   ws-switch = let
     wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
     rofi = "${pkgs.rofi}/bin/rofi";
@@ -36,24 +37,22 @@ let
   ws-new = let
     wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
     rofi = "${pkgs.rofi}/bin/rofi";
-    lantactl = "$HOME/src/rust/lanta/target/release/lantactl";
   in pkgs.writers.writeBashBin "rofi-new-workspace" ''
        ${wmctrl} -d \
          | awk '{ print $1 " " $9}' \
          | ${rofi} -dmenu -i -p 'New Workspace' \
-         | awk ' NF == 2 { system("${lantactl} new " $2) }
-                 NF == 1 { system("${lantactl} new " $1) }'
+         | awk ' NF == 2 { system("${lanta} new " $2) }
+                 NF == 1 { system("${lanta} new " $1) }'
   '';
   ws-rename = let
     wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
     rofi = "${pkgs.rofi}/bin/rofi";
-    lantactl = "$HOME/src/rust/lanta/target/release/lantactl";
   in pkgs.writers.writeBashBin "rofi-rename-workspace" ''
        ${wmctrl} -d \
          | awk '{ print $1 " " $9}' \
          | ${rofi} -dmenu -i -p 'Rename Workspace' \
-         | awk ' NF == 2 { system("${lantactl} rename " $2) }
-                 NF == 1 { system("${lantactl} rename " $1) }'
+         | awk ' NF == 2 { system("${lanta} rename " $2) }
+                 NF == 1 { system("${lanta} rename " $1) }'
   '';
 in {
   imports = [

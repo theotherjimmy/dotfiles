@@ -13,7 +13,7 @@ in {
   };
   config = mkIf cfg.enable (
     {
-      xsession.windowManager.command = "systemd-cat -t wm -- $HOME/src/rust/lanta/target/release/lanta";
+      xsession.windowManager.command = "systemd-cat -t wm -- $HOME/.cargo/bin/lanta";
       xdg.configFile."lanta/lanta.yaml".source = cfg.config;
     }
   );
