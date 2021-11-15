@@ -6,10 +6,10 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "theotherjimmy";
     repo = "autorandr-rs";
-    rev = "633c9c0809f1389bed5c8b1654b8ce837dbe9b67";
-    hash = "sha256-NphhIjmWN2JpC+qRTMNXgznLoZ4SXMDvqR4tDwCnhU4=";
+    rev = "cecda70c66db983c1fc7e4a04d8f2cec91f16f13";
+    hash = "sha256-0Quye6D1JjsVStADClR9MXlsH2i6ihBV9iOgQCBx9+E=";
   };
-  cargoHash = "sha256-+nHhZeZMftfFleqMd3OsqDka6T34JUDImQ2/GryiROA=";
+  cargoHash = "sha256-2D2iKgtYdJZ7AypPhJ2n0GCpEfwFKNEPbjRxtcicbmw=";
   nativeBuildInputs = [ scdoc installShellFiles ];
   preFixup = ''
     installManPage $releaseDir/build/${pname}-*/out/monitor-layout.1
