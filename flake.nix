@@ -43,7 +43,7 @@
             ./cli-apps.nix
             ./email.nix
           ];
-          colors.theme = "nord-dark";
+          colors.theme = "rose-pine";
           nixpkgs.overlays = overlays;
           xsession.enable = true;
           systemd.user.startServices = true;
