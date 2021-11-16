@@ -4,81 +4,77 @@ let
   colors = config.colors.fn;
 in {
   home.packages = [ pkgs.wezterm-nightly ];
-  xdg.configFile."wezterm/wezterm.lua".text = let
-    inherit (colors "#") primary normal bright;
-  in ''
-    local wezterm = require 'wezterm';
-    return {
-      colors = {
-        foreground = "${primary.foreground}",
-        background = "${primary.background}",
-        cursor_bg = "${primary.fg4}",
-        cursor_border = "${primary.fg4}",
-        cursor_fg = "${primary.background}",
-        selection_bg = "${primary.fg4}",
-        selection_fg = "${primary.bg4}",
-        ansi = {
-          "${normal.black}", "${normal.red}", "${normal.green}", "${normal.yellow}",
-          "${normal.blue}", "${normal.magenta}", "${normal.cyan}", "${normal.white}"
+  xdg.configFile."wezterm/wezterm.lua".text = 
+    let
+      c = colors "#";
+    in 
+    ''
+      local wezterm = require 'wezterm';
+      return {
+        colors = {
+          foreground = "${c.base05}",
+          background = "${c.base00}",
+          cursor_bg = "${c.base05}",
+          cursor_border = "${c.base03}",
+          cursor_fg = "${c.base00}",
+          selection_bg = "${c.base05}",
+          selection_fg = "${c.base00}",
+          ansi = {
+            "${c.base00}", "${c.base08}", "${c.base0B}", "${c.base0A}",
+            "${c.base0D}", "${c.base0E}", "${c.base0C}", "${c.base05}"
+          },
+          brights = {
+            "${c.base03}", "${c.base09}", "${c.base01}", "${c.base02}",
+            "${c.base04}", "${c.base06}", "${c.base0F}", "${c.base07}"
+          },
         },
-        brights = {
-          "${bright.black}", "${bright.red}", "${bright.green}", "${bright.yellow}",
-          "${bright.blue}", "${bright.magenta}", "${bright.cyan}", "${bright.white}"
-        },
-      },
-      font = wezterm.font("${config.font.name}", {bold=false}),
-      font_size = 13,
-      dpi = 96.0,
-      enable_tab_bar = false,
-      window_padding = {
-        left = 5,
-        right = 5,
-        top = 5,
-        bottom = 5,
+        font = wezterm.font("${config.font.name}", {bold=false}),
+        font_size = 13,
+        dpi = 96.0,
+        enable_tab_bar = false,
+        window_padding = {
+          left = 5,
+          right = 5,
+          top = 5,
+          bottom = 5,
+        }
       }
-    }
-  '';
+    '';
   programs.zathura = {
     enable = true;
-    options = let inherit (colors "#") primary normal; in {
-      font = config.font.emstr;
-      guioptions = "cs";
-      adjust-open = "width";
-      incremental-search = "false";
-      recolor = "true";
-      recolor-reverse-video = "false";
-      statusbar-home-tilde = "true";
-      selection-clipboard = "primary";
-
-      completion-fg = primary.foreground;
-      completion-bg = primary.background;
-      completion-group-fg = primary.foreground;
-      completion-group-bg = primary.bg-soft;
-      completion-highlight-fg = normal.green;
-      completion-highlight-bg = primary.bg-soft;
-      default-fg = primary.foreground;
-      default-bg = primary.background;
-      inputbar-fg = primary.foreground;
-      inputbar-bg = primary.background;
-      notification-bg = primary.background;
-      notification-fg = primary.foreground;
-      notification-error-bg = primary.background;
-      notification-error-fg = normal.red;
-      notification-warning-bg = primary.background;
-      notification-warning-fg = normal.yellow;
-      statusbar-bg = primary.bg-soft;
-      statusbar-fg = primary.foreground;
-      highlight-color = normal.yellow;
-      highlight-active-color = primary.foreground;
-      recolor-darkcolor = primary.foreground;
-      recolor-lightcolor = primary.background;
-      render-loading-bg = primary.background;
-      render-loading-fg = primary.foreground;
-      index-bg = primary.background;
-      index-fg = primary.foreground;
-      index-active-bg = primary.bg-soft;
-      index-active-fg = normal.green;
-    };
+    options = 
+      let 
+        c = colors "#"; 
+      in 
+      {
+        font = config.font.emstr;
+        guioptions = "cs";
+        adjust-open = "width";
+        incremental-search = "false";
+        recolor = "true";
+        recolor-reverse-video = "false";
+        statusbar-home-tilde = "true";
+        selection-clipboard = "primary";
+  
+        default-bg = c.base00;
+        default-fg = c.base01;
+        statusbar-fg = c.base04;
+        statusbar-bg = c.base02;
+        inputbar-bg = c.base00;
+        inputbar-fg = c.base07;
+        notification-bg = c.base00;
+        notification-fg = c.base07;
+        notification-error-bg = c.base00;
+        notification-error-fg = c.base08;
+        notification-warning-bg = c.base00;
+        notification-warning-fg = c.base08;
+        completion-bg = c.base01;
+        completion-fg = c.base0D;
+        completion-highlight-fg = c.base07;
+        completion-highlight-bg = c.base0D;
+        recolor-lightcolor = c.base00;
+        recolor-darkcolor = c.base06;
+      };
   };
   programs.firefox = {
     enable = true;
@@ -89,11 +85,11 @@ in {
     terminal = "${pkgs.wezterm-nightly}/bin/wezterm";
     theme = let
       inherit (config.lib.formats.rasi) mkLiteral;
-      inherit (colors "#") primary normal bright;
+      c = colors "#";
     in {
       "*" = {
-        background-color = mkLiteral primary.background;
-        border-color = normal.magenta;
+        background-color = mkLiteral c.base00;
+        border-color = c.base0E;
       };
       window = {
         border = 2;
@@ -106,14 +102,14 @@ in {
       };
       textbox = {
         highlight = mkLiteral "bold italic";
-        text-color = mkLiteral primary.foreground;
+        text-color = mkLiteral c.base05;
       };
       listview = {
         border = mkLiteral "2px solid 0 0";
         padding = mkLiteral "2px 0 0";
-        border-color = mkLiteral normal.magenta;
+        border-color = mkLiteral c.base0E;
         spacing = mkLiteral "2px";
-        scrollbar = mkLiteral normal.magenta;
+        scrollbar = mkLiteral c.base0E;
         lines = 20;
       };
       element = {
@@ -122,62 +118,62 @@ in {
       };
 
       "element.normal.normal" = {
-        text-color = mkLiteral primary.foreground;
+        text-color = mkLiteral c.base05;
       };
       "element.alternate.normal" = {
-        background-color = mkLiteral primary.bg-soft;
-        text-color = mkLiteral primary.foreground;
+        background-color = mkLiteral c.base03;
+        text-color = mkLiteral c.base05;
       };
       "element.selected.normal" = {
-        text-color = mkLiteral normal.green;
+        text-color = mkLiteral c.base0B;
       };
 
       "element.normal.active" = {
-        background-color = mkLiteral normal.yellow;
-        text-color = mkLiteral primary.background;
+        background-color = mkLiteral c.base0A;
+        text-color = mkLiteral c.base00;
       };
       "element.alternate.active" = {
-        background-color = mkLiteral normal.yellow;
-        text-color = mkLiteral primary.bg-soft;
+        background-color = mkLiteral c.base0A;
+        text-color = mkLiteral c.base03;
       };
       "element.selected.active" = {
-        background-color = mkLiteral bright.yellow;
-        text-color = mkLiteral primary.background;
+        background-color = mkLiteral c.base0A;
+        text-color = mkLiteral c.base00;
       };
 
       "element.normal.urgent" = {
-        background-color = mkLiteral normal.red;
-        text-color = mkLiteral primary.background;
+        background-color = mkLiteral c.base08;
+        text-color = mkLiteral c.base00;
       };
       "element.alternate.urgent" = {
-        background-color = mkLiteral normal.red;
-        text-color = mkLiteral primary.bg-soft;
+        background-color = mkLiteral c.base08;
+        text-color = mkLiteral c.base03;
       };
       "element.selected.urgent" = {
-        background-color = mkLiteral bright.red;
-        text-color = mkLiteral primary.background;
+        background-color = mkLiteral c.base08;
+        text-color = mkLiteral c.base00;
       };
       mode-switcher = {
         border = mkLiteral "2px 0 0";
-        border-color = mkLiteral normal.magenta;
+        border-color = mkLiteral c.base0E;
       };
       "case-indicator, entry, prompt, button" = {
         spacing = 0;
-        text-color = mkLiteral primary.foreground;
+        text-color = mkLiteral c.base05;
       };
       "button.selected" = {
-        text-color = mkLiteral normal.green;
+        text-color = mkLiteral c.base0B;
       };
       inputbar = {
         spacing = 0;
-        text-color = mkLiteral primary.foreground;
+        text-color = mkLiteral c.base05;
         padding = mkLiteral "2px";
         children = [ "prompt" "textbox-prompt-sep" "entry" "case-indicator" ];
       };
       textbox-prompt-sep = {
         expand = false;
         str = ";";
-        text-color = mkLiteral normal.magenta;
+        text-color = mkLiteral c.base0E;
         margin = mkLiteral "0 0.3em 0 0";
       };
       "element-text, element-icon" = {
@@ -213,22 +209,22 @@ in {
     propagatedUserEnvPkgs = [ pkgs.gtk-engine-murrine ];
 
     enableParallelBuilding = false;
-    patchPhase = let inherit (colors "#") primary normal bright; in ''
+    patchPhase = let c = colors "#"; in ''
     for file in `find . -name '*.scss' -or -name '*.svg'` ; do
       substituteInPlace $file \
-        --replace '#282828' '${primary.background}' \
-        --replace '#ebdbb2' '${primary.foreground}' \
-        --replace '#fbf1c7' '${primary.fg1}' \
-        --replace '#3c3836' '${primary.bg1}' \
-        --replace '#689d6a' '${normal.cyan}' \
-        --replace '$primary_caret_color: #1d2021' '$primary_caret_color: ${primary.foreground}' \
-        --replace '#1d2021' '${normal.black}' \
-        --replace '#03a9f4' '${normal.blue}' \
-        --replace '#ef6c00' '${normal.orange}' \
-        --replace '#673ab7' '${normal.magenta}' \
-        --replace '#f44336' '${normal.red}' \
-        --replace '#4caf50' '${normal.green}' \
-        --replace '#83a598' '${bright.blue}' ;
+        --replace '#282828' '${c.base00}' \
+        --replace '#ebdbb2' '${c.base05}' \
+        --replace '#fbf1c7' '${c.base07}' \
+        --replace '#3c3836' '${c.base03}' \
+        --replace '#689d6a' '${c.base0C}' \
+        --replace '$primary_caret_color: #1d2021' '$primary_caret_color: ${c.base05}' \
+        --replace '#1d2021' '${c.base03}' \
+        --replace '#03a9f4' '${c.base0D}' \
+        --replace '#ef6c00' '${c.base0A}' \
+        --replace '#673ab7' '${c.base0E}' \
+        --replace '#f44336' '${c.base08}' \
+        --replace '#4caf50' '${c.base0B}' \
+        --replace '#83a598' '${c.base04}' ;
     done
     '';
 

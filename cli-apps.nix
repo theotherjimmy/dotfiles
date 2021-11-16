@@ -6,56 +6,47 @@
     enable = true;
     config = {
       theme = "nix-generated";
-      editor.line-numbers = "relative";
+      editor.line-number = "relative";
       keys.normal.backspace = "keep_primary_selection";
     };
     theme =
       let
-        inherit (config.colors.fn "#") primary normal bright;
+        colors = config.colors.fn "#";
       in {
-        attribute = bright.cyan;
-        keyword = normal.blue;
-        "keyword.directive" = normal.red;
-        namespace = normal.cyan;
-        punctuation = primary.fg4;
-        operator = bright.magenta;
-        special = normal.magenta;
-        variable = primary.fg1;
-        "variable.builtin" = normal.orange;
-        "variable.parameter" = primary.fg2;
-        "variable.other.member" = bright.blue;
-        constructor = { fg = bright.magenta; modifiers = ["bold"]; };
-        function = { fg = bright.green; modifiers = ["bold"]; };
-        "function.macro" = bright.cyan;
-        "function.builtin" = bright.yellow;
-        comment = normal.grey;
-        constant = bright.magenta;
-        "constant.builtin" = { fg = bright.magenta; modifiers = ["bold"]; };
-        "constant.numeric" = bright.magenta;
-        "constant.character.escape" = { fg = primary.fg2; modifiers =["bold"]; };
-        string = bright.green;
-        label = bright.cyan;
-        module = bright.cyan;
-        warning = { fg = bright.orange; bg = primary.bg1; };
-        error = { fg = bright.red; bg = primary.bg1; };
-        info = { fg = bright.cyan; bg = primary.bg1; };
-        hint = { fg = bright.blue; bg = primary.bg1; };
-        "ui.background" = { bg = primary.background; };
-        "ui.linenr" = primary.bg4;
-        "ui.linenr.selected" = bright.yellow;
-        "ui.statusline" = {fg = primary.fg1; bg = primary.bg2; };
-        "ui.statusline.inactive" = { fg = primary.fg4; bg = primary.bg1; };
-        "ui.popup" = { bg = primary.bg1; };
-        "ui.window" = { bg = primary.bg1; };
-        "ui.help" = { fg = primary.fg1; bg = primary.bg1; };
-        "ui.text" = primary.fg1;
-        "ui.text.focus" = primary.fg1;
-        "ui.selection" = { bg = primary.bg3; modifiers = ["reversed"]; };
-        "ui.cursor.primary" = { modifiers = ["reversed"]; };
-        "ui.cursor.match" = { modifiers = ["reversed"]; };
-        "ui.menu" = { fg = primary.fg1; bg = primary.bg2; };
-        "ui.menu.selected" = { fg = primary.bg2; bg = bright.blue; modifiers = ["bold"]; };
-        diagnostic = { modifiers = ["underline"]; };
+        "ui.background" = { bg = colors.base00; };
+        "ui.menu" = colors.base01;
+        "ui.menu.selected" = { fg = colors.base04; bg = colors.base01;};
+        "ui.linenr" = { fg = colors.base04; };
+        "ui.popup" = { bg = colors.base01; };
+        "ui.window" = { bg = colors.base01; };
+        "ui.selection" = { modifiers = ["underlined"]; };
+        "comment" = colors.base03;
+        "ui.statusline" = {fg = colors.base04; bg = colors.base01;};
+        "ui.cursor" = { fg = colors.base05; modifiers = ["reversed" "underlined"]; };
+        "ui.text" = { fg = colors.base05; };
+        "operator" = colors.base05;
+        "ui.text.focus" = { fg = colors.base05; };
+        "variable" = colors.base08;
+        "constant.numeric" = colors.base09;
+        "constant" = colors.base09;
+        "attributes" = colors.base09;
+        "type" = colors.base0A;
+        "ui.cursor.match" = { fg = colors.base0A; modifiers = ["underlined"]; };
+        "strings"  = colors.base0B;
+        "variable.other.member" = colors.base0B;
+        "constant.character.escape" = colors.base0C;
+        "function" = colors.base0D;
+        "constructor" = colors.base0D;
+        "special" = colors.base0D;
+        "keyword" = colors.base0E;
+        "label" = colors.base0F;
+        "namespace" = colors.base0F;
+        "ui.help" = { bg = colors.base01; fg = colors.base06; };
+        "info" = colors.base03;
+        "hint" = colors.base03;
+        "debug" = colors.base03;
+        "diagnostic" = colors.base03;
+        "error" = colors.base0E;
       };
   };
   programs.direnv = {
@@ -79,14 +70,14 @@
       psme = "pstree -h -C age -U -T $USER";
       icat = "wezterm imgcat";
       isvg = "rsvg-convert | icat";
-      idot = let inherit (config.colors.fn "#") primary; in
+      idot = let inherit (config.colors.fn "#") base00 base05; in
         ''dot -T bmp \
-          -Gbgcolor="${primary.background}" \
-          -Gcolor="${primary.foreground}" \
-          -Ncolor="${primary.foreground}" \
-          -Nfontcolor="${primary.foreground}" \
-          -Ecolor="${primary.foreground}" \
-          -Efontcolor="${primary.foreground}" \
+          -Gbgcolor="${base00}" \
+          -Gcolor="${base05}" \
+          -Ncolor="${base05}" \
+          -Nfontcolor="${base05}" \
+          -Ecolor="${base05}" \
+          -Efontcolor="${base05}" \
           | icat
         '';
     };

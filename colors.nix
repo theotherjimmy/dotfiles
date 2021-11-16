@@ -3,107 +3,115 @@
 let
   colorthemes = {
     nord-dark = {
-      primary = {
-        background = "2e3440";
-        foreground = "d8dee9";
-        bg-soft = "3b4252";
-        bg1 = "3b4252";
-        bg2 = "434e5e";
-        bg3 = "4c566a";
-        bg4 = "4c566a";
-        fg1 = "e5e9f0";
-        fg2 = "e5e9f0";
-        fg3 = "eceff4";
-        fg4 = "eceff4";
-      };
-      bright = {
-        black = "3b4252";
-        red = "bf616a";
-        green = "a3be8c";
-        yellow = "ebcb8b";
-        blue = "81a1c1";
-        magenta = "b48ead";
-        cyan = "88c0d0";
-        orange = "d08770";
-        white = "e5e9f0";
-      };
-      normal = {
-        black = "373e4d";
-        red = "94545d";
-        green = "809575";
-        yellow = "b29e75";
-        blue = "68809a";
-        magenta = "8c738c";
-        cyan = "6d96a5";
-        orange = "d08770";
-        white = "aeb3bb";
-        grey = "616e88";
-      };
+      base00 = "2e3440";
+      base01 = "3b4252";
+      base02 = "434c5e";
+      base03 = "4c566a";
+      base04 = "d8dee9";
+      base05 = "e5e9f0";
+      base06 = "eceff4";
+      base07 = "8fbcbb";
+      base08 = "88c0d0";
+      base09 = "81a1c1";
+      base0A = "5e81ac";
+      base0B = "bf616a";
+      base0C = "d08770";
+      base0D = "ebcb8b";
+      base0E = "a3be8c";
+      base0F = "b48ead";
     };
+    # from https://github.com/edunfelt/base16-rose-pine-scheme
+    rose-pine = {
+      base00 = "191724";
+      base01 = "1f1d2e";
+      base02 = "26233a";
+      base03 = "555169";
+      base04 = "6e6a86";
+      base05 = "e0def4";
+      base06 = "f0f0f3";
+      base07 = "c5c3ce";
+      base08 = "e2e1e7";
+      base09 = "eb6f92";
+      base0A = "f6c177";
+      base0B = "ebbcba";
+      base0C = "31748f";
+      base0D = "9ccfd8";
+      base0E = "c4a7e7";
+      base0F = "e5e5e5";
+    };
+    rose-pine-moon = {
+      base00 = "232136";
+      base01 = "2a273f";
+      base02 = "393552";
+      base03 = "59546d";
+      base04 = "817c9c";
+      base05 = "e0def4";
+      base06 = "f5f5f7";
+      base07 = "d9d7e1";
+      base08 = "ecebf0";
+      base09 = "eb6f92";
+      base0A = "f6c177";
+      base0B = "ea9a97";
+      base0C = "3e8fb0";
+      base0D = "9ccfd8";
+      base0E = "c4a7e7";
+      base0F = "b9b9bc";
+    };
+    # from https://github.com/dawikur/base16-gruvbox-scheme
     gruvbox-dark = {
-      primary = {
-        background = "282828";
-        foreground = "ebdbb2";
-        bg-soft = "32302f";
-        bg1 = "3c3836";
-        bg2 = "504945";
-        bg3 = "665c54";
-        bg4 = "7c6f64";
-        fg1 = "ebdbb2";
-        fg2 = "d5c4a1";
-        fg3 = "bdae93";
-        fg4 = "a89984";
-      };
-      normal = {
-        black = "282828";
-        red = "cc241d";
-        green = "98971a";
-        yellow = "d79921";
-        blue = "458588";
-        magenta = "b16286";
-        cyan = "689d6a";
-        orange = "d65d0e";
-        white = "7c6f64";
-        grey = "928374";
-      };
-      bright = {
-        black = "928374";
-        red = "fb4934";
-        green = "b8bb26";
-        yellow = "fabd2f";
-        blue = "83a598";
-        magenta = "d3869b";
-        cyan = "8ec07c";
-        orange = "fe8019";
-        white = "ebdbb2";
-      };
+      base00 = "282828"; # ----
+      base01 = "3c3836"; # ---
+      base02 = "504945"; # --
+      base03 = "665c54"; # -
+      base04 = "bdae93"; # +
+      base05 = "d5c4a1"; # ++
+      base06 = "ebdbb2"; # +++
+      base07 = "fbf1c7"; # ++++
+      base08 = "fb4934"; # red
+      base09 = "fe8019"; # orange
+      base0A = "fabd2f"; # yellow
+      base0B = "b8bb26"; # green
+      base0C = "8ec07c"; # aqua/cyan
+      base0D = "83a598"; # blue
+      base0E = "d3869b"; # purple
+      base0F = "d65d0e"; # brown
     };
     gruvbox-light = {
-      primary = {
-        background = "fbf1c7";
-        foreground = "3c3836";
-        bg-soft = "f2e5bc";
-      };
-      normal = {
-        black = "fbf1c7";
-        red = "cc241d";
-        green = "98971a";
-        yellow = "d79921";
-        blue = "458588";
-        magenta = "b16286";
-        cyan = "d65d0e";
-        white = "7c6f64";
-      };
-      bright = {
-        black = "928374";
-        red = "9d0006";
-        green = "79740e";
-        yellow = "b57614";
-        blue = "076678";
-        magenta = "8f3f71";
-        cyan = "af3a03";
-        white = "3c3836";
-      };
+      base00 = "fbf1c7"; # ----
+      base01 = "ebdbb2"; # ---
+      base02 = "d5c4a1"; # --
+      base03 = "bdae93"; # -
+      base04 = "665c54"; # +
+      base05 = "504945"; # ++
+      base06 = "3c3836"; # +++
+      base07 = "282828"; # ++++
+      base08 = "9d0006"; # red
+      base09 = "af3a03"; # orange
+      base0A = "b57614"; # yellow
+      base0B = "79740e"; # green
+      base0C = "427b58"; # aqua/cyan
+      base0D = "076678"; # blue
+      base0E = "8f3f71"; # purple
+      base0F = "d65d0e"; # brown
+    };
+    # form https://github.com/sainnhe/everforest
+    everforest = {
+      base00 = "2b3339";
+      base01 = "323c41";
+      base02 = "503946";
+      base03 = "868d80";
+      base04 = "d3c6aa";
+      base05 = "d3c6aa";
+      base06 = "e9e8d2";
+      base07 = "fff9e8";
+      base08 = "7fbbb3";
+      base09 = "d699b6";
+      base0A = "83c092";
+      base0B = "dbbc7f";
+      base0C = "e69875";
+      base0D = "a7c080";
+      base0E = "e67e80";
+      base0F = "d699b6";
     };
   };
 in {

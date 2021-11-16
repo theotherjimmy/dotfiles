@@ -6,8 +6,8 @@ let
   bg-image = pkgs.runCommand "background.png" {
     src = pkgs.writeText "bg-svg" (
       import ./nix-snowflake.svg.nix {
-        dark = colors.normal.cyan;
-        light = colors.bright.cyan;
+        dark = colors.base04;
+        light = colors.base05;
       }
     );
     buildInputs = [pkgs.imagemagick pkgs.potrace];
@@ -69,10 +69,10 @@ in {
       name = "lanta-config";
       src = ./lanta.yaml;
       unpackPhase = "true";
-      buildPhase = with config.colors.fn "0x"; ''
+      buildPhase = let inherit (config.colors.fn "0x") base0B base02; in ''
         substitute $src $out \
-          --replace "{{focus}}" "${normal.green}" \
-          --replace "{{normal}}" "${primary.bg4}"
+          --replace "{{focus}}" "${base0B}" \
+          --replace "{{normal}}" "${base02}"
       '';
       installPhase = "true";
     };
@@ -82,7 +82,7 @@ in {
     # Anything with "legacy" in the name is sus
     package = pkgs.pulseeffects-legacy;
   };
-  config.services.polybar = let inherit (colors) primary normal bright; in {
+  config.services.polybar = {
     enable = true;
     script = "polybar main &";
     config = let line = "background"; in {
@@ -92,8 +92,8 @@ in {
         radius = 0;
         fixed-center = true;
         bottom = true;
-        background = primary.background;
-        foreground = primary.foreground;
+        background = colors.base00;
+        foreground = colors.base05;
 
         border-size = 0;
         line-size = 2;
@@ -122,19 +122,19 @@ in {
         enable-scroll = false;
 
         label-active = " %name% ";
-        "label-active-${line}" = normal.green;
-        label-active-foreground = primary.background;
+        "label-active-${line}" = colors.base0B;
+        label-active-foreground = colors.base00;
 
         label-occupied = " %name% ";
         label-urgent = " %name% ";
         label-empty = " %name% ";
-        label-empty-foreground = normal.white;
+        label-empty-foreground = colors.base04;
       };
       "module/cpu" = {
         type = "internal/cpu";
         interval = 2;
-        "format-${line}" = normal.red;
-        format-foreground = primary.background;
+        "format-${line}" = colors.base08;
+        format-foreground = colors.base00;
         label = " cpu %percentage:2%% ";
       };
       "module/wlan" =  {
@@ -142,8 +142,8 @@ in {
         interface = "wlp59s0";
         interval = 5;
         format-connected = "<ramp-signal> <label-connected>";
-        "format-connected-${line}" = normal.magenta;
-        format-connected-foreground = primary.background;
+        "format-connected-${line}" = colors.base0E;
+        format-connected-foreground = colors.base00;
         label-connected = " %essid% ";
         label-disconnected = "";
         ramp-signal-0 = "🌧";
@@ -156,8 +156,8 @@ in {
         type = "internal/network";
         interface = "eno1";
         interval = 5;
-        "format-connected-${line}" = normal.magenta;
-        format-connected-foreground = primary.background;
+        "format-connected-${line}" = colors.base0E;
+        format-connected-foreground = colors.base00;
         label-connected = " eth %local_ip% ";
         format-disconnected = "";
       };
@@ -166,8 +166,8 @@ in {
         interval = 5;
         date = "%a %d";
         time = "%H:%M";
-        "format-${line}" = normal.blue;
-        format-foreground = primary.background;
+        "format-${line}" = colors.base0D;
+        format-foreground = colors.base00;
         label = " %date% %time% ";
       };
       "module/battery" = {
@@ -178,14 +178,14 @@ in {
         time-format = "%H:%M";
         format-charging = "<label-charging>";
         label-charging = "☝%percentage%%—%time%";
-        "format-charging-${line}" = normal.yellow;
-        format-charging-foreground = primary.background;
+        "format-charging-${line}" = colors.base0A;
+        format-charging-foreground = colors.base00;
         format-discharging = "<label-discharging>";
         label-discharging = "☟%percentage%%—%time%";
-        "format-discharging-${line}" = normal.yellow;
-        format-discharging-foreground = primary.background;
+        "format-discharging-${line}" = colors.base0A;
+        format-discharging-foreground = colors.base00;
         format-full = " ☀ ";
-        "format-full-${line}" = normal.green;
+        "format-full-${line}" = colors.base0B;
       };
       settings.screenchange-reload = true;
     };
@@ -197,32 +197,6 @@ in {
     latitude = "30.3126259";
     longitude = "-97.7407611";
   };
-  config.services.dunst = {
-    enable = true;
-    settings = let inherit (colors) primary normal; in {
-      global = {
-        geometry = "500x5-0+${toString bar-height}";
-        padding = 10;
-        frame_width = 2;
-        frame_color = normal.cyan;
-        font = config.font.emstr;
-        align = "left";
-        word_wrap = true;
-      };
-      urgency_low = {
-        inherit (primary) foreground background;
-        frame_color = normal.yellow;
-      };
-      urgency_medium = {
-        inherit (primary) foreground background;
-        frame_color = normal.cyan;
-      };
-      urgency_high = {
-        inherit (primary) foreground background;
-        frame_color = normal.red;
-      };
-    };
-  };
   config.systemd.user.services.background = {
     Unit = {
       Description = "Set the background for an X session";
@@ -232,7 +206,7 @@ in {
     Service = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.feh}/bin/feh --bg-center --image-bg ${colors.primary.bg-soft} ${bg-image}";
+      ExecStart = "${pkgs.feh}/bin/feh --bg-center --image-bg ${colors.base02} ${bg-image}";
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
