@@ -1,13 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  colors = config.colors.fn;
+  c = config.colors.fn "#";
 in {
   home.packages = [ pkgs.wezterm-nightly ];
   xdg.configFile."wezterm/wezterm.lua".text = 
-    let
-      c = colors "#";
-    in 
     ''
       local wezterm = require 'wezterm';
       return {
@@ -42,39 +39,35 @@ in {
     '';
   programs.zathura = {
     enable = true;
-    options = 
-      let 
-        c = colors "#"; 
-      in 
-      {
-        font = config.font.emstr;
-        guioptions = "cs";
-        adjust-open = "width";
-        incremental-search = "false";
-        recolor = "true";
-        recolor-reverse-video = "false";
-        statusbar-home-tilde = "true";
-        selection-clipboard = "primary";
-  
-        default-bg = c.base00;
-        default-fg = c.base01;
-        statusbar-fg = c.base04;
-        statusbar-bg = c.base02;
-        inputbar-bg = c.base00;
-        inputbar-fg = c.base07;
-        notification-bg = c.base00;
-        notification-fg = c.base07;
-        notification-error-bg = c.base00;
-        notification-error-fg = c.base08;
-        notification-warning-bg = c.base00;
-        notification-warning-fg = c.base08;
-        completion-bg = c.base01;
-        completion-fg = c.base0D;
-        completion-highlight-fg = c.base07;
-        completion-highlight-bg = c.base0D;
-        recolor-lightcolor = c.base00;
-        recolor-darkcolor = c.base06;
-      };
+    options = {
+      font = config.font.emstr;
+      guioptions = "cs";
+      adjust-open = "width";
+      incremental-search = "false";
+      recolor = "true";
+      recolor-reverse-video = "false";
+      statusbar-home-tilde = "true";
+      selection-clipboard = "primary";
+
+      default-bg = c.base00;
+      default-fg = c.base01;
+      statusbar-fg = c.base04;
+      statusbar-bg = c.base02;
+      inputbar-bg = c.base00;
+      inputbar-fg = c.base07;
+      notification-bg = c.base00;
+      notification-fg = c.base07;
+      notification-error-bg = c.base00;
+      notification-error-fg = c.base08;
+      notification-warning-bg = c.base00;
+      notification-warning-fg = c.base08;
+      completion-bg = c.base01;
+      completion-fg = c.base0D;
+      completion-highlight-fg = c.base07;
+      completion-highlight-bg = c.base0D;
+      recolor-lightcolor = c.base00;
+      recolor-darkcolor = c.base06;
+    };
   };
   programs.firefox = {
     enable = true;
@@ -85,7 +78,6 @@ in {
     terminal = "${pkgs.wezterm-nightly}/bin/wezterm";
     theme = let
       inherit (config.lib.formats.rasi) mkLiteral;
-      c = colors "#";
     in {
       "*" = {
         background-color = mkLiteral c.base00;
@@ -209,7 +201,7 @@ in {
     propagatedUserEnvPkgs = [ pkgs.gtk-engine-murrine ];
 
     enableParallelBuilding = false;
-    patchPhase = let c = colors "#"; in ''
+    patchPhase = ''
     for file in `find . -name '*.scss' -or -name '*.svg'` ; do
       substituteInPlace $file \
         --replace '#282828' '${c.base00}' \
