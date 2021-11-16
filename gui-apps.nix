@@ -24,7 +24,7 @@ in {
             "${c.base0D}", "${c.base0E}", "${c.base0C}", "${c.base05}"
           },
           brights = {
-            "${c.base03}", "${c.base09}", "${c.base01}", "${c.base02}",
+            "${c.base03}", "${c.base09}", "${c.base0B}", "${c.base02}",
             "${c.base04}", "${c.base06}", "${c.base0F}", "${c.base07}"
           },
         },
