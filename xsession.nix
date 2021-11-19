@@ -38,21 +38,23 @@ let
     wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
     rofi = "${pkgs.rofi}/bin/rofi";
   in pkgs.writers.writeBashBin "rofi-new-workspace" ''
-       ${wmctrl} -d \
-         | awk '{ print $1 " " $9}' \
-         | ${rofi} -dmenu -i -p 'New Workspace' \
-         | awk ' NF == 2 { system("${lanta} new " $2) }
-                 NF == 1 { system("${lanta} new " $1) }'
+    FRE_STORE=$HOME/.local/share/lanta/desktop-names
+    NAME=$(fre --sorted --store $FRE_STORE | rofi -dmenu -i -p 'New Workspace')
+    if [[ $? == 0 ]] ; then
+      lanta new $NAME
+      fre --add "$NAME" --store $FRE_STORE
+    fi
   '';
   ws-rename = let
     wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
     rofi = "${pkgs.rofi}/bin/rofi";
   in pkgs.writers.writeBashBin "rofi-rename-workspace" ''
-       ${wmctrl} -d \
-         | awk '{ print $1 " " $9}' \
-         | ${rofi} -dmenu -i -p 'Rename Workspace' \
-         | awk ' NF == 2 { system("${lanta} rename " $2) }
-                 NF == 1 { system("${lanta} rename " $1) }'
+    FRE_STORE=$HOME/.local/share/lanta/desktop-names
+    NAME=$(fre --sorted --store $FRE_STORE | rofi -dmenu -i -p 'Rename Workspace')
+    if [[ $? == 0 ]] ; then
+      lanta rename $NAME
+      fre --add "$NAME" --store $FRE_STORE
+    fi
   '';
 in {
   imports = [
@@ -63,6 +65,7 @@ in {
     enable = true;
     config = ./monitors.kdl;
   };
+  config.home.sessionPath = ["$HOME/.cargo/bin"];
   config.lanta = {
     enable = true;
     config = pkgs.stdenv.mkDerivation {
@@ -72,7 +75,8 @@ in {
       buildPhase = let inherit (config.colors.fn "0x") base0B base02; in ''
         substitute $src $out \
           --replace "{{focus}}" "${base0B}" \
-          --replace "{{normal}}" "${base02}"
+          --replace "{{normal}}" "${base02}" \
+          --replace "{{bashInteractive}}" "${pkgs.bashInteractive}/bin/bash"
       '';
       installPhase = "true";
     };

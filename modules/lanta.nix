@@ -15,6 +15,7 @@ in {
     {
       xsession.windowManager.command = "systemd-cat -t wm -- $HOME/.cargo/bin/lanta";
       xdg.configFile."lanta/lanta.yaml".source = cfg.config;
+      home.sessionPath = [ "$HOME/.cargo/bin" ];
     }
   );
 }
