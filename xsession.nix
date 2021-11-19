@@ -220,6 +220,7 @@ in {
     pkgs.xclip
     pkgs.xorg.xdpyinfo
     pkgs.fractal
+    pkgs.fre
     ws-switch
     ws-new
     ws-rename
