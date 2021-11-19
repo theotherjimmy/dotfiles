@@ -42,7 +42,6 @@
             ./font.nix
             ./gui-apps.nix
             ./cli-apps.nix
-            ./email.nix
           ];
           colors.theme = "rose-pine";
           nixpkgs.overlays = overlays;
