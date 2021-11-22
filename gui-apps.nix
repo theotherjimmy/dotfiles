@@ -113,10 +113,10 @@ in {
         text-color = mkLiteral c.base05;
       };
       "element.alternate.normal" = {
-        background-color = mkLiteral c.base03;
         text-color = mkLiteral c.base05;
       };
       "element.selected.normal" = {
+        background-color = mkLiteral c.base01;
         text-color = mkLiteral c.base0B;
       };
 
@@ -126,11 +126,11 @@ in {
       };
       "element.alternate.active" = {
         background-color = mkLiteral c.base0A;
-        text-color = mkLiteral c.base03;
+        text-color = mkLiteral c.base00;
       };
       "element.selected.active" = {
         background-color = mkLiteral c.base0A;
-        text-color = mkLiteral c.base00;
+        text-color = mkLiteral c.base01;
       };
 
       "element.normal.urgent" = {
@@ -139,11 +139,11 @@ in {
       };
       "element.alternate.urgent" = {
         background-color = mkLiteral c.base08;
-        text-color = mkLiteral c.base03;
+        text-color = mkLiteral c.base00;
       };
       "element.selected.urgent" = {
         background-color = mkLiteral c.base08;
-        text-color = mkLiteral c.base00;
+        text-color = mkLiteral c.base01;
       };
       mode-switcher = {
         border = mkLiteral "2px 0 0";
