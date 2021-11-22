@@ -1,6 +1,23 @@
 { config, lib, pkgs, ... }:
 
 let
+  mk-black-metal = base0A: base0B: {
+      base00 = "000000";
+      base01 = "121212";
+      base02 = "222222";
+      base03 = "444444";
+      base04 = "999999";
+      base05 = "c1c1c1";
+      base06 = "999999";
+      base07 = "c1c1c1";
+      base08 = "5f8787";
+      base09 = "aaaaaa";
+      inherit base0A base0B;
+      base0C = "aaaaaa";
+      base0D = "888888";
+      base0E = "999999";
+      base0F = "555555";
+  };
   colorthemes = {
     nord-dark = {
       base00 = "2e3440";
@@ -152,42 +169,9 @@ let
     };
     # black metal themes from https://github.com/metalelf0/base16-black-metal-scheme
     # base03, comments, has been tweaked to be a tad lighter
-    black-metal-burzum = {
-      base00 = "000000";
-      base01 = "121212";
-      base02 = "222222";
-      base03 = "444444";
-      base04 = "999999";
-      base05 = "c1c1c1";
-      base06 = "999999";
-      base07 = "c1c1c1";
-      base08 = "5f8787";
-      base09 = "aaaaaa";
-      base0A = "99bbaa";
-      base0B = "ddeecc";
-      base0C = "aaaaaa";
-      base0D = "888888";
-      base0E = "999999";
-      base0F = "444444";
-    };
-    black-metal-dark-funeral = {
-      base00 = "000000";
-      base01 = "121212";
-      base02 = "222222";
-      base03 = "444444";
-      base04 = "999999";
-      base05 = "c1c1c1";
-      base06 = "999999";
-      base07 = "c1c1c1";
-      base08 = "5f8787";
-      base09 = "aaaaaa";
-      base0A = "5f81a5";
-      base0B = "d0dfee";
-      base0C = "aaaaaa";
-      base0D = "888888";
-      base0E = "999999";
-      base0F = "444444";
-    };
+    black-metal-bathory = mk-black-metal "e78a53" "fbcb97";
+    black-metal-burzum = mk-black-metal "99bbaa" "ddeecc";
+    black-metal-dark-funeral = mk-black-metal "5f81a5" "d0dfee";
   };
 in {
   options.colors = let inherit (lib) types mkOption; in {
