@@ -113,6 +113,81 @@ let
       base0E = "e67e80";
       base0F = "d699b6";
     };
+    # from https://github.com/maxwells-daemons/base16-gigavolt-scheme
+    gigavolt = {
+      base00 = "202126";
+      base01 = "2d303d";
+      base02 = "5a576e";
+      base03 = "a1d2e6";
+      base04 = "cad3ff";
+      base05 = "e9e7e1";
+      base06 = "eff0f9";
+      base07 = "f2fbff";
+      base08 = "ff661a";
+      base09 = "19f988";
+      base0A = "ffdc2d";
+      base0B = "f2e6a9";
+      base0C = "fb6acb";
+      base0D = "40bfff";
+      base0E = "ae94f9";
+      base0F = "6187ff";
+    };
+    sandcastle = {
+      base00 = "282c34";
+      base01 = "2c323b";
+      base02 = "3e4451";
+      base03 = "665c54";
+      base04 = "928374";
+      base05 = "a89984";
+      base06 = "d5c4a1";
+      base07 = "fdf4c1";
+      base08 = "83a598";
+      base09 = "a07e3b";
+      base0A = "a07e3b";
+      base0B = "528b8b";
+      base0C = "83a598";
+      base0D = "83a598";
+      base0E = "d75f5f";
+      base0F = "a87322";
+    };
+    # black metal themes from https://github.com/metalelf0/base16-black-metal-scheme
+    # base03, comments, has been tweaked to be a tad lighter
+    black-metal-burzum = {
+      base00 = "000000";
+      base01 = "121212";
+      base02 = "222222";
+      base03 = "444444";
+      base04 = "999999";
+      base05 = "c1c1c1";
+      base06 = "999999";
+      base07 = "c1c1c1";
+      base08 = "5f8787";
+      base09 = "aaaaaa";
+      base0A = "99bbaa";
+      base0B = "ddeecc";
+      base0C = "aaaaaa";
+      base0D = "888888";
+      base0E = "999999";
+      base0F = "444444";
+    };
+    black-metal-dark-funeral = {
+      base00 = "000000";
+      base01 = "121212";
+      base02 = "222222";
+      base03 = "444444";
+      base04 = "999999";
+      base05 = "c1c1c1";
+      base06 = "999999";
+      base07 = "c1c1c1";
+      base08 = "5f8787";
+      base09 = "aaaaaa";
+      base0A = "5f81a5";
+      base0B = "d0dfee";
+      base0C = "aaaaaa";
+      base0D = "888888";
+      base0E = "999999";
+      base0F = "444444";
+    };
   };
 in {
   options.colors = let inherit (lib) types mkOption; in {
