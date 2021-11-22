@@ -1,6 +1,6 @@
 // Desktop
-monitor "Work-Down" product="Acer K272HUL" serial="T0SAA0014200"
-monitor "Work-Up" product="S27D850" serial="HCJH901332"
+monitor "Work-Up" product="Acer K272HUL" serial="T0SAA0014200"
+monitor "Work-Down" product="S27D850" serial="HCJH901332"
 
 layout "Work-Desktop" {
     matches "Work-Down" "Work-Up"
