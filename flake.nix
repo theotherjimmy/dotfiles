@@ -1,7 +1,7 @@
 # flake.nix, the mothership of the dot-files. Take your seats, the show is
 # about to start.
 {
-  description = "A bland, gruvbox-dark config";
+  description = "A bland config";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/master";
 
