@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  mk-black-metal = base0A: base0B: {
+  mk-black-metal = base08: base0A: base0B: {
       base00 = "000000";
       base01 = "121212";
       base02 = "222222";
@@ -10,7 +10,7 @@ let
       base05 = "c1c1c1";
       base06 = "999999";
       base07 = "c1c1c1";
-      base08 = "5f8787";
+      inherit base08;
       base09 = "aaaaaa";
       inherit base0A base0B;
       base0C = "aaaaaa";
@@ -169,9 +169,10 @@ let
     };
     # black metal themes from https://github.com/metalelf0/base16-black-metal-scheme
     # base03, comments, has been tweaked to be a tad lighter
-    black-metal-bathory = mk-black-metal "e78a53" "fbcb97";
-    black-metal-burzum = mk-black-metal "99bbaa" "ddeecc";
-    black-metal-dark-funeral = mk-black-metal "5f81a5" "d0dfee";
+    black-metal-bathory = mk-black-metal "5f8787" "e78a53" "fbcb97";
+    black-metal-burzum = mk-black-metal "5f8787" "99bbaa" "ddeecc";
+    black-metal-dark-funeral = mk-black-metal "5f8787" "5f81a5" "d0dfee";
+    black-metal-tank-buster = mk-black-metal "bc3942" "f8d281" "ca4cb5";
   };
 in {
   options.colors = let inherit (lib) types mkOption; in {
