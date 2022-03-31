@@ -39,12 +39,14 @@ keys:
     Spawn: rofi-move-workspaces
   M-n:
     Spawn: rofi-new-workspace
+  M-S-n:
+    Spawn: rofi-new-workspace-from-wd
   M-p:
     Spawn: lanta exec-in-cwd -- rofi -show run
   M-S-p:
     Spawn: rofi -show drun
   M-S-s:
-    Spawn: xset dpms force off
+    Spawn: systemctl suspend
   M-c:
     Spawn: wezterm start -- lanta exec-in-cwd -- {{bashInteractive}}
   M-S-c:

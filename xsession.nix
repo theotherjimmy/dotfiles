@@ -45,6 +45,15 @@ let
       fre --add "$NAME" --store $FRE_STORE
     fi
   '';
+  ws-new-from-wd = let
+    wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
+    rofi = "${pkgs.rofi}/bin/rofi";
+  in pkgs.writers.writeBashBin "rofi-new-workspace-from-wd" ''
+    NAME=$(fd -t d -d 4 | rofi -dmenu -i -p 'New Workspace')
+    if [[ $? == 0 ]] ; then
+      lanta new-from-wd $NAME
+    fi
+  '';
   ws-rename = let
     wmctrl = "${pkgs.wmctrl}/bin/wmctrl";
     rofi = "${pkgs.rofi}/bin/rofi";
@@ -227,6 +236,7 @@ in {
     pkgs.fre
     ws-switch
     ws-new
+    ws-new-from-wd
     ws-rename
     ws-move
   ];
