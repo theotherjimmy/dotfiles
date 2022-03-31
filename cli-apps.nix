@@ -97,6 +97,7 @@
     '';
   };
   programs.git = {
+    package = pkgs.gitAndTools.gitFull;
     enable = true;
     aliases = {
       ds = "diff --staged";
@@ -143,7 +144,6 @@
     pkgs.exa
     pkgs.fd
     pkgs.file
-    pkgs.git
     pkgs.git-hub
     pkgs.git-review
     pkgs.git-series
