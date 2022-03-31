@@ -3,7 +3,21 @@
 let
   c = config.colors.fn "#";
 in {
-  home.packages = [ pkgs.wezterm-nightly ];
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "steam"
+    "steam-original"
+    "steam-runtime"
+  ];  
+  home.packages = [ 
+    pkgs.plover.dev
+    pkgs.wezterm 
+    pkgs.cura
+    (pkgs.steam.override {
+      extraProfile = ''
+        unset VK_ICD_FILENAMES
+        export VK_ICD_FILENAMES=`realpath /run/opengl-driver/share`/vulkan/icd.d/nvidia_icd.json:`realpath /run/opengl-driver-32/share`/vulkan/icd.d/nvidia_icd32.json'';
+    })
+  ];
   xdg.configFile."wezterm/wezterm.lua".text = 
     ''
       local wezterm = require 'wezterm';
@@ -75,7 +89,7 @@ in {
   programs.rofi = {
     enable = true;
     font = config.font.emstr;
-    terminal = "${pkgs.wezterm-nightly}/bin/wezterm";
+    terminal = "${pkgs.wezterm}/bin/wezterm";
     theme = let
       inherit (config.lib.formats.rasi) mkLiteral;
     in {

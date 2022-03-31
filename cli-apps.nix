@@ -1,53 +1,53 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./modules/helix.nix ];
   programs.helix = {
     enable = true;
-    config = {
+    settings = {
       theme = "nix-generated";
       editor.line-number = "relative";
       keys.normal.backspace = "keep_primary_selection";
     };
-    theme =
-      let
-        colors = config.colors.fn "#";
-      in {
-        "ui.background" = { bg = colors.base00; };
-        "ui.menu" = colors.base01;
-        "ui.menu.selected" = { fg = colors.base04; bg = colors.base01;};
-        "ui.linenr" = { fg = colors.base04; };
-        "ui.popup" = { bg = colors.base01; };
-        "ui.window" = { bg = colors.base01; };
-        "ui.selection" = { modifiers = ["underlined"]; };
-        "comment" = colors.base03;
-        "ui.statusline" = {fg = colors.base04; bg = colors.base01;};
-        "ui.cursor" = { fg = colors.base05; modifiers = ["reversed" "underlined"]; };
-        "ui.text" = { fg = colors.base05; };
-        "operator" = colors.base05;
-        "ui.text.focus" = { fg = colors.base05; };
-        "variable" = colors.base08;
-        "constant.numeric" = colors.base09;
-        "constant" = colors.base09;
-        "attributes" = colors.base09;
-        "type" = colors.base0A;
-        "ui.cursor.match" = { fg = colors.base0A; modifiers = ["underlined"]; };
-        "strings"  = colors.base0B;
-        "variable.other.member" = colors.base0B;
-        "constant.character.escape" = colors.base0C;
-        "function" = colors.base0D;
-        "constructor" = colors.base0D;
-        "special" = colors.base0D;
-        "keyword" = colors.base0E;
-        "label" = colors.base0F;
-        "namespace" = colors.base0F;
-        "ui.help" = { bg = colors.base01; fg = colors.base06; };
-        "info" = colors.base03;
-        "hint" = colors.base03;
-        "debug" = colors.base03;
-        "diagnostic" = colors.base03;
-        "error" = colors.base0E;
-      };
+    themes = {
+       nix-generated = let
+          colors = config.colors.fn "#";
+        in {
+          "ui.background" = { bg = colors.base00; };
+          "ui.menu" = colors.base01;
+          "ui.menu.selected" = { fg = colors.base04; bg = colors.base01;};
+          "ui.linenr" = { fg = colors.base04; };
+          "ui.popup" = { bg = colors.base01; };
+          "ui.window" = { bg = colors.base01; };
+          "ui.selection" = { modifiers = ["underlined"]; };
+          "comment" = colors.base03;
+          "ui.statusline" = {fg = colors.base04; bg = colors.base01;};
+          "ui.cursor" = { fg = colors.base05; modifiers = ["reversed" "underlined"]; };
+          "ui.text" = { fg = colors.base05; };
+          "operator" = colors.base05;
+          "ui.text.focus" = { fg = colors.base05; };
+          "variable" = colors.base08;
+          "constant.numeric" = colors.base09;
+          "constant" = colors.base09;
+          "attributes" = colors.base09;
+          "type" = colors.base0A;
+          "ui.cursor.match" = { fg = colors.base0A; modifiers = ["underlined"]; };
+          "strings"  = colors.base0B;
+          "variable.other.member" = colors.base0B;
+          "constant.character.escape" = colors.base0C;
+          "function" = colors.base0D;
+          "constructor" = colors.base0D;
+          "special" = colors.base0D;
+          "keyword" = colors.base0E;
+          "label" = colors.base0F;
+          "namespace" = colors.base0F;
+          "ui.help" = { bg = colors.base01; fg = colors.base06; };
+          "info" = colors.base03;
+          "hint" = colors.base03;
+          "debug" = colors.base03;
+          "diagnostic" = colors.base03;
+          "error" = colors.base0E;
+        };
+    };
   };
   programs.direnv = {
     enable = true;

@@ -205,7 +205,6 @@ in {
   };
   config.services.unclutter.enable = true;
   config.services.redshift = {
-    package = pkgs.redshift-wlr;
     enable = true;
     latitude = "30.3126259";
     longitude = "-97.7407611";

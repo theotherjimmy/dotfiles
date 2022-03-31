@@ -22,8 +22,6 @@
         home-config = home-config.activationPackage;
         monitor-layout = final.callPackage ./pkgs/monitor-layout.nix { };
         rpn-c = final.callPackage ./pkgs/rpn-c.nix { };
-        wezterm-nightly = final.callPackage ./pkgs/wezterm-nightly.nix { };
-        helix-nightly = final.callPackage ./pkgs/helix-editor.nix { };
         fre = final.callPackage ./pkgs/fre.nix { };
       };
       overlays = [ rust-overlay.overlay local-overlay ];
