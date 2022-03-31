@@ -162,5 +162,6 @@
     pkgs.screen
     pkgs.tmux
     pkgs.xe
+    pkgs.xdg-user-dirs
   ];
 }
