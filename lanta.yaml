@@ -51,3 +51,5 @@ keys:
     Spawn: wezterm start -- lanta exec-in-cwd -- {{bashInteractive}}
   M-S-c:
     Spawn: wezterm
+  M-F12:
+    Spawn: plover_send_command toggle
