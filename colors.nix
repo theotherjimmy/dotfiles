@@ -1,23 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  mk-black-metal = base08: base0A: base0B: {
-      base00 = "000000";
-      base01 = "121212";
-      base02 = "222222";
-      base03 = "444444";
-      base04 = "999999";
-      base05 = "c1c1c1";
-      base06 = "999999";
-      base07 = "c1c1c1";
-      inherit base08;
-      base09 = "aaaaaa";
-      inherit base0A base0B;
-      base0C = "aaaaaa";
-      base0D = "888888";
-      base0E = "999999";
-      base0F = "555555";
-  };
   colorthemes = {
     nord-dark = {
       base00 = "2e3440";
@@ -74,6 +57,46 @@ let
       base0E = "c4a7e7";
       base0F = "b9b9bc";
     };
+    #Rusty background with Coppery and Orange foreground
+    # Rose Pine Moon rotated by 135 Degrees
+    corrosion = {
+      base00 = "29221d";
+      base01 = "302923";
+      base02 = "403730";
+      base03 = "5e5650";
+      base04 = "8d7d70";
+      base05 = "f5dccb";
+      base06 = "f7f5f4";
+      base07 = "e2d6cd";
+      base08 = "f0ebe7";
+      base09 = "49aa5c";
+      base0A = "64dcd8";
+      base0B = "65c196";
+      base0C = "ef456e";
+      base0D = "e0bdcc";
+      base0E = "d6ad66";
+      base0F = "bdb8b6";
+    };
+    # Purple and cyan w/ green-grey bg
+    # Rose Pine Moon rotated by 270 Degrees
+    glow-tulip = {
+      base00 = "1e2524";
+      base01 = "232c2a";
+      base02 = "313b39";
+      base03 = "515958";
+      base04 = "728381";
+      base05 = "8ef1e5";
+      base06 = "eff7f5";
+      base07 = "c2dedb";
+      base08 = "dbf0ee";
+      base09 = "928ee6";
+      base0A = "f5b8e2";
+      base0B = "c3a1e6";
+      base0C = "38975b";
+      base0D = "a9d295";
+      base0E = "6cc1c2";
+      base0F = "b6bab9";
+    };
     # from https://github.com/dawikur/base16-gruvbox-scheme
     gruvbox-dark = {
       base00 = "282828"; # ----
@@ -111,68 +134,6 @@ let
       base0E = "8f3f71"; # purple
       base0F = "d65d0e"; # brown
     };
-    # form https://github.com/sainnhe/everforest
-    everforest = {
-      base00 = "2b3339";
-      base01 = "323c41";
-      base02 = "503946";
-      base03 = "868d80";
-      base04 = "d3c6aa";
-      base05 = "d3c6aa";
-      base06 = "e9e8d2";
-      base07 = "fff9e8";
-      base08 = "7fbbb3";
-      base09 = "d699b6";
-      base0A = "83c092";
-      base0B = "dbbc7f";
-      base0C = "e69875";
-      base0D = "a7c080";
-      base0E = "e67e80";
-      base0F = "d699b6";
-    };
-    # from https://github.com/maxwells-daemons/base16-gigavolt-scheme
-    gigavolt = {
-      base00 = "202126";
-      base01 = "2d303d";
-      base02 = "5a576e";
-      base03 = "a1d2e6";
-      base04 = "cad3ff";
-      base05 = "e9e7e1";
-      base06 = "eff0f9";
-      base07 = "f2fbff";
-      base08 = "ff661a";
-      base09 = "19f988";
-      base0A = "ffdc2d";
-      base0B = "f2e6a9";
-      base0C = "fb6acb";
-      base0D = "40bfff";
-      base0E = "ae94f9";
-      base0F = "6187ff";
-    };
-    sandcastle = {
-      base00 = "282c34";
-      base01 = "2c323b";
-      base02 = "3e4451";
-      base03 = "665c54";
-      base04 = "928374";
-      base05 = "a89984";
-      base06 = "d5c4a1";
-      base07 = "fdf4c1";
-      base08 = "83a598";
-      base09 = "a07e3b";
-      base0A = "a07e3b";
-      base0B = "528b8b";
-      base0C = "83a598";
-      base0D = "83a598";
-      base0E = "d75f5f";
-      base0F = "a87322";
-    };
-    # black metal themes from https://github.com/metalelf0/base16-black-metal-scheme
-    # base03, comments, has been tweaked to be a tad lighter
-    black-metal-bathory = mk-black-metal "5f8787" "e78a53" "fbcb97";
-    black-metal-burzum = mk-black-metal "5f8787" "99bbaa" "ddeecc";
-    black-metal-dark-funeral = mk-black-metal "5f8787" "5f81a5" "d0dfee";
-    black-metal-tank-buster = mk-black-metal "bc3942" "f8d281" "ca4cb5";
   };
 in {
   options.colors = let inherit (lib) types mkOption; in {

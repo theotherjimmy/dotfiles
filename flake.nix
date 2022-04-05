@@ -41,7 +41,7 @@
             ./gui-apps.nix
             ./cli-apps.nix
           ];
-          colors.theme = "rose-pine";
+          colors.theme = "corrosion";
           nixpkgs.overlays = overlays;
           xsession.enable = true;
           systemd.user.startServices = true;
