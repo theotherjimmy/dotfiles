@@ -6,8 +6,8 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "theotherjimmy";
     repo = "autorandr-rs";
-    rev = "cecda70c66db983c1fc7e4a04d8f2cec91f16f13";
-    hash = "sha256-0Quye6D1JjsVStADClR9MXlsH2i6ihBV9iOgQCBx9+E=";
+    rev = "408764f2b42f4fea28e03a04f9826a8fee699086";
+    hash = "sha256-ulAxffFWCHzuM1/GzSloesoMYQ8Lzc/7yvLRmHeeubs=";
   };
   cargoHash = "sha256-2D2iKgtYdJZ7AypPhJ2n0GCpEfwFKNEPbjRxtcicbmw=";
   nativeBuildInputs = [ scdoc installShellFiles ];
