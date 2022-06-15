@@ -10,6 +10,7 @@ layouts:
     type: Stack
 keys:
   M-d: CloseFocused
+  M-S-d: CloseDesktop
   M-l:
     Focus: Right
   M-S-l:
@@ -30,6 +31,8 @@ keys:
   M-S-enter: WindowToNextCrtc
   M-space: RotateLayout
   M-tab: RotateFocus
+  M-o: HideFocus
+  M-S-o: ShowAll
   M-S-r: Restart
   M-r:
     Spawn: rofi-rename-workspace
