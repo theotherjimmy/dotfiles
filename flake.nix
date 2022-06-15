@@ -41,7 +41,7 @@
             ./gui-apps.nix
             ./cli-apps.nix
           ];
-          colors.theme = "corrosion";
+          colors.theme = "glow-tulip";
           nixpkgs.overlays = overlays;
           xsession.enable = true;
           systemd.user.startServices = true;
