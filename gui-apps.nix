@@ -208,7 +208,6 @@ in {
       pkgs.sassc
       pkgs.optipng
       pkgs.librsvg
-      pkgs.inkscape
       pkgs.gtk3
     ];
 

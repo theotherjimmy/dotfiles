@@ -90,11 +90,6 @@ in {
       installPhase = "true";
     };
   };
-  config.services.pulseeffects = {
-    enable = true;
-    # Anything with "legacy" in the name is sus
-    package = pkgs.pulseeffects-legacy;
-  };
   config.services.polybar = {
     enable = true;
     script = "polybar main &";
@@ -231,7 +226,6 @@ in {
     pkgs.mupdf
     pkgs.xclip
     pkgs.xorg.xdpyinfo
-    pkgs.fractal
     pkgs.fre
     ws-switch
     ws-new
