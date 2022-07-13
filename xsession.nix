@@ -227,6 +227,7 @@ in {
     pkgs.xclip
     pkgs.xorg.xdpyinfo
     pkgs.fre
+    pkgs.gnuplot
     ws-switch
     ws-new
     ws-new-from-wd
