@@ -307,12 +307,15 @@
   services.lorri.enable = true;
   home.packages = let
     edit = pkgs.writers.writeBashBin "edit" ''
-      ws=$(${pkgs.wmctrl}/bin/wmctrl -d | awk -F '(::| *)' '$2 == "*" {print $9}')
       if [[ $# > 0 ]]; then
         files=$@
       else
         files=$(sk -m)
+        if [[ $? != 0 ]] ; then
+          exit 1
+        fi
       fi
+      ws=$(${pkgs.wmctrl}/bin/wmctrl -d | awk -F '(::| *)' '$2 == "*" {print $9}')
       if [[ $ws != "" ]] ; then
         if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
           exec kak -c $ws $files
