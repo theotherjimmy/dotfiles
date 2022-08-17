@@ -308,14 +308,19 @@
   home.packages = let
     edit = pkgs.writers.writeBashBin "edit" ''
       ws=$(${pkgs.wmctrl}/bin/wmctrl -d | awk -F '(::| *)' '$2 == "*" {print $9}')
+      if [[ $# > 0 ]]; then
+        files=$@
+      else
+        files=$(sk -m)
+      fi
       if [[ $ws != "" ]] ; then
         if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
-          exec kak -c $ws $@
+          exec kak -c $ws $files
         else
-          exec kak -s $ws $@
+          exec kak -s $ws $files
         fi
       else
-        exec kak $@
+        exec kak $files
       fi
     '';
     git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
