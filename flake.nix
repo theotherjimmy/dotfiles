@@ -30,33 +30,32 @@
         inherit overlays;
       };
       home-config = home-manager.lib.homeManagerConfiguration {
-        homeDirectory = "/home/jimbri01";
-        username = "jimbri01";
-        inherit system pkgs;
-        configuration = { config, lib, pkgs, ... }: {
-          imports = [
+          inherit pkgs;
+          modules = [
             ./colors.nix
             ./xsession.nix
             ./font.nix
             ./gui-apps.nix
             ./cli-apps.nix
+            {
+              home = {
+                homeDirectory = "/home/jimbri01";
+                username = "jimbri01";
+                stateVersion = "22.11";
+              };
+              colors.theme = "glow-tulip";
+              xsession.enable = true;
+              systemd.user.startServices = true;
+              home.keyboard = {
+                layout = "us";
+                variant = "dvp";
+                options = [ "caps:escape" ];
+              };
+            }
           ];
-          colors.theme = "glow-tulip";
-          nixpkgs.overlays = overlays;
-          xsession.enable = true;
-          systemd.user.startServices = true;
-          home.keyboard = {
-            layout = "us";
-            variant = "dvp";
-            options = [ "caps:escape" ];
-          };
         };
-      };
     in
     {
-      defaultApp = {
-        type = "app";
-        program = "${pkgs.home-config}/activate";
-      };
+      defaultApp = pkgs.home-config;
     });
 }
