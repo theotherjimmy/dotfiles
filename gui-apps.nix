@@ -15,7 +15,7 @@ in {
     (pkgs.steam.override {
       extraProfile = ''
         unset VK_ICD_FILENAMES
-        export VK_ICD_FILENAMES=`realpath /run/opengl-driver/share`/vulkan/icd.d/nvidia_icd.json:`realpath /run/opengl-driver-32/share`/vulkan/icd.d/nvidia_icd32.json'';
+        export VK_ICD_FILENAMES=`realpath /run/opengl-driver/share`/vulkan/icd.d/radeon_icd.x86_64.json:`realpath /run/opengl-driver-32/share`/vulkan/icd.d/radeon_icd.i686.json'';
     })
   ];
   xdg.configFile."wezterm/wezterm.lua".text = 
