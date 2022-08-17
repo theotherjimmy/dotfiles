@@ -323,6 +323,9 @@
         exec kak $files
       fi
     '';
+    rgl = pkgs.writers.writeBashBin "rgl" ''
+      rg -p $@ | less -RF
+    '';
     git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
       rev=$(git rev-parse --abbrev-ref HEAD)
       if [ "HEAD" == $rev ] ; then
@@ -334,6 +337,7 @@
     '';
   in [
     edit
+    rgl
     git-ip-review
     pkgs.aspell
     pkgs.aspellDicts.en
