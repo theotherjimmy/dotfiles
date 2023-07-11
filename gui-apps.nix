@@ -7,11 +7,11 @@ in {
     "steam"
     "steam-original"
     "steam-runtime"
+    "steam-run"
   ];  
   home.packages = [ 
     pkgs.plover.dev
     pkgs.wezterm 
-    pkgs.cura
     (pkgs.steam.override {
       extraProfile = ''
         unset VK_ICD_FILENAMES
@@ -48,7 +48,16 @@ in {
           right = 5,
           top = 5,
           bottom = 5,
-        }
+        },
+        keys = {
+            ${pkgs.lib.concatMapStrings (num: ''
+          {
+            key = '${toString num}',
+            mods = 'SHIFT',
+            action = wezterm.action.SendString "${toString num}",
+          },''
+          ) (pkgs.lib.range 0 9)}
+        },
       }
     '';
   programs.zathura = {
@@ -85,6 +94,7 @@ in {
   };
   programs.firefox = {
     enable = true;
+    package = pkgs.firefox-bin;
   };
   programs.rofi = {
     enable = true;

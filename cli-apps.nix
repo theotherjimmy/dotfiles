@@ -268,6 +268,7 @@
         '';
     };
     sessionVariables.EDITOR = "edit";
+    sessionVariables._JAVA_AWT_WM_NONREPARENTING = "1";
     bashrcExtra = ''
       export PS1='    ; \[$(tput sgr0)\]'
       export PROMPT_COMMAND='if [[ $? != 0 ]] ; then echo -e -n "\001$(tput setaf 2)\002"; fi'
@@ -365,7 +366,6 @@
     pkgs.psmisc
     pkgs.usbutils
     pkgs.ripgrep
-    pkgs.rpn-c
     pkgs.screen
     pkgs.tmux
     pkgs.xe

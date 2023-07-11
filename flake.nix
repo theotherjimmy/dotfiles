@@ -24,7 +24,7 @@
         rpn-c = final.callPackage ./pkgs/rpn-c.nix { };
         fre = final.callPackage ./pkgs/fre.nix { };
       };
-      overlays = [ rust-overlay.overlay local-overlay ];
+      overlays = [ rust-overlay.overlays.default local-overlay ];
       pkgs = import nixpkgs {
         inherit system;
         inherit overlays;
@@ -43,7 +43,7 @@
                 username = "jimbri01";
                 stateVersion = "22.11";
               };
-              colors.theme = "glow-tulip";
+              colors.theme = "corrosion";
               xsession.enable = true;
               systemd.user.startServices = true;
               home.keyboard = {
@@ -57,5 +57,6 @@
     in
     {
       defaultApp = pkgs.home-config;
+      packages.default = pkgs.home-config;
     });
 }

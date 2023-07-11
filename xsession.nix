@@ -217,9 +217,7 @@ in {
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
-  config.programs.obs-studio.enable = true;
   config.home.packages = [
-    pkgs.firefox
     pkgs.hack-font
     pkgs.keepass
     pkgs.monitor-layout

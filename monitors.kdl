@@ -4,10 +4,10 @@ monitor "Work-Down" product="S27D850" serial="HCJH901332"
 monitor "Work-Right" product="ASUS PB278" serial="E5LMTF100243"
 
 layout "Work-Desktop" {
-    matches "Work-Down" "Work-Up" "Work-Right"
+    matches "Work-Down" "Work-Up" /*"Work-Right"*/
     monitor "Work-Up" w=2560 h=1440 x=0 y=0
     monitor "Work-Down" w=2560 h=1440 x=0 y=1440 primary=true
-    monitor "Work-Right" w=2560 h=1440 x=2560 y=320 rotate="left"
+  /*  monitor "Work-Right" w=2560 h=1440 x=2560 y=320 rotate="left" */
 }
 layout "Work-Lower-Only" {
     matches "Work-Down"
