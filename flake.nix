@@ -22,7 +22,6 @@
     let
       local-overlay = final: super: {
         home-config = home-config.activationPackage;
-        rpn-c = final.callPackage ./pkgs/rpn-c.nix { };
         waybar = super.waybar.override {
             wireplumberSupport = false;
         };
