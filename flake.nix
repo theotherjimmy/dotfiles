@@ -13,18 +13,21 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
+
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = { self, nixpkgs, flake-utils, home-manager, rust-overlay }:
+  outputs = { self, nixpkgs, flake-utils, home-manager, rust-overlay, hyprland }:
   flake-utils.lib.eachDefaultSystem (system:
     let
       local-overlay = final: super: {
         home-config = home-config.activationPackage;
-        monitor-layout = final.callPackage ./pkgs/monitor-layout.nix { };
         rpn-c = final.callPackage ./pkgs/rpn-c.nix { };
-        fre = final.callPackage ./pkgs/fre.nix { };
+        waybar = super.waybar.override {
+            wireplumberSupport = false;
+        };
       };
-      overlays = [ rust-overlay.overlays.default local-overlay ];
+      overlays = [ rust-overlay.overlays.default local-overlay];
       pkgs = import nixpkgs {
         inherit system;
         inherit overlays;
@@ -32,8 +35,9 @@
       home-config = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
+            hyprland.homeManagerModules.default
             ./colors.nix
-            ./xsession.nix
+            ./wayland.nix
             ./font.nix
             ./gui-apps.nix
             ./cli-apps.nix
@@ -44,7 +48,7 @@
                 stateVersion = "22.11";
               };
               colors.theme = "corrosion";
-              xsession.enable = true;
+              xsession.enable = false;
               systemd.user.startServices = true;
               home.keyboard = {
                 layout = "us";

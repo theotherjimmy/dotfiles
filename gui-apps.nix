@@ -22,6 +22,7 @@ in {
     ''
       local wezterm = require 'wezterm';
       return {
+        enable_wayland = false;
         colors = {
           foreground = "${c.base05}",
           background = "${c.base00}",
@@ -214,7 +215,7 @@ in {
     };
 
     nativeBuildInputs = [
-      pkgs.pkgconfig
+      pkgs.pkg-config
       pkgs.sassc
       pkgs.optipng
       pkgs.librsvg

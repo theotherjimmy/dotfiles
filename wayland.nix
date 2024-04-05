@@ -1,0 +1,128 @@
+{config, pkgs, ...}:
+
+let
+  hyprmenu = let
+    tofi-run = "${pkgs.tofi}/bin/tofi-run";
+    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  in pkgs.writers.writeBashBin "hyprmenu" ''
+     ${tofi-run} | xargs ${hyprctl} dispatch exec
+  '';
+  hypr-ws-rename = let
+    tofi-run = "${pkgs.tofi}/bin/tofi-run";
+    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  in pkgs.writers.writeBashBin "hypr-ws-rename" ''
+    FRE_STORE=$HOME/.local/share/lanta/desktop-names
+    NAME=$(fre --sorted --store $FRE_STORE | tofi --prompt-text="Rename Workspace ")
+    if [[ -n $NAME ]] ; then
+      ID=$(hyprctl activeworkspace -j | jq '.id')
+      hyprctl dispatch renameworkspace $ID $NAME
+      fre --add "$NAME" --store $FRE_STORE
+    fi
+  '';
+  hypr-ws-switch = let
+    tofi-run = "${pkgs.tofi}/bin/tofi-run";
+    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  in pkgs.writers.writeBashBin "hypr-ws-switch" ''
+    FRE_STORE=$HOME/.local/share/lanta/desktop-names
+    NAME=$(hyprctl workspaces -j | jq -r '.[] | @text "\(.id) \(.name)"' | tofi --prompt-text="Switch To ")
+    if [[ -n $NAME ]] ; then
+      hyprctl dispatch focusworkspaceoncurrentmonitor $(echo $NAME | awk '{print $1}')
+    fi
+  '';
+  hypr-screenoff = let
+    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  in pkgs.writers.writeBashBin "hypr-screenoff" ''
+    sleep 1 && hyprctl dispatch dpms off
+  '';
+in {
+    home.packages = [pkgs.tofi hyprmenu hypr-ws-rename hypr-ws-switch];
+    programs.waybar = {
+        enable = true;
+        systemd.enable = true;
+        settings = {
+          mainBar = {
+            layer = "top";
+            position = "bottom";
+            height = 30;
+            output = [
+              "DP-1"
+              "DP-4"
+            ];
+            modules-left = [ "hyprland/workspaces" "cpu" ];
+            modules-center = [ "hyprland/window" ];
+            modules-right = [ "memory" "temperature" "clock" ];
+
+          };
+        };
+    };
+    programs.swaylock.enable = true;
+    xdg.configFile."tofi/config" = {
+        enable = true;
+        text = ''
+          width = 100%
+          height = 100%
+          border-width = 0
+          outline-width = 0
+          padding-left = 35%
+          padding-top = 35%
+          result-spacing = 25
+          num-results = 12
+          font = monospace
+          background-color = #000A
+        '';
+    };
+    wayland.windowManager.hyprland = {
+        enable = true;
+        extraConfig = let colors = config.colors.fn "0xff"; in ''
+          $mod = Alt
+          bind = $mod, C, exec, wezterm
+          bind = $mod, G, exec, hypr-ws-switch
+          bind = $mod, N, workspace, empty
+          bind = $mod, R, exec, hypr-ws-rename
+          bind = $mod, P, exec, hyprmenu
+          bind = $mod, H, movefocus, l
+          bind = $mod, J, movefocus, d
+          bind = $mod, K, movefocus, u
+          bind = $mod, L, movefocus, r
+          bind = $mod and Shift, H, swapwindow, l
+          bind = $mod and Shift, J, swapwindow, d
+          bind = $mod and Shift, K, swapwindow, u
+          bind = $mod and Shift, L, swapwindow, r
+          bind = $mod, D, killactive,
+          bind = $mod and Shift, S, exec, sleep 1 && hyprctl dispatch dpms off
+          bindm = $mod, mouse:272, movewindow
+
+          monitor=DP-4,2560x1440,0x0,1
+          monitor=DP-1,2560x1440,0x1440,1
+
+          general {
+              layout = master
+              border_size = 3
+              gaps_out = 0
+              col.inactive_border = ${colors.base02}
+              col.active_border = ${colors.base0B}
+          }
+
+          decoration {
+              rounding = 10
+              drop_shadow = false
+          }
+          animation=windows,1,3,default
+
+          input {
+              kb_layout = us
+              kb_variant = dvp
+              kb_options = caps:escape
+          }
+
+          master {
+              orientation = center
+              mfact = 0.4
+          }
+
+          misc {
+              key_press_enables_dpms = true
+          }
+        '';
+    };
+}

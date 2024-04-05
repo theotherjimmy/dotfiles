@@ -1,8 +1,11 @@
 profile-dir := "/nix/var/nix/profiles/per-user/$USER"
 find-gen:= "home-manager-generation"
 
-switch:
-    nix run -L
+switch: build
+    ./result/activate
+
+build:
+    nix build -L
 
 rollback num="0":
     {{profile-dir}}/home-manager-{{num}}-link/activate

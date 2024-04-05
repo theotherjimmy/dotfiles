@@ -57,6 +57,24 @@ let
       base0E = "c4a7e7";
       base0F = "b9b9bc";
     };
+    test = {
+      base00 = "2d1f2a";
+      base01 = "362531";
+      base02 = "473242";
+      base03 = "65525f";
+      base04 = "9a7590";
+      base05 = "f4d8ed";
+      base06 = "f7f5f7";
+      base07 = "e1d5dd";
+      base08 = "f0eaee";
+      base09 = "c48c49";
+      base0A = "b3d75d";
+      base0B = "caac62";
+      base0C = "9d6ce8";
+      base0D = "bfc6df";
+      base0E = "e99cc7";
+      base0F = "bcb8bb";
+    };
     #Rusty background with Coppery and Orange foreground
     # Rose Pine Moon rotated by 135 Degrees
     corrosion = {
