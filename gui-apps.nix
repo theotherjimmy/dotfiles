@@ -9,8 +9,7 @@ in {
     "steam-runtime"
     "steam-run"
   ];  
-  home.packages = [ 
-    pkgs.plover.dev
+  home.packages = [
     pkgs.wezterm 
     (pkgs.steam.override {
       extraProfile = ''
@@ -40,9 +39,7 @@ in {
             "${c.base04}", "${c.base06}", "${c.base0F}", "${c.base07}"
           },
         },
-        font = wezterm.font("${config.font.name}", {bold=false}),
         font_size = 13,
-        dpi = 96.0,
         enable_tab_bar = false,
         window_padding = {
           left = 5,
