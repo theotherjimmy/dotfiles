@@ -259,6 +259,15 @@
     defaultCommand = "fd --type f || git ls-tree -r --name-only HEAD || rg --files || find .";
   };
   services.lorri.enable = true;
+  systemd.user.services.ollama = {
+    Unit = {
+      Description = "LLM server";
+      After = [ "graphical-session-pre.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service.ExecStart = "${pkgs.ollama}/bin/ollama serve";
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
   home.packages = let
     edit = pkgs.writers.writeBashBin "edit" ''
       if [[ $# > 0 ]]; then
@@ -313,6 +322,7 @@
     pkgs.libnotify
     pkgs.nixpkgs-fmt
     pkgs.nix-top
+    pkgs.ollama
     pkgs.patchelf
     pkgs.procs
     pkgs.pv
