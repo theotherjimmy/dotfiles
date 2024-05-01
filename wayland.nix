@@ -1,8 +1,8 @@
 {config, pkgs, ...}:
 
 let
-  tofi-run = "${pkgs.wofi}/bin/wofi --show run";
-  wofi = "${pkgs.wofi}/bin/wofi -d";
+  tofi-run = "${pkgs.wofi}/bin/wofi -i --show run";
+  wofi = "${pkgs.wofi}/bin/wofi -d -i";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
   hyprmenu = pkgs.writers.writeBashBin "hyprmenu" ''
      ${tofi-run}
