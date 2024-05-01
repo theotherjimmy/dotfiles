@@ -313,6 +313,7 @@
     pkgs.entr
     pkgs.eza
     pkgs.fd
+    pkgs.fre
     pkgs.file
     pkgs.git-hub
     pkgs.git-review

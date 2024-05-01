@@ -10,7 +10,8 @@ in {
     "steam-run"
   ];  
   home.packages = [
-    pkgs.wezterm 
+    pkgs.wezterm
+    pkgs.freetube
     (pkgs.steam.override {
       extraProfile = ''
         unset VK_ICD_FILENAMES

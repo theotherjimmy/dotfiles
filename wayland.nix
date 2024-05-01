@@ -1,41 +1,33 @@
 {config, pkgs, ...}:
 
 let
-  hyprmenu = let
-    tofi-run = "${pkgs.tofi}/bin/tofi-run";
-    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-  in pkgs.writers.writeBashBin "hyprmenu" ''
-     ${tofi-run} | xargs ${hyprctl} dispatch exec
+  tofi-run = "${pkgs.wofi}/bin/wofi --show run";
+  wofi = "${pkgs.wofi}/bin/wofi -d";
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  hyprmenu = pkgs.writers.writeBashBin "hyprmenu" ''
+     ${tofi-run}
   '';
-  hypr-ws-rename = let
-    tofi-run = "${pkgs.tofi}/bin/tofi-run";
-    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-  in pkgs.writers.writeBashBin "hypr-ws-rename" ''
+  hypr-ws-rename = pkgs.writers.writeBashBin "hypr-ws-rename" ''
     FRE_STORE=$HOME/.local/share/lanta/desktop-names
-    NAME=$(fre --sorted --store $FRE_STORE | tofi --prompt-text="Rename Workspace ")
+    NAME=$(fre --sorted --store $FRE_STORE | ${wofi} -p "Rename Workspace ")
     if [[ -n $NAME ]] ; then
-      ID=$(hyprctl activeworkspace -j | jq '.id')
-      hyprctl dispatch renameworkspace $ID $NAME
+      ID=$(${hyprctl} activeworkspace -j | jq '.id')
+      ${hyprctl} dispatch renameworkspace $ID $NAME
       fre --add "$NAME" --store $FRE_STORE
     fi
   '';
-  hypr-ws-switch = let
-    tofi-run = "${pkgs.tofi}/bin/tofi-run";
-    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-  in pkgs.writers.writeBashBin "hypr-ws-switch" ''
+  hypr-ws-switch = pkgs.writers.writeBashBin "hypr-ws-switch" ''
     FRE_STORE=$HOME/.local/share/lanta/desktop-names
-    NAME=$(hyprctl workspaces -j | jq -r '.[] | @text "\(.id) \(.name)"' | tofi --prompt-text="Switch To ")
+    NAME=$(${hyprctl} workspaces -j | jq -r '.[] | @text "\(.id) \(.name)"' | ${wofi} -p "Switch To ")
     if [[ -n $NAME ]] ; then
-      hyprctl dispatch focusworkspaceoncurrentmonitor $(echo $NAME | awk '{print $1}')
+      ${hyprctl} dispatch focusworkspaceoncurrentmonitor $(echo $NAME | awk '{print $1}')
     fi
   '';
-  hypr-screenoff = let
-    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-  in pkgs.writers.writeBashBin "hypr-screenoff" ''
-    sleep 1 && hyprctl dispatch dpms off
+  hypr-screenoff = pkgs.writers.writeBashBin "hypr-screenoff" ''
+    sleep 1 && ${hyprctl} dispatch dpms off
   '';
 in {
-    home.packages = [pkgs.tofi hyprmenu hypr-ws-rename hypr-ws-switch];
+    home.packages = [pkgs.wofi hyprmenu hypr-ws-rename hypr-ws-switch];
     programs.waybar = {
         enable = true;
         systemd.enable = true;
@@ -54,6 +46,11 @@ in {
 
           };
         };
+    };
+    services.mako = {
+        enable = true;
+        borderRadius = 5;
+        borderSize = 2;
     };
     programs.swaylock.enable = true;
     xdg.configFile."tofi/config" = {
