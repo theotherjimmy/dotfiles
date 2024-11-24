@@ -1,6 +1,37 @@
 { config, lib, pkgs, ... }:
 
 let
+  freecad-weekly-src = pkgs.fetchurl rec {
+      version = "39176";
+      url = "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-${version}-conda-Linux-x86_64-py311.AppImage";
+      hash = "sha256-HpbP7PXeGsZAwBOclhwiMyy+L7WzWtge7w55zD8q9y4=";
+  };
+  freecad-weekly = pkgs.appimageTools.wrapType2 {
+      name = "freecad";
+      src = freecad-weekly-src;
+      extraPkgs = (pkgs : with pkgs; [webkitgtk]);
+  };
+  cura-version ="5.9.0-beta.2";
+  cura-src = pkgs.fetchurl{
+      url = "https://github.com/Ultimaker/Cura/releases/download/${cura-version}/UltiMaker-Cura-${cura-version}-linux-X64.AppImage";
+      hash = "sha256-AfUIUMcyreOpm2hNTfwk8e1+0LC8px09AWj2nBufIDU=";
+  };
+  cura = pkgs.appimageTools.wrapType2 {
+      name = "Ultimaker-Cura";
+      version = cura-version;
+      src = cura-src;
+      extraPkgs = (pkgs : with pkgs; [webkitgtk]);
+  };
+  orcaslicer-src = pkgs.fetchurl rec {
+      version = "2.2.0-beta";
+      url = "https://github.com/SoftFever/OrcaSlicer/releases/download/v${version}/OrcaSlicer_Linux_Ubuntu2004_V${version}.AppImage";
+      hash = "sha256-SSg50dp9Js6M5CCSqsbACs9hYlc2TcMdyfCfOl8/kJo=";
+  };
+  orcaslicer = pkgs.appimageTools.wrapType2 {
+      name = "orcaSlicer";
+      src = orcaslicer-src;
+      extraPkgs = (pkgs : with pkgs; [webkitgtk]);
+  };
   c = config.colors.fn "#";
 in {
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -8,21 +39,55 @@ in {
     "steam-original"
     "steam-runtime"
     "steam-run"
+    "steam-unwrapped"
   ];  
   home.packages = [
+    orcaslicer
+    freecad-weekly
     pkgs.wezterm
     pkgs.freetube
+    pkgs.gamescope
+    pkgs.r2modman
+    pkgs.protontricks
     (pkgs.steam.override {
       extraProfile = ''
         unset VK_ICD_FILENAMES
         export VK_ICD_FILENAMES=`realpath /run/opengl-driver/share`/vulkan/icd.d/radeon_icd.x86_64.json:`realpath /run/opengl-driver-32/share`/vulkan/icd.d/radeon_icd.i686.json'';
     })
   ];
+  programs.foot = {
+      enable = true;
+      settings.main = {
+          font = "${config.font.name}NerdFontMono:size=${toString config.font.em}";
+          dpi-aware = "yes";
+      };
+      settings.colors = let c = config.colors.fn ""; in {
+          foreground = c.base05;
+          background = c.base00;
+          regular0 = c.base00;
+          regular1 = c.base08;
+          regular2 = c.base0B;
+          regular3 = c.base0A;
+          regular4 = c.base0D;
+          regular5 = c.base0E;
+          regular6 = c.base0C;
+          regular7 = c.base05;
+          bright0 =  c.base03;
+          bright1 =  c.base09;
+          bright2 =  c.base0B;
+          bright3 =  c.base0A;
+          bright4 =  c.base04;
+          bright5 =  c.base06;
+          bright6 =  c.base0F;
+          bright7 =  c.base07;
+      };
+  };
   xdg.configFile."wezterm/wezterm.lua".text = 
     ''
       local wezterm = require 'wezterm';
       return {
-        enable_wayland = false;
+        enable_wayland = true;
+        front_end = "WebGpu";
         colors = {
           foreground = "${c.base05}",
           background = "${c.base00}",
@@ -199,7 +264,7 @@ in {
   };
   gtk.enable = true;
   gtk.iconTheme.name = "Adwaita";
-  gtk.iconTheme.package = pkgs.gnome3.adwaita-icon-theme;
+  gtk.iconTheme.package = pkgs.adwaita-icon-theme;
   gtk.theme.name = "gruvbox-gtk";
   gtk.theme.package = pkgs.stdenv.mkDerivation rec {
     pname = "gruvbox-gtk";

@@ -12,7 +12,6 @@
 
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    rust-overlay.inputs.flake-utils.follows = "flake-utils";
 
     hyprland.url = "github:hyprwm/Hyprland";
   };
@@ -26,7 +25,10 @@
             wireplumberSupport = false;
         };
       };
-      overlays = [ rust-overlay.overlays.default local-overlay];
+      overlays = [
+        rust-overlay.overlays.default
+        local-overlay
+      ];
       pkgs = import nixpkgs {
         inherit system;
         inherit overlays;
@@ -34,7 +36,6 @@
       home-config = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            hyprland.homeManagerModules.default
             ./colors.nix
             ./wayland.nix
             ./font.nix
@@ -46,7 +47,7 @@
                 username = "jimbri01";
                 stateVersion = "22.11";
               };
-              colors.theme = "corrosion";
+              colors.theme = "rose-pine-moon";
               xsession.enable = false;
               systemd.user.startServices = true;
               home.keyboard = {

@@ -23,18 +23,6 @@
       };
       keyMappings = [
         {
-          key = "<space>";
-          mode = "normal";
-          effect = ",";
-          docstring = "leader";
-        }
-        {
-          key = "<backspace>";
-          mode = "normal";
-          effect = "<space>";
-          docstring = "clear selection to only keep the main one";
-        }
-        {
           key = "<a-backspace>";
           mode = "normal";
           effect = "<a-space>";
@@ -315,6 +303,7 @@
     pkgs.fd
     pkgs.fre
     pkgs.file
+    pkgs.gdb
     pkgs.git-hub
     pkgs.git-review
     pkgs.git-series
@@ -329,6 +318,7 @@
     pkgs.pv
     pkgs.psmisc
     pkgs.usbutils
+    pkgs.rink
     pkgs.ripgrep
     pkgs.screen
     pkgs.tmux
@@ -340,6 +330,7 @@
     pkgs.bc
     pkgs.wget
     pkgs.unzip
+    pkgs.p7zip
     pkgs.innoextract
     pkgs.steam-run
     pkgs.socat

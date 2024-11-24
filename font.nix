@@ -23,13 +23,13 @@ with lib; {
       description = "Don't set";
     };
   };
-  config.font.emstr = "${config.font.name} ${toString config.font.em}";
+  config.font.emstr = "${config.font.name}FontMono ${toString config.font.em}";
   config.home.packages = [
     (pkgs.nerdfonts.override {fonts = [config.font.name];})
     # Noto fonts used as backup for now
     pkgs.noto-fonts
     pkgs.noto-fonts-emoji
-    pkgs.noto-fonts-cjk
+    pkgs.noto-fonts-cjk-sans
     pkgs.noto-fonts-extra
   ];
   config.fonts.fontconfig.enable = true;

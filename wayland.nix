@@ -17,7 +17,6 @@ let
     fi
   '';
   hypr-ws-switch = pkgs.writers.writeBashBin "hypr-ws-switch" ''
-    FRE_STORE=$HOME/.local/share/lanta/desktop-names
     NAME=$(${hyprctl} workspaces -j | jq -r '.[] | @text "\(.id) \(.name)"' | ${wofi} -p "Switch To ")
     if [[ -n $NAME ]] ; then
       ${hyprctl} dispatch focusworkspaceoncurrentmonitor $(echo $NAME | awk '{print $1}')
@@ -27,7 +26,14 @@ let
     sleep 1 && ${hyprctl} dispatch dpms off
   '';
 in {
-    home.packages = [pkgs.wofi hyprmenu hypr-ws-rename hypr-ws-switch];
+    home.packages = [
+        pkgs.wofi
+        hyprmenu
+        hypr-ws-rename
+        hypr-ws-switch
+        pkgs.helvum
+        pkgs.wl-clipboard-rs
+    ];
     programs.waybar = {
         enable = true;
         systemd.enable = true;
@@ -40,10 +46,11 @@ in {
               "DP-1"
               "DP-4"
             ];
-            modules-left = [ "hyprland/workspaces" "cpu" ];
-            modules-center = [ "hyprland/window" ];
-            modules-right = [ "memory" "temperature" "clock" ];
-
+            modules-left = [ "cpu" "memory" "temperature" ];
+            modules-center = [ "hyprland/submap" ];
+            modules-right = [ "tray" "clock" ];
+            cpu.format = "{min_frequency}Ghz ⇋ {max_frequency}Ghz";
+            "hyprland/submap".format = "╞ {} ╡";
           };
         };
     };
@@ -51,6 +58,11 @@ in {
         enable = true;
         borderRadius = 5;
         borderSize = 2;
+    };
+    services.network-manager-applet.enable = true;
+    services.udiskie = {
+      enable = true;
+      tray = "always";
     };
     programs.swaylock.enable = true;
     xdg.configFile."tofi/config" = {
@@ -72,7 +84,7 @@ in {
         enable = true;
         extraConfig = let colors = config.colors.fn "0xff"; in ''
           $mod = Alt
-          bind = $mod, C, exec, wezterm
+          bind = $mod, C, exec, foot
           bind = $mod, G, exec, hypr-ws-switch
           bind = $mod, N, workspace, empty
           bind = $mod, R, exec, hypr-ws-rename
@@ -81,6 +93,7 @@ in {
           bind = $mod, J, movefocus, d
           bind = $mod, K, movefocus, u
           bind = $mod, L, movefocus, r
+          bind = $mod, F, togglefloating,
           bind = $mod and Shift, H, swapwindow, l
           bind = $mod and Shift, J, swapwindow, d
           bind = $mod and Shift, K, swapwindow, u
@@ -89,8 +102,9 @@ in {
           bind = $mod and Shift, S, exec, sleep 1 && hyprctl dispatch dpms off
           bindm = $mod, mouse:272, movewindow
 
-          monitor=DP-4,2560x1440,0x0,1
-          monitor=DP-1,2560x1440,0x1440,1
+          monitor=desc:Acer Technologies Acer K272HUL T0SAA0014200,2560x1440,0x0,1,bitdepth,8
+          monitor=desc:Samsung Electric Company S27D850 HCJH901332,2560x1440,0x1440,1,bitdepth,8
+          monitor=desc:Ancor Communications Inc ASUS PB278 E5LMTF100243,2560x1440,2560x320,1,bitdepth,8,transform,1
 
           general {
               layout = master
@@ -104,7 +118,7 @@ in {
               rounding = 10
               drop_shadow = false
           }
-          animation=windows,1,3,default
+          layerrule=noanim,wofi
 
           input {
               kb_layout = us
@@ -115,6 +129,7 @@ in {
           master {
               orientation = center
               mfact = 0.4
+              new_on_active = after
           }
 
           misc {
