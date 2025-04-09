@@ -3,7 +3,7 @@
 {
   description = "A bland config";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/master";
+    nixpkgs.url = "github:nixos/nixpkgs/6313551cd05425cd5b3e63fe47dbc324eabb15e4";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -90,8 +90,6 @@
       };
     in
     {
-      defaultApp = pkgs.home-config;
-      packages.default = pkgs.home-config;
       devShell = pkgs.devshell.mkShell {
         motd = "";
         packages = [ pkgs.deploy-rs ];

@@ -1,18 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  freecad-version = "39786";
-  freecad-weekly-src = pkgs.fetchurl rec {
-      version = freecad-version;
-      url = "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-${version}-conda-Linux-x86_64-py311.AppImage";
-      hash = "sha256-fSRGy4FO873aHFB7p21hTi6n97yvIlmDm0Dc8QPYGak=";
-  };
-  freecad-weekly = pkgs.appimageTools.wrapType2 {
-      pname = "freecad";
-      version = freecad-version;
-      src = freecad-weekly-src;
-      extraPkgs = (pkgs : with pkgs; [webkitgtk]);
-  };
   cura-version ="5.9.0-beta.2";
   cura-src = pkgs.fetchurl {
       url = "https://github.com/Ultimaker/Cura/releases/download/${cura-version}/UltiMaker-Cura-${cura-version}-linux-X64.AppImage";
@@ -47,7 +35,7 @@ in {
   ];  
   home.packages = [
     orcaslicer
-    freecad-weekly
+    pkgs.freecad-wayland
     pkgs.wezterm
     pkgs.freetube
     pkgs.gamescope
