@@ -1,0 +1,98 @@
+{ stdenv
+, lib
+, fetchFromGitHub
+, python3
+, unstableGitUpdater
+, makeWrapper
+, writeShellScript
+}:
+
+stdenv.mkDerivation rec {
+  pname = "klipper";
+  version = "0.12.0-unstable-2024-05-16";
+
+  src = fetchFromGitHub {
+    owner = "KalicoCrew";
+    repo = "kalico";
+    rev = "20d9035cb589eb583e5c42761209eb5051b8a670";
+    sha256 = "sha256-4PSwVuA98+5SAMXAtFR/Lpl7nNIRn/BW74Haz1fEO2w=";
+  };
+  sourceRoot = "${src.name}/klippy";
+
+  # NB: This is needed for the postBuild step
+  nativeBuildInputs = [
+    (python3.withPackages (p: with p; [ cffi ]))
+    makeWrapper
+  ];
+
+  buildInputs = [ (python3.withPackages (p: with p; [ can cffi pyserial greenlet jinja2 markupsafe numpy ])) ];
+
+  # we need to run this to prebuild the chelper.
+  postBuild = ''
+    python ./chelper/__init__.py
+  '';
+
+  # Python 3 is already supported but shebangs aren't updated yet
+  postPatch = ''
+    # needed for cross compilation
+    substituteInPlace ./chelper/__init__.py \
+      --replace 'GCC_CMD = "gcc"' 'GCC_CMD = "${stdenv.cc.targetPrefix}cc"'
+  '';
+
+  pythonInterpreter =
+    (python3.withPackages (
+      p: with p; [
+        numpy
+        matplotlib
+      ]
+    )).interpreter;
+
+  pythonScriptWrapper = writeShellScript pname ''
+    ${pythonInterpreter} "@out@/lib/scripts/@script@" "$@"
+  '';
+
+  # NB: We don't move the main entry point into `/bin`, or even symlink it,
+  # because it uses relative paths to find necessary modules. We could wrap but
+  # this is used 99% of the time as a service, so it's not worth the effort.
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out/lib/klippy
+    cp -r ./* $out/lib/klippy
+
+    # Moonraker expects `config_examples` and `docs` to be available
+    # under `klipper_path`
+    cp -r $src/docs $out/lib/docs
+    cp -r $src/config $out/lib/config
+    cp -r $src/scripts $out/lib/scripts
+    #cp -r $src/klippy $out/lib/klippy
+
+    # Add version information. For the normal procedure see https://www.klipper3d.org/Packaging.html#versioning
+    # This is done like this because scripts/make_version.py is not available when sourceRoot is set to "${src.name}/klippy"
+    echo "${version}-NixOS" > $out/lib/klippy/.version
+
+    mkdir -p $out/bin
+    chmod 755 $out/lib/klippy/klippy.py
+    makeWrapper $out/lib/klippy/klippy.py $out/bin/klippy --chdir $out/lib/klippy
+
+    substitute "$pythonScriptWrapper" "$out/bin/klipper-calibrate-shaper" \
+      --subst-var "out" \
+      --subst-var-by "script" "calibrate_shaper.py"
+    chmod 755 "$out/bin/klipper-calibrate-shaper"
+
+    runHook postInstall
+  '';
+
+  passthru.updateScript = unstableGitUpdater {
+    url = meta.homepage;
+    tagPrefix = "v";
+  };
+
+  meta = with lib; {
+    description = "Klipper 3D printer firmware";
+    mainProgram = "klippy";
+    homepage = "https://github.com/KevinOConnor/klipper";
+    maintainers = with maintainers; [ lovesegfault zhaofengli cab404 ];
+    platforms = platforms.linux;
+    license = licenses.gpl3Only;
+  };
+}

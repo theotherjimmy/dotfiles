@@ -33,38 +33,30 @@
       deploy,
       devshell,
   }:
-  {
-    nixosConfigurations.nixboi = nixpkgs.lib.nixosSystem {
+  let local-overlay = final: prior:
+    prior.lib.filesystem.packagesFromDirectoryRecursive {
+      callPackage = prior.callPackage;
+      directory = ./pkgs;
+    };
+    mkComputer = hostName: includeUser: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./nixboi-config.nix
-        ./nixboi-hardware.nix
+        ({...}: { nixpkgs.overlays = [ local-overlay ]; })
+        ./computers/${hostName}/config.nix
+        ./computers/${hostName}/hardware.nix
         home-manager.nixosModules.home-manager
-        ({...}: {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.jimbri01 = import ./modules/top-level.nix;
-          };
-        })
-      ];
+        
+      ] ++ nixpkgs.lib.optional (includeUser) ({...}: {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          users.jimbri01 = import ./modules/top-level.nix;
+        };
+      });
     };
-    nixosConfigurations.tablet = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./tablet-config.nix
-        ./tablet-hardware.nix
-        home-manager.nixosModules.home-manager
-        ({...}: {
-          networking.hostName = "tablet";
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.jimbri01 = import ./modules/top-level.nix;
-          };
-        })
-      ];
-    };
+  in {
+    nixosConfigurations.nixboi = mkComputer "nixboi" true;
+    nixosConfigurations.tablet = mkComputer "tablet" true;
     deploy.nodes.tablet = {
       hostname = "tablet.local";
       profiles.system = {

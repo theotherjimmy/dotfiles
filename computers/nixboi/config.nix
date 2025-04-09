@@ -1,10 +1,6 @@
 # Help is available in the configuration.nix(5) man page and in the
 # NixOS manual, accessible by running ‘nixos-help’.
 { config, pkgs, lib, ... }: {
-  imports = [
-    ./nixboi-hardware.nix
-  ];
-
   # boot from zfs
   boot.initrd.supportedFilesystems = ["zfs"];
   boot.supportedFilesystems = [ "zfs" ];
