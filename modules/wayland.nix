@@ -87,6 +87,13 @@ in {
           background-color = #000A
         '';
     };
+    xdg.portal = {
+      enable = true;
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal-hyprland
+      ];
+    };
     wayland.windowManager.hyprland = {
         enable = true;
         extraConfig = let colors = config.colors.fn "0xff"; in ''
