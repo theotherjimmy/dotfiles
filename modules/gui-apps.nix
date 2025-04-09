@@ -26,13 +26,6 @@ let
   };
   c = config.colors.fn "#";
 in {
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-original"
-    "steam-runtime"
-    "steam-run"
-    "steam-unwrapped"
-  ];  
   home.packages = [
     orcaslicer
     pkgs.freecad-wayland
