@@ -52,7 +52,7 @@
     nixosConfigurations.tablet = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./configuration.nix
+        ./tablet-config.nix
         ./tablet-hardware.nix
         home-manager.nixosModules.home-manager
         ({...}: {
