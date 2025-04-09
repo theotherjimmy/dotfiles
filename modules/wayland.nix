@@ -33,6 +33,8 @@ in {
         hypr-ws-switch
         pkgs.helvum
         pkgs.wl-clipboard-rs
+        pkgs.wayvnc
+        pkgs.wlvncc
     ];
     programs.waybar = {
         enable = true;
@@ -63,6 +65,11 @@ in {
     services.udiskie = {
       enable = true;
       tray = "always";
+    };
+    systemd.user.services.wayvnc = {
+      Install.WantedBy = ["graphical-session.target"];
+      Unit.PartOf = ["graphical-session.target"];
+      Service.ExecStart = "${pkgs.lib.getExe pkgs.wayvnc} -g -f 60";
     };
     programs.swaylock.enable = true;
     xdg.configFile."tofi/config" = {
@@ -99,12 +106,18 @@ in {
           bind = $mod and Shift, K, swapwindow, u
           bind = $mod and Shift, L, swapwindow, r
           bind = $mod, D, killactive,
+          bind = $mod, Return, fullscreen, 1
+          bind = $mod and Shift, Return, fullscreen, 0
           bind = $mod and Shift, S, exec, sleep 1 && hyprctl dispatch dpms off
           bindm = $mod, mouse:272, movewindow
+          bindm = $mod, mouse:273, resizewindow
 
           monitor=desc:Acer Technologies Acer K272HUL T0SAA0014200,2560x1440,0x0,1,bitdepth,8
+          workspace = m[desc:Acer Technologies Acer K272HUL T0SAA0014200], layoutopt:orientation:center
           monitor=desc:Samsung Electric Company S27D850 HCJH901332,2560x1440,0x1440,1,bitdepth,8
+          workspace = m[desc:Samsung Electric Company S27D850 HCJH901332], layoutopt:orientation:center
           monitor=desc:Ancor Communications Inc ASUS PB278 E5LMTF100243,2560x1440,2560x320,1,bitdepth,8,transform,1
+          workspace = m[desc:Ancor Communications Inc ASUS PB278 E5LMTF100243], layoutopt:orientation:top
 
           general {
               layout = master
@@ -116,13 +129,12 @@ in {
 
           decoration {
               rounding = 10
-              drop_shadow = false
           }
           layerrule=noanim,wofi
 
           input {
-              kb_layout = us
-              kb_variant = dvp
+              kb_layout = us,us
+              kb_variant = dvp,
               kb_options = caps:escape
           }
 
@@ -131,6 +143,7 @@ in {
               mfact = 0.4
               new_on_active = after
           }
+          workspace = m:desc:Ancor Communications Inc ASUS PB278 E5LMTF100243, layoutopt:orientation:top
 
           misc {
               key_press_enables_dpms = true

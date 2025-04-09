@@ -14,53 +14,88 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprland.url = "github:hyprwm/Hyprland";
+
+    deploy.url = "github:serokell/deploy-rs";
+    deploy.inputs.nixpkgs.follows = "nixpkgs";
+    deploy.inputs.utils.follows = "flake-utils";
+
+    devshell.url = "github:numtide/devshell/main";
+    devshell.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, home-manager, rust-overlay, hyprland }:
-  flake-utils.lib.eachDefaultSystem (system:
-    let
-      local-overlay = final: super: {
-        home-config = home-config.activationPackage;
-        waybar = super.waybar.override {
-            wireplumberSupport = false;
-        };
+  outputs = {
+      self,
+      nixpkgs,
+      flake-utils,
+      home-manager,
+      rust-overlay,
+      hyprland,
+      deploy,
+      devshell,
+  }:
+  {
+    nixosConfigurations.nixboi = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./nixboi-config.nix
+        ./nixboi-hardware.nix
+        home-manager.nixosModules.home-manager
+        ({...}: {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.jimbri01 = import ./modules/top-level.nix;
+          };
+        })
+      ];
+    };
+    nixosConfigurations.tablet = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./configuration.nix
+        ./tablet-hardware.nix
+        home-manager.nixosModules.home-manager
+        ({...}: {
+          networking.hostName = "tablet";
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.jimbri01 = import ./modules/top-level.nix;
+          };
+        })
+      ];
+    };
+    deploy.nodes.tablet = {
+      hostname = "tablet.local";
+      profiles.system = {
+        user = "root";
+        path = deploy.lib.x86_64-linux.activate.nixos self.nixosConfigurations.tablet;
       };
+    };
+    deploy.nodes.nixboi = {
+      hostname = "nixboi.local";
+      profiles.system = {
+        user = "root";
+        path = deploy.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixboi;
+      };
+    };
+  } // (flake-utils.lib.eachDefaultSystem (system:
+    let
       overlays = [
-        rust-overlay.overlays.default
-        local-overlay
+        devshell.overlays.default
       ];
       pkgs = import nixpkgs {
         inherit system;
         inherit overlays;
       };
-      home-config = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            ./colors.nix
-            ./wayland.nix
-            ./font.nix
-            ./gui-apps.nix
-            ./cli-apps.nix
-            {
-              home = {
-                homeDirectory = "/home/jimbri01";
-                username = "jimbri01";
-                stateVersion = "22.11";
-              };
-              colors.theme = "rose-pine-moon";
-              xsession.enable = false;
-              systemd.user.startServices = true;
-              home.keyboard = {
-                layout = "us";
-                variant = "dvp";
-                options = [ "caps:escape" ];
-              };
-            }
-          ];
-        };
     in
     {
       defaultApp = pkgs.home-config;
       packages.default = pkgs.home-config;
-    });
+      devShell = pkgs.devshell.mkShell {
+        motd = "";
+        packages = [ pkgs.deploy-rs ];
+        env = [{name = "NIX_PATH"; value = "nixpkgs=${nixpkgs}";}];
+      };
+    }));
 }

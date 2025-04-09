@@ -25,7 +25,7 @@ with lib; {
   };
   config.font.emstr = "${config.font.name}FontMono ${toString config.font.em}";
   config.home.packages = [
-    (pkgs.nerdfonts.override {fonts = [config.font.name];})
+    pkgs.nerd-fonts."${lib.strings.toLower config.font.name}"
     # Noto fonts used as backup for now
     pkgs.noto-fonts
     pkgs.noto-fonts-emoji

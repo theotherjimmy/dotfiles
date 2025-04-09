@@ -1,34 +1,38 @@
 { config, lib, pkgs, ... }:
 
 let
+  freecad-version = "39786";
   freecad-weekly-src = pkgs.fetchurl rec {
-      version = "39176";
+      version = freecad-version;
       url = "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-${version}-conda-Linux-x86_64-py311.AppImage";
-      hash = "sha256-HpbP7PXeGsZAwBOclhwiMyy+L7WzWtge7w55zD8q9y4=";
+      hash = "sha256-fSRGy4FO873aHFB7p21hTi6n97yvIlmDm0Dc8QPYGak=";
   };
   freecad-weekly = pkgs.appimageTools.wrapType2 {
-      name = "freecad";
+      pname = "freecad";
+      version = freecad-version;
       src = freecad-weekly-src;
       extraPkgs = (pkgs : with pkgs; [webkitgtk]);
   };
   cura-version ="5.9.0-beta.2";
-  cura-src = pkgs.fetchurl{
+  cura-src = pkgs.fetchurl {
       url = "https://github.com/Ultimaker/Cura/releases/download/${cura-version}/UltiMaker-Cura-${cura-version}-linux-X64.AppImage";
       hash = "sha256-AfUIUMcyreOpm2hNTfwk8e1+0LC8px09AWj2nBufIDU=";
   };
   cura = pkgs.appimageTools.wrapType2 {
-      name = "Ultimaker-Cura";
+      pname = "Ultimaker-Cura";
       version = cura-version;
       src = cura-src;
       extraPkgs = (pkgs : with pkgs; [webkitgtk]);
   };
+  orcaslicer-version = "2.2.0-beta";
   orcaslicer-src = pkgs.fetchurl rec {
-      version = "2.2.0-beta";
+      version = orcaslicer-version;
       url = "https://github.com/SoftFever/OrcaSlicer/releases/download/v${version}/OrcaSlicer_Linux_Ubuntu2004_V${version}.AppImage";
       hash = "sha256-SSg50dp9Js6M5CCSqsbACs9hYlc2TcMdyfCfOl8/kJo=";
   };
   orcaslicer = pkgs.appimageTools.wrapType2 {
-      name = "orcaSlicer";
+      pname = "orcaSlicer";
+      version = orcaslicer-version;
       src = orcaslicer-src;
       extraPkgs = (pkgs : with pkgs; [webkitgtk]);
   };
