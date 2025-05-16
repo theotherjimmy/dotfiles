@@ -1,6 +1,9 @@
 profile-dir := "/nix/var/nix/profiles/per-user/$USER"
 find-gen:= "home-manager-generation"
 
+d computer:
+    deploy .#{{computer}} -s --ssh-user root
+
 switch: build
     ./result/activate
 

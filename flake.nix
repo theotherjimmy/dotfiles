@@ -38,40 +38,36 @@
       callPackage = prior.callPackage;
       directory = ./pkgs;
     };
-    mkComputer = hostName: includeUser: nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ({...}: { nixpkgs.overlays = [ local-overlay ]; })
-        ./computers/${hostName}/config.nix
-        ./computers/${hostName}/hardware.nix
-        home-manager.nixosModules.home-manager
-        
-      ] ++ nixpkgs.lib.optional (includeUser) ({...}: {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.jimbri01 = import ./modules/top-level.nix;
+    mkComputer = hostName: includeUser: {
+      nixosConfigurations.${hostName} = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ({...}: { nixpkgs.overlays = [ local-overlay ]; })
+          ./computers/${hostName}/config.nix
+          ./computers/${hostName}/hardware.nix
+          home-manager.nixosModules.home-manager
+        ] ++ nixpkgs.lib.optional (includeUser) ({...}: {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.jimbri01 = import ./modules/top-level.nix;
+          };
+        });
+      };
+      deploy.nodes.${hostName} = {
+        hostname = hostName;
+        profiles.system = {
+          user = "root";
+          path = deploy.lib.x86_64-linux.activate.nixos
+                 self.nixosConfigurations.${hostName};
         };
-      });
-    };
-  in {
-    nixosConfigurations.nixboi = mkComputer "nixboi" true;
-    nixosConfigurations.tablet = mkComputer "tablet" true;
-    deploy.nodes.tablet = {
-      hostname = "tablet.local";
-      profiles.system = {
-        user = "root";
-        path = deploy.lib.x86_64-linux.activate.nixos self.nixosConfigurations.tablet;
       };
     };
-    deploy.nodes.nixboi = {
-      hostname = "nixboi.local";
-      profiles.system = {
-        user = "root";
-        path = deploy.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixboi;
-      };
-    };
-  } // (flake-utils.lib.eachDefaultSystem (system:
+  in (nixpkgs.lib.foldr nixpkgs.lib.recursiveUpdate {}
+      [(mkComputer "nixboi" true)
+       (mkComputer "tablet" true)
+       (mkComputer "eycho" false)])
+  // (flake-utils.lib.eachDefaultSystem (system:
     let
       overlays = [
         devshell.overlays.default
