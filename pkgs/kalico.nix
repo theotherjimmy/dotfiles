@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "KalicoCrew";
     repo = "kalico";
-    rev = "20d9035cb589eb583e5c42761209eb5051b8a670";
-    sha256 = "sha256-4PSwVuA98+5SAMXAtFR/Lpl7nNIRn/BW74Haz1fEO2w=";
+    rev = "3f066a578a0753dec21271e4e824e0f6810cc4df";
+    sha256 = "sha256-j4yytSgj87FlD08dMthuXwtTeDXOlkFcpLBlViEvuVQ=";
   };
   sourceRoot = "${src.name}/klippy";
 
