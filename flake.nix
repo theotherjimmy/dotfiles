@@ -3,7 +3,7 @@
 {
   description = "A bland config";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/6313551cd05425cd5b3e63fe47dbc324eabb15e4";
+    nixpkgs.url = "github:nixos/nixpkgs";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -14,6 +14,7 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     deploy.url = "github:serokell/deploy-rs";
     deploy.inputs.nixpkgs.follows = "nixpkgs";
@@ -71,6 +72,7 @@
     let
       overlays = [
         devshell.overlays.default
+        local-overlay
       ];
       pkgs = import nixpkgs {
         inherit system;
@@ -82,6 +84,10 @@
         motd = "";
         packages = [ pkgs.deploy-rs ];
         env = [{name = "NIX_PATH"; value = "nixpkgs=${nixpkgs}";}];
+      };
+      packages.homeConfigurations."jimbri01" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./modules/top-level.nix ];
       };
     }));
 }

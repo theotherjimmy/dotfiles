@@ -1,8 +1,32 @@
-{config, pkgs, ...}:
+{config, pkgs, lib, ...}:
 
 let
-  tofi-run = "${pkgs.wofi}/bin/wofi -i --show run";
-  wofi = "${pkgs.wofi}/bin/wofi -d -i";
+  bemenu-options = let
+    c = config.colors.fn "#";
+    colors = {
+      tf = c.base0B;
+      tb = c.base02;
+      ff = c.base08;
+      fb = c.base02;
+      cf = c.base07;
+      cb = c.base02;
+      nf = c.base07;
+      nb = c.base02;
+      af = c.base07;
+      ab = c.base02;
+      hf = c.base0D;
+      hb = c.base03;
+      sf = c.base0D;
+      sb = c.base02;
+    };
+    color-args = lib.attrsets.mapAttrsToList
+      (arg: val: ''--${arg} "${val}"'') colors;
+    color-arg-string = lib.strings.concatStringsSep " " color-args;
+  in ''-W 0.5 -c -l 30 --fixed-height -R 5 ${color-arg-string}'';
+  tofi-run = "${pkgs.bemenu}/bin/bemenu-run ${bemenu-options}";
+  wofi = "${pkgs.bemenu}/bin/bemenu -i ${bemenu-options}";
+  term = "${pkgs.foot}/bin/foot";
+  termInPwd = pwdVar: "${term} -- env -C ${pwdVar} bash";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
   hyprmenu = pkgs.writers.writeBashBin "hyprmenu" ''
      ${tofi-run}
@@ -12,8 +36,27 @@ let
     NAME=$(fre --sorted --store $FRE_STORE | ${wofi} -p "Rename Workspace ")
     if [[ -n $NAME ]] ; then
       ID=$(${hyprctl} activeworkspace -j | jq '.id')
+      SUFFIX=$(${hyprctl} activeworkspace -j | jq -r '.name' | cut -d: -s -f 2-)
       ${hyprctl} dispatch renameworkspace $ID $NAME
       fre --add "$NAME" --store $FRE_STORE
+    fi
+  '';
+  hypr-set-pwd = pkgs.writers.writeBashBin "hypr-set-pwd" ''
+    SELECTED=$(fd -d 2 -t d | ${wofi} -p "Set Workspace PWD")
+    if [[ -n $SELECTED ]] ; then
+      ID=$(${hyprctl} activeworkspace -j | jq '.id')
+      PREFIX=$(${hyprctl} activeworkspace -j | jq -r '.name' | cut -d: -f 1)
+      if [[ -n $ID ]] && [[ -n $PREFIX ]] ; then
+          ${hyprctl} dispatch renameworkspace $ID $PREFIX:$SELECTED
+      fi
+    fi
+  '';
+  hypr-ws-pwd = pkgs.writers.writeBashBin "hypr-ws-pwd" ''
+    CUR_WS_PWD=$(${hyprctl} activeworkspace -j | jq -r '.name' | cut -d: -s -f 2-)
+    if [[ -e $CUR_WS_PWD ]] ; then
+       ${termInPwd "$CUR_WS_PWD"}
+    else
+       ${term}
     fi
   '';
   hypr-ws-switch = pkgs.writers.writeBashBin "hypr-ws-switch" ''
@@ -27,10 +70,12 @@ let
   '';
 in {
     home.packages = [
-        pkgs.wofi
+        pkgs.bemenu
         hyprmenu
+        hypr-set-pwd
         hypr-ws-rename
         hypr-ws-switch
+        hypr-ws-pwd
         pkgs.helvum
         pkgs.wl-clipboard-rs
         pkgs.wayvnc
@@ -44,17 +89,50 @@ in {
             layer = "top";
             position = "bottom";
             height = 30;
-            output = [
-              "DP-1"
-              "DP-4"
-            ];
-            modules-left = [ "cpu" "memory" "temperature" ];
-            modules-center = [ "hyprland/submap" ];
-            modules-right = [ "tray" "clock" ];
-            cpu.format = "{min_frequency}Ghz ⇋ {max_frequency}Ghz";
-            "hyprland/submap".format = "╞ {} ╡";
+            modules-left = [ "cpu" "memory" "temperature" "battery"];
+            modules-center = [ "hyprland/workspaces" ];
+            modules-right = [ "wireplumber" "tray" "clock" ];
+            clock.format = "{:%A %F %H:%M}";
+            cpu.format = "{min_frequency:0.1f}Ghz ⇋ {max_frequency:0.1f}Ghz";
+            memory.format = "{used:0.1f}G/{total:0.1f}G";
+            "hyprland/workspaces" = {
+                format = "{name}";
+                active-only = true;
+            };
+            temperature = {
+                hwmon-path = "/sys/devices/platform/coretemp.0/hwmon/hwmon9/temp1_input";
+                tooltip = false;
+            };
+            wireplumber.format = "Vol: {volume}";
+            battery.format = "Bat: {capacity}%";
           };
         };
+        style = let c = config.colors.fn "#"; in ''
+          * {
+              padding: 0 10px;
+              border: none;
+              border-radius: 10;
+              font-size: 18px;
+          }
+          window#waybar {
+              background: transparent;
+          }
+          .modules-left {
+              padding: 0 10px;
+              border: 2px solid ${c.base0D};
+              background-color: ${c.base00};
+          }
+          .modules-center {
+              padding: 0 10px;
+              border: 2px solid ${c.base09};
+              background-color: ${c.base00};
+          }
+          .modules-right {
+              padding: 0 10px;
+              border: 2px solid ${c.base0E};
+              background-color: ${c.base00};
+          }
+        '';
     };
     services.mako = {
         enable = true;
@@ -96,12 +174,22 @@ in {
     };
     wayland.windowManager.hyprland = {
         enable = true;
-        extraConfig = let colors = config.colors.fn "0xff"; in ''
+        extraConfig = let
+          colors = config.colors.fn "0xff";
+          foot = "${pkgs.foot}"/bin/foot;
+          mkMonitor = desc: res: loc: scale: rotate: lib.strings.trim ''
+            monitor=desc:${desc},${res},${loc},${toString scale},bitdepth,8${lib.strings.optionalString rotate ",transform,1"}
+            workspace = m[desc:${desc}], layoutopt:orientation:${if rotate then "top" else "center"}
+          '';
+        in ''
+          env AQ_MGPU_NO_EXPLICIT=1
           $mod = Alt
-          bind = $mod, C, exec, foot
+          bind = $mod and Shift, C, exec, foot
+          bind = $mod, C, exec, hypr-ws-pwd
           bind = $mod, G, exec, hypr-ws-switch
           bind = $mod, N, workspace, empty
           bind = $mod, R, exec, hypr-ws-rename
+          bind = $mod and Shift, R, exec, hypr-set-pwd
           bind = $mod, P, exec, hyprmenu
           bind = $mod, H, movefocus, l
           bind = $mod, J, movefocus, d
@@ -119,12 +207,16 @@ in {
           bindm = $mod, mouse:272, movewindow
           bindm = $mod, mouse:273, resizewindow
 
-          monitor=desc:Acer Technologies Acer K272HUL T0SAA0014200,2560x1440,0x0,1,bitdepth,8
-          workspace = m[desc:Acer Technologies Acer K272HUL T0SAA0014200], layoutopt:orientation:center
-          monitor=desc:Samsung Electric Company S27D850 HCJH901332,2560x1440,0x1440,1,bitdepth,8
-          workspace = m[desc:Samsung Electric Company S27D850 HCJH901332], layoutopt:orientation:center
-          monitor=desc:Ancor Communications Inc ASUS PB278 E5LMTF100243,2560x1440,2560x320,1,bitdepth,8,transform,1
-          workspace = m[desc:Ancor Communications Inc ASUS PB278 E5LMTF100243], layoutopt:orientation:top
+          ${mkMonitor "Acer Technologies Acer K272HUL T0SAA0014200" "2560x1440" "0x0" 1 false}
+          ${mkMonitor "Samsung Electric Company S27D850 HCJH901332" "2560x1440" "0x1440" 1 false}
+
+          ${mkMonitor "Ancor Communications Inc ASUS PB278 E5LMTF100243" "2560x1440" "0x0" 1 false}
+          ${mkMonitor "Samsung Display Corp. 0x4164" "3840x2400" "0x1440" 2 false}
+
+          ${mkMonitor "Lenovo Group Limited TIO24Gen4 V308MBXM" "1920x1080@74.97" "2250x0" 1 true}
+          ${mkMonitor "Lenovo Group Limited P24h-30 V90E1R50" "2560x1440@74.78" "-310x0" 1 false}
+          animation = global, 1, 1, default
+          animation = workspaces, 1, 1, default, fade
 
           general {
               layout = master
@@ -137,7 +229,6 @@ in {
           decoration {
               rounding = 10
           }
-          layerrule=noanim,wofi
 
           input {
               kb_layout = us,us

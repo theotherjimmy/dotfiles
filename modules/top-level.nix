@@ -11,7 +11,7 @@
     username = "jimbri01";
     stateVersion = "22.11";
   };
-  colors.theme = "rose-pine-moon";
+  colors.theme = "gruvbox-dark";
   xsession.enable = false;
   systemd.user.startServices = true;
   home.keyboard = {

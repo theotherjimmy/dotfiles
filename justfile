@@ -8,7 +8,7 @@ switch: build
     ./result/activate
 
 build:
-    nix build -L
+    nix build -L .#homeConfigurations."jimbri01".activationPackage
 
 rollback num="0":
     {{profile-dir}}/home-manager-{{num}}-link/activate

@@ -49,8 +49,8 @@
         {
           key = "l";
           mode = "user";
-          effect = ":peneira-lines<ret>";
-          docstring = "Spell check actions";
+          effect = ":enter-user-mode lsp<ret>";
+          docstring = "Language server actions";
         }
         {
           key = "b";
@@ -103,14 +103,15 @@
       ];
     };
     plugins = [
+      pkgs.kakounePlugins.kakoune-lsp
       (pkgs.kakouneUtils.buildKakounePlugin rec {
         pname = "peneira";
-        version = "2022-02-13";
+        version = "2025-05-01";
         src = pkgs.fetchFromGitHub {
           owner = "gustavo-hms";
           repo = pname;
-          rev = "429f0422f4395564811d9c73d51a78b772dbd4e4";
-          hash = "sha256-kO1kZr8U214qJxP0txUpzUl1/nJadknXDSTEfLKlaPI=";
+          rev = "b56dd10bb4771da327b05a9071b3ee9a092f9788";
+          hash = "sha256-rZBZ+ks9aaefmjl6GAAwg/HQqDbMEp+zkevMbJ1QeUI=";
         };
       })
       (pkgs.kakouneUtils.buildKakounePlugin rec {
@@ -119,8 +120,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "gustavo-hms";
           repo = pname;
-          rev = "2f430316f8fc4d35db6c93165e2e77dc9f3d0450";
-          hash = "sha256-vHn/V3sfzaxaxF8OpA5jPEuPstOVwOiQrogdSGtT6X4=";
+          rev = "e32ac89fdc43e5dbd8750d55cbcf1aea66d3ebdf";
+          hash = "sha256-Hz4e3c/cv7K7+pXIOI3eqYmJgWHuRSdI50hqurGey/g=";
         };
       })
     ];
@@ -173,6 +174,10 @@
                         buffer %arg{1}
             }
         }
+        eval %sh{kak-lsp}
+        hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
+            lsp-enable-window
+        }
     '';
   };
   programs.htop.enable = true;
@@ -210,6 +215,7 @@
     };
     sessionVariables.EDITOR = "edit";
     sessionVariables._JAVA_AWT_WM_NONREPARENTING = "1";
+    sessionVariables.SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent";
     bashrcExtra = ''
       export PS1='    ; \[$(tput sgr0)\]'
       export PROMPT_COMMAND='if [[ $? != 0 ]] ; then echo -e -n "\001$(tput setaf 2)\002"; fi'
@@ -247,6 +253,7 @@
     defaultCommand = "fd --type f || git ls-tree -r --name-only HEAD || rg --files || find .";
   };
   services.lorri.enable = true;
+  services.ssh-agent.enable = true;
   systemd.user.services.ollama = {
     Unit = {
       Description = "LLM server";
@@ -266,7 +273,7 @@
           exit 1
         fi
       fi
-      ws=$(hyprctl activeworkspace -j | jq -r ".name")
+      ws=$(hyprctl activeworkspace -j | jq -r ".name" | cut -d: -f 1)
       if [[ $ws != "" ]] ; then
         if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
           exec kak -c $ws $files
