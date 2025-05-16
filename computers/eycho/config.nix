@@ -34,7 +34,6 @@
   hardware = {
     opengl = {
       enable = true;
-      driSupport = true;
     };
   };
   services.getty.autologinUser = "klipper";
@@ -53,7 +52,7 @@
     user = "klipper";
     group = "klipper";
     configFile = ./kalico.cfg;
-    package = pkgs.callPackage ./pkgs/kalico.nix {} ;
+    package = pkgs.kalico;
   };
   services.avahi = {
     enable = true;
@@ -70,6 +69,7 @@
     lidSwitch = "ignore";
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "ignore";
+    suspendKey = "ignore";
   };
   services.nginx = {
     enable = true;
