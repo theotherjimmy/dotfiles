@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
@@ -14,12 +15,14 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "dozer";
+    {
+      device = "dozer";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/4830-8589";
+    {
+      device = "/dev/disk/by-uuid/4830-8589";
       fsType = "vfat";
     };
 

@@ -24,51 +24,56 @@
     devshell.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
-      self,
-      nixpkgs,
-      flake-utils,
-      home-manager,
-      rust-overlay,
-      hyprland,
-      deploy,
-      devshell,
-  }:
-  let local-overlay = final: prior:
-    prior.lib.filesystem.packagesFromDirectoryRecursive {
-      callPackage = prior.callPackage;
-      directory = ./pkgs;
-    };
-    mkComputer = hostName: includeUser: {
-      nixosConfigurations.${hostName} = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ({...}: { nixpkgs.overlays = [ local-overlay ]; })
-          ./computers/${hostName}/config.nix
-          ./computers/${hostName}/hardware.nix
-          home-manager.nixosModules.home-manager
-        ] ++ nixpkgs.lib.optional (includeUser) ({...}: {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.jimbri01 = import ./modules/top-level.nix;
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , home-manager
+    , rust-overlay
+    , hyprland
+    , deploy
+    , devshell
+    ,
+    }:
+    let
+      local-overlay = final: prior:
+        prior.lib.filesystem.packagesFromDirectoryRecursive {
+          callPackage = prior.callPackage;
+          directory = ./pkgs;
+        };
+      mkComputer = hostName: includeUser: {
+        nixosConfigurations.${hostName} = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ({ ... }: { nixpkgs.overlays = [ local-overlay ]; })
+            ./computers/${hostName}/config.nix
+            ./computers/${hostName}/hardware.nix
+            home-manager.nixosModules.home-manager
+          ] ++ nixpkgs.lib.optional (includeUser) ({ ... }: {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.jimbri01 = import ./modules/top-level.nix;
+            };
+          });
+        };
+        deploy.nodes.${hostName} = {
+          hostname = hostName;
+          profiles.system = {
+            user = "root";
+            path = deploy.lib.x86_64-linux.activate.nixos
+              self.nixosConfigurations.${hostName};
           };
-        });
-      };
-      deploy.nodes.${hostName} = {
-        hostname = hostName;
-        profiles.system = {
-          user = "root";
-          path = deploy.lib.x86_64-linux.activate.nixos
-                 self.nixosConfigurations.${hostName};
         };
       };
-    };
-  in (nixpkgs.lib.foldr nixpkgs.lib.recursiveUpdate {}
-      [(mkComputer "nixboi" true)
-       (mkComputer "tablet" true)
-       (mkComputer "eycho" false)])
-  // (flake-utils.lib.eachDefaultSystem (system:
+    in
+    (nixpkgs.lib.foldr nixpkgs.lib.recursiveUpdate { }
+      [
+        (mkComputer "nixboi" true)
+        (mkComputer "tablet" true)
+        (mkComputer "eycho" false)
+      ])
+    // (flake-utils.lib.eachDefaultSystem (system:
     let
       overlays = [
         devshell.overlays.default
@@ -83,8 +88,9 @@
       devShell = pkgs.devshell.mkShell {
         motd = "";
         packages = [ pkgs.deploy-rs ];
-        env = [{name = "NIX_PATH"; value = "nixpkgs=${nixpkgs}";}];
+        env = [{ name = "NIX_PATH"; value = "nixpkgs=${nixpkgs}"; }];
       };
+      formatter = pkgs.nixpkgs-fmt;
       packages.homeConfigurations."jimbri01" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./modules/top-level.nix ];

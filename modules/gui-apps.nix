@@ -1,31 +1,21 @@
 { config, lib, pkgs, ... }:
 
 let
-  cura-version ="5.9.0-beta.2";
-  cura-src = pkgs.fetchurl {
-      url = "https://github.com/Ultimaker/Cura/releases/download/${cura-version}/UltiMaker-Cura-${cura-version}-linux-X64.AppImage";
-      hash = "sha256-AfUIUMcyreOpm2hNTfwk8e1+0LC8px09AWj2nBufIDU=";
-  };
-  cura = pkgs.appimageTools.wrapType2 {
-      pname = "Ultimaker-Cura";
-      version = cura-version;
-      src = cura-src;
-      extraPkgs = (pkgs : with pkgs; [webkitgtk]);
-  };
   orcaslicer-version = "2.2.0-beta";
   orcaslicer-src = pkgs.fetchurl rec {
-      version = orcaslicer-version;
-      url = "https://github.com/SoftFever/OrcaSlicer/releases/download/v${version}/OrcaSlicer_Linux_Ubuntu2004_V${version}.AppImage";
-      hash = "sha256-SSg50dp9Js6M5CCSqsbACs9hYlc2TcMdyfCfOl8/kJo=";
+    version = orcaslicer-version;
+    url = "https://github.com/SoftFever/OrcaSlicer/releases/download/v${version}/OrcaSlicer_Linux_Ubuntu2004_V${version}.AppImage";
+    hash = "sha256-SSg50dp9Js6M5CCSqsbACs9hYlc2TcMdyfCfOl8/kJo=";
   };
   orcaslicer = pkgs.appimageTools.wrapType2 {
-      pname = "orcaSlicer";
-      version = orcaslicer-version;
-      src = orcaslicer-src;
-      extraPkgs = (pkgs : with pkgs; [webkitgtk]);
+    pname = "orcaSlicer";
+    version = orcaslicer-version;
+    src = orcaslicer-src;
+    extraPkgs = (pkgs: with pkgs; [ webkitgtk ]);
   };
   c = config.colors.fn "#";
-in {
+in
+{
   home.packages = [
     orcaslicer
     pkgs.freecad-wayland
@@ -41,74 +31,32 @@ in {
     })
   ];
   programs.foot = {
-      enable = true;
-      settings.main = {
-          font = "${config.font.name}NerdFontMono:size=${toString config.font.em}";
-          dpi-aware = "yes";
-      };
-      settings.colors = let c = config.colors.fn ""; in {
-          foreground = c.base05;
-          background = c.base00;
-          regular0 = c.base00;
-          regular1 = c.base08;
-          regular2 = c.base0B;
-          regular3 = c.base0A;
-          regular4 = c.base0D;
-          regular5 = c.base0E;
-          regular6 = c.base0C;
-          regular7 = c.base05;
-          bright0 =  c.base03;
-          bright1 =  c.base09;
-          bright2 =  c.base0B;
-          bright3 =  c.base0A;
-          bright4 =  c.base04;
-          bright5 =  c.base06;
-          bright6 =  c.base0F;
-          bright7 =  c.base07;
-      };
+    enable = true;
+    settings.main = {
+      font = "${config.font.name}NerdFontMono:size=${toString config.font.em}";
+      dpi-aware = "yes";
+    };
+    settings.colors = let c = config.colors.fn ""; in {
+      foreground = c.base05;
+      background = c.base00;
+      regular0 = c.base00;
+      regular1 = c.base08;
+      regular2 = c.base0B;
+      regular3 = c.base0A;
+      regular4 = c.base0D;
+      regular5 = c.base0E;
+      regular6 = c.base0C;
+      regular7 = c.base05;
+      bright0 = c.base03;
+      bright1 = c.base09;
+      bright2 = c.base0B;
+      bright3 = c.base0A;
+      bright4 = c.base04;
+      bright5 = c.base06;
+      bright6 = c.base0F;
+      bright7 = c.base07;
+    };
   };
-  xdg.configFile."wezterm/wezterm.lua".text = 
-    ''
-      local wezterm = require 'wezterm';
-      return {
-        enable_wayland = true;
-        front_end = "WebGpu";
-        colors = {
-          foreground = "${c.base05}",
-          background = "${c.base00}",
-          cursor_bg = "${c.base05}",
-          cursor_border = "${c.base03}",
-          cursor_fg = "${c.base00}",
-          selection_bg = "${c.base05}",
-          selection_fg = "${c.base00}",
-          ansi = {
-            "${c.base00}", "${c.base08}", "${c.base0B}", "${c.base0A}",
-            "${c.base0D}", "${c.base0E}", "${c.base0C}", "${c.base05}"
-          },
-          brights = {
-            "${c.base03}", "${c.base09}", "${c.base0B}", "${c.base0A}",
-            "${c.base04}", "${c.base06}", "${c.base0F}", "${c.base07}"
-          },
-        },
-        font_size = 13,
-        enable_tab_bar = false,
-        window_padding = {
-          left = 5,
-          right = 5,
-          top = 5,
-          bottom = 5,
-        },
-        keys = {
-            ${pkgs.lib.concatMapStrings (num: ''
-          {
-            key = '${toString num}',
-            mods = 'SHIFT',
-            action = wezterm.action.SendString "${toString num}",
-          },''
-          ) (pkgs.lib.range 0 9)}
-        },
-      }
-    '';
   programs.zathura = {
     enable = true;
     options = {
@@ -145,108 +93,6 @@ in {
     enable = true;
     package = pkgs.firefox-bin;
   };
-  programs.rofi = {
-    enable = true;
-    font = config.font.emstr;
-    terminal = "${pkgs.wezterm}/bin/wezterm";
-    theme = let
-      inherit (config.lib.formats.rasi) mkLiteral;
-    in {
-      "*" = {
-        background-color = mkLiteral c.base00;
-        border-color = c.base0E;
-      };
-      window = {
-        border = 2;
-        padding = 2;
-        anchor = mkLiteral "center";
-      };
-      mainbox = {
-        border = 0;
-        padding = 0;
-      };
-      textbox = {
-        highlight = mkLiteral "bold italic";
-        text-color = mkLiteral c.base05;
-      };
-      listview = {
-        border = mkLiteral "2px solid 0 0";
-        padding = mkLiteral "2px 0 0";
-        border-color = mkLiteral c.base0E;
-        spacing = mkLiteral "2px";
-        scrollbar = mkLiteral c.base0E;
-        lines = 20;
-      };
-      element = {
-        border = 0;
-        padding = mkLiteral "2px";
-      };
-
-      "element.normal.normal" = {
-        text-color = mkLiteral c.base05;
-      };
-      "element.alternate.normal" = {
-        text-color = mkLiteral c.base05;
-      };
-      "element.selected.normal" = {
-        background-color = mkLiteral c.base01;
-        text-color = mkLiteral c.base0B;
-      };
-
-      "element.normal.active" = {
-        background-color = mkLiteral c.base0A;
-        text-color = mkLiteral c.base00;
-      };
-      "element.alternate.active" = {
-        background-color = mkLiteral c.base0A;
-        text-color = mkLiteral c.base00;
-      };
-      "element.selected.active" = {
-        background-color = mkLiteral c.base0A;
-        text-color = mkLiteral c.base01;
-      };
-
-      "element.normal.urgent" = {
-        background-color = mkLiteral c.base08;
-        text-color = mkLiteral c.base00;
-      };
-      "element.alternate.urgent" = {
-        background-color = mkLiteral c.base08;
-        text-color = mkLiteral c.base00;
-      };
-      "element.selected.urgent" = {
-        background-color = mkLiteral c.base08;
-        text-color = mkLiteral c.base01;
-      };
-      mode-switcher = {
-        border = mkLiteral "2px 0 0";
-        border-color = mkLiteral c.base0E;
-      };
-      "case-indicator, entry, prompt, button" = {
-        spacing = 0;
-        text-color = mkLiteral c.base05;
-      };
-      "button.selected" = {
-        text-color = mkLiteral c.base0B;
-      };
-      inputbar = {
-        spacing = 0;
-        text-color = mkLiteral c.base05;
-        padding = mkLiteral "2px";
-        children = [ "prompt" "textbox-prompt-sep" "entry" "case-indicator" ];
-      };
-      textbox-prompt-sep = {
-        expand = false;
-        str = ";";
-        text-color = mkLiteral c.base0E;
-        margin = mkLiteral "0 0.3em 0 0";
-      };
-      "element-text, element-icon" = {
-        background-color = mkLiteral "inherit";
-        text-color = mkLiteral "inherit";
-      };
-    };
-  };
   gtk.enable = true;
   gtk.iconTheme.name = "Adwaita";
   gtk.iconTheme.package = pkgs.adwaita-icon-theme;
@@ -256,9 +102,9 @@ in {
     version = "master";
 
     src = pkgs.fetchFromGitHub {
-      owner  = "3ximus";
-      repo   = pname;
-      rev    = "fda45c127bd5ed3cdd2dfcc6c396e7aef99abd8e";
+      owner = "3ximus";
+      repo = pname;
+      rev = "fda45c127bd5ed3cdd2dfcc6c396e7aef99abd8e";
       sha256 = "1vlgsp7hgf96bzlj54rimmimzhpchh3z3a4fll71wxghr3gpv27d";
     };
 
@@ -274,22 +120,22 @@ in {
 
     enableParallelBuilding = false;
     patchPhase = ''
-    for file in `find . -name '*.scss' -or -name '*.svg'` ; do
-      substituteInPlace $file \
-        --replace '#282828' '${c.base00}' \
-        --replace '#ebdbb2' '${c.base05}' \
-        --replace '#fbf1c7' '${c.base07}' \
-        --replace '#3c3836' '${c.base03}' \
-        --replace '#689d6a' '${c.base0C}' \
-        --replace '$primary_caret_color: #1d2021' '$primary_caret_color: ${c.base05}' \
-        --replace '#1d2021' '${c.base03}' \
-        --replace '#03a9f4' '${c.base0D}' \
-        --replace '#ef6c00' '${c.base0A}' \
-        --replace '#673ab7' '${c.base0E}' \
-        --replace '#f44336' '${c.base08}' \
-        --replace '#4caf50' '${c.base0B}' \
-        --replace '#83a598' '${c.base04}' ;
-    done
+      for file in `find . -name '*.scss' -or -name '*.svg'` ; do
+        substituteInPlace $file \
+          --replace '#282828' '${c.base00}' \
+          --replace '#ebdbb2' '${c.base05}' \
+          --replace '#fbf1c7' '${c.base07}' \
+          --replace '#3c3836' '${c.base03}' \
+          --replace '#689d6a' '${c.base0C}' \
+          --replace '$primary_caret_color: #1d2021' '$primary_caret_color: ${c.base05}' \
+          --replace '#1d2021' '${c.base03}' \
+          --replace '#03a9f4' '${c.base0D}' \
+          --replace '#ef6c00' '${c.base0A}' \
+          --replace '#673ab7' '${c.base0E}' \
+          --replace '#f44336' '${c.base08}' \
+          --replace '#4caf50' '${c.base0B}' \
+          --replace '#83a598' '${c.base04}' ;
+      done
     '';
 
     installPhase = ''

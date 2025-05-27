@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "sd_mod" ];
@@ -14,22 +15,26 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "dozer/local/root";
+    {
+      device = "dozer/local/root";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/B554-3523";
+    {
+      device = "/dev/disk/by-uuid/B554-3523";
       fsType = "vfat";
     };
 
   fileSystems."/nix" =
-    { device = "dozer/local/nix";
+    {
+      device = "dozer/local/nix";
       fsType = "zfs";
     };
 
   fileSystems."/home" =
-    { device = "dozer/safe/home";
+    {
+      device = "dozer/safe/home";
       fsType = "zfs";
     };
 

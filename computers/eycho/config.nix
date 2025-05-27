@@ -15,8 +15,8 @@
     group = "klipper";
     address = "0.0.0.0";
     settings = {
-      octoprint_compat = {};
-      history = {};
+      octoprint_compat = { };
+      history = { };
       authorization = {
         force_logins = true;
         cors_domains = [
@@ -42,7 +42,7 @@
        cage -ds start-klipper-screen;
     fi
   '';
-  users.groups.klipper = {};
+  users.groups.klipper = { };
   users.users.klipper = {
     isNormalUser = true;
     group = "klipper";
@@ -79,7 +79,8 @@
       wlr-randr --output LVDS-1 --rotate 90
       exec KlipperScreen
     '';
-  in[
+  in
+  [
     kakoune
     cage
     start-klipper-screen

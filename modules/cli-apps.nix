@@ -1,5 +1,27 @@
 { config, lib, pkgs, ... }:
 
+let
+  kak-peneira = pkgs.kakouneUtils.buildKakounePlugin rec {
+    pname = "peneira";
+    version = "2025-05-01";
+    src = pkgs.fetchFromGitHub {
+      owner = "gustavo-hms";
+      repo = pname;
+      rev = "b56dd10bb4771da327b05a9071b3ee9a092f9788";
+      hash = "sha256-rZBZ+ks9aaefmjl6GAAwg/HQqDbMEp+zkevMbJ1QeUI=";
+    };
+  };
+  kak-luar = pkgs.kakouneUtils.buildKakounePlugin rec {
+    pname = "luar";
+    version = "2022-02-28";
+    src = pkgs.fetchFromGitHub {
+      owner = "gustavo-hms";
+      repo = pname;
+      rev = "e32ac89fdc43e5dbd8750d55cbcf1aea66d3ebdf";
+      hash = "sha256-Hz4e3c/cv7K7+pXIOI3eqYmJgWHuRSdI50hqurGey/g=";
+    };
+  };
+in
 {
   programs.kakoune = {
     enable = true;
@@ -104,28 +126,10 @@
     };
     plugins = [
       pkgs.kakounePlugins.kakoune-lsp
-      (pkgs.kakouneUtils.buildKakounePlugin rec {
-        pname = "peneira";
-        version = "2025-05-01";
-        src = pkgs.fetchFromGitHub {
-          owner = "gustavo-hms";
-          repo = pname;
-          rev = "b56dd10bb4771da327b05a9071b3ee9a092f9788";
-          hash = "sha256-rZBZ+ks9aaefmjl6GAAwg/HQqDbMEp+zkevMbJ1QeUI=";
-        };
-      })
-      (pkgs.kakouneUtils.buildKakounePlugin rec {
-        pname = "luar";
-        version = "2022-02-28";
-        src = pkgs.fetchFromGitHub {
-          owner = "gustavo-hms";
-          repo = pname;
-          rev = "e32ac89fdc43e5dbd8750d55cbcf1aea66d3ebdf";
-          hash = "sha256-Hz4e3c/cv7K7+pXIOI3eqYmJgWHuRSdI50hqurGey/g=";
-        };
-      })
+      kak-peneira
+      kak-luar
     ];
-    extraConfig = 
+    extraConfig =
       with (config.colors.fn "rgb:"); ''
         face global value ${base09}
         face global type ${base0A}+b
@@ -178,7 +182,7 @@
         hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
             lsp-enable-window
         }
-    '';
+      '';
   };
   programs.htop.enable = true;
   programs.direnv = {
@@ -215,7 +219,7 @@
     };
     sessionVariables.EDITOR = "edit";
     sessionVariables._JAVA_AWT_WM_NONREPARENTING = "1";
-    sessionVariables.SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent";
+    sessionVariables.SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent";
     bashrcExtra = ''
       export PS1='    ; \[$(tput sgr0)\]'
       export PROMPT_COMMAND='if [[ $? != 0 ]] ; then echo -e -n "\001$(tput setaf 2)\002"; fi'
@@ -229,6 +233,9 @@
       export LESS_TERMCAP_mr=$(tput rev)
       export LESS_TERMCAP_mh=$(tput dim)
     '';
+  };
+  pograms.fish = {
+    enable = true;
   };
   programs.git = {
     package = pkgs.gitAndTools.gitFull;
@@ -254,92 +261,84 @@
   };
   services.lorri.enable = true;
   services.ssh-agent.enable = true;
-  systemd.user.services.ollama = {
-    Unit = {
-      Description = "LLM server";
-      After = [ "graphical-session-pre.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
-    Service.ExecStart = "${pkgs.ollama}/bin/ollama serve";
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-  home.packages = let
-    edit = pkgs.writers.writeBashBin "edit" ''
-      if [[ $# > 0 ]]; then
-        files=$@
-      else
-        files=$(sk -m)
-        if [[ $? != 0 ]] ; then
-          exit 1
-        fi
-      fi
-      ws=$(hyprctl activeworkspace -j | jq -r ".name" | cut -d: -f 1)
-      if [[ $ws != "" ]] ; then
-        if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
-          exec kak -c $ws $files
+  home.packages =
+    let
+      edit = pkgs.writers.writeBashBin "edit" ''
+        if [[ $# > 0 ]]; then
+          files=$@
         else
-          exec kak -s $ws $files
+          files=$(sk -m)
+          if [[ $? != 0 ]] ; then
+            exit 1
+          fi
         fi
-      else
-        exec kak $files
-      fi
-    '';
-    rgl = pkgs.writers.writeBashBin "rgl" ''
-      rg -p $@ | less -RF
-    '';
-    git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
-      rev=$(git rev-parse --abbrev-ref HEAD)
-      if [ "HEAD" == $rev ] ; then
-        echo "Error: detached HEAD; Refusing to push an ip review"
-        exit 1
-      else
-        git push arm $rev:refs/for/master/$rev
-      fi
-    '';
-  in [
-    edit
-    rgl
-    git-ip-review
-    pkgs.aspell
-    pkgs.aspellDicts.en
-    pkgs.bashInteractive
-    pkgs.cargo-flamegraph
-    pkgs.direnv
-    pkgs.entr
-    pkgs.eza
-    pkgs.fd
-    pkgs.fre
-    pkgs.file
-    pkgs.gdb
-    pkgs.git-hub
-    pkgs.git-review
-    pkgs.git-series
-    pkgs.graphviz
-    pkgs.just
-    pkgs.libnotify
-    pkgs.nixpkgs-fmt
-    pkgs.nix-top
-    pkgs.ollama
-    pkgs.patchelf
-    pkgs.procs
-    pkgs.pv
-    pkgs.psmisc
-    pkgs.usbutils
-    pkgs.rink
-    pkgs.ripgrep
-    pkgs.screen
-    pkgs.tmux
-    pkgs.xe
-    pkgs.xdg-user-dirs
-    pkgs.xdotool
-    pkgs.xorg.xwininfo
-    pkgs.yad
-    pkgs.bc
-    pkgs.wget
-    pkgs.unzip
-    pkgs.p7zip
-    pkgs.innoextract
-    pkgs.steam-run
-    pkgs.socat
-  ];
+        ws=$(hyprctl activeworkspace -j | jq -r ".name" | cut -d: -f 1)
+        if [[ $ws != "" ]] ; then
+          if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
+            exec kak -c $ws $files
+          else
+            exec kak -s $ws $files
+          fi
+        else
+          exec kak $files
+        fi
+      '';
+      rgl = pkgs.writers.writeBashBin "rgl" ''
+        rg -p $@ | less -RF
+      '';
+      git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
+        rev=$(git rev-parse --abbrev-ref HEAD)
+        if [ "HEAD" == $rev ] ; then
+          echo "Error: detached HEAD; Refusing to push an ip review"
+          exit 1
+        else
+          git push arm $rev:refs/for/master/$rev
+        fi
+      '';
+    in
+    [
+      edit
+      rgl
+      git-ip-review
+      pkgs.aspell
+      pkgs.aspellDicts.en
+      pkgs.bashInteractive
+      pkgs.cargo-flamegraph
+      pkgs.direnv
+      pkgs.entr
+      pkgs.eza
+      pkgs.fd
+      pkgs.fre
+      pkgs.file
+      pkgs.gdb
+      pkgs.git-hub
+      pkgs.git-review
+      pkgs.git-series
+      pkgs.graphviz
+      pkgs.just
+      pkgs.libnotify
+      pkgs.nixpkgs-fmt
+      pkgs.nix-top
+      pkgs.ollama
+      pkgs.patchelf
+      pkgs.procs
+      pkgs.pv
+      pkgs.psmisc
+      pkgs.usbutils
+      pkgs.rink
+      pkgs.ripgrep
+      pkgs.screen
+      pkgs.tmux
+      pkgs.xe
+      pkgs.xdg-user-dirs
+      pkgs.xdotool
+      pkgs.xorg.xwininfo
+      pkgs.yad
+      pkgs.bc
+      pkgs.wget
+      pkgs.unzip
+      pkgs.p7zip
+      pkgs.innoextract
+      pkgs.socat
+    ];
 }

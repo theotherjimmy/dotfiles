@@ -153,13 +153,16 @@ let
       base0F = "d65d0e"; # brown
     };
   };
-in {
+in
+{
   options.colors = let inherit (lib) types mkOption; in {
     theme = mkOption { type = types.enum (builtins.attrNames colorthemes); };
     fn = mkOption { };
   };
-  config.colors.fn = pre: let
-    to-map = _path: value: "${pre}${value}";
-    input = colorthemes."${config.colors.theme}";
-  in lib.attrsets.mapAttrsRecursive to-map input;
+  config.colors.fn = pre:
+    let
+      to-map = _path: value: "${pre}${value}";
+      input = colorthemes."${config.colors.theme}";
+    in
+    lib.attrsets.mapAttrsRecursive to-map input;
 }

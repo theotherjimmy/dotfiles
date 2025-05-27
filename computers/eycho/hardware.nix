@@ -20,12 +20,14 @@
   networking.hostId = "b97ab22d";
 
   fileSystems."/" =
-    { device = "rpool/root/nixos";
+    {
+      device = "rpool/root/nixos";
       fsType = "zfs";
     };
 
   fileSystems."/home" =
-    { device = "rpool/home";
+    {
+      device = "rpool/home";
       fsType = "zfs";
     };
 
