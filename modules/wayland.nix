@@ -44,6 +44,7 @@ in
         BEMENU_OPTS = bemenu-options;
       };
     })
+    pkgs.sshfs
     pkgs.bemenu
     hyprmenu
     pkgs.helvum
@@ -137,6 +138,7 @@ in
         $mod = Alt
         bind = $mod and Shift, C, exec, foot
         bind = $mod, C, exec, hyprws term
+        bind = $mod, E, exec, hyprws edit
         bind = $mod, G, exec, hyprws switch
         bind = $mod and Shift, G, exec, hyprws move-to
         bind = $mod, N, workspace, empty

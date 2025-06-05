@@ -47,16 +47,39 @@ set_pwd() {
     fi
 }
 
-pwd_term() {
-    CUR_WS_PWD=$(hyprctl activeworkspace -j \
+cur_pwd() {
+    hyprctl activeworkspace -j \
         | jq -r '.name' \
-        | cut -d: -s -f 2-)
+        | cut -d: -s -f 2-
+}
+
+pwd_term() {
+    CUR_WS_PWD=$(cur_pwd)
     if [[ $CUR_WS_PWD == @* ]] ; then
-        $term -- ssh "${CUR_WS_PWD:1}"
+        exec $term -- ssh "${CUR_WS_PWD:1}"
     elif [[ -e $CUR_WS_PWD ]] ; then
-        $term -D "$CUR_WS_PWD"
+        exec $term -D "$CUR_WS_PWD" fish
     else
-        $term
+        exec $term fish
+    fi
+}
+
+pwd_edit() {
+    CUR_WS_PWD=$(cur_pwd)
+    if [[ $CUR_WS_PWD == @* ]] ; then
+        HOST="${CUR_WS_PWD:1}"
+        ACTUAL_CWD=~/.mnt/"$HOST"
+        mkdir -p "$ACTUAL_CWD"
+        if mountpoint "$ACTUAL_CWD" ; then
+            exec $term -D "$ACTUAL_CWD" -- edit
+        else
+            exec $term -D "$ACTUAL_CWD" -- bash -c \
+                "sshfs \"$HOST\": \"$ACTUAL_CWD\" ; edit"
+        fi
+    elif [[ -e $CUR_WS_PWD ]] ; then
+        exec $term -D "$CUR_WS_PWD" edit
+    else
+        exec $term edit
     fi
 }
 
@@ -72,6 +95,9 @@ case "$1" in
         ;;
     "term" | "pwd-term")
         pwd_term
+        ;;
+    "edit")
+        pwd_edit
         ;;
     "move-to")
         move_to
