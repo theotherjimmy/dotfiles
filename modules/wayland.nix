@@ -138,7 +138,11 @@ in
         bind = $mod and Shift, C, exec, foot
         bind = $mod, C, exec, hyprws term
         bind = $mod, G, exec, hyprws switch
+        bind = $mod and Shift, G, exec, hyprws move-to
         bind = $mod, N, workspace, empty
+        bind = $mod, N, exec, hyprws rename
+        bind = $mod and Shift, N, movetoworkspace, empty
+        bind = $mod and Shift, N, exec, hyprws rename
         bind = $mod, R, exec, hyprws rename
         bind = $mod and Shift, R, exec, hyprws set-pwd
         bind = $mod, P, exec, hyprmenu

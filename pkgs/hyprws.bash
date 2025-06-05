@@ -12,13 +12,24 @@ rename() {
     fi
 }
 
-switch() {
-    NAME=$(hyprctl workspaces -j \
+select_ws() {
+    hyprctl workspaces -j \
         | jq -r '.[] | @text "\(.id) \(.name)"' \
         | bemenu -p "Switch To " \
-        | awk '{print $1}')
+        | awk '{print $1}'
+}
+
+switch() {
+    NAME=$(select_ws)
     if [[ -n $NAME ]] ; then
       hyprctl dispatch focusworkspaceoncurrentmonitor "$NAME"
+    fi
+}
+
+move_to() {
+    NAME=$(select_ws)
+    if [[ -n $NAME ]] ; then
+      hyprctl dispatch movetoworkspace "$NAME"
     fi
 }
 
@@ -63,6 +74,9 @@ case "$1" in
         ;;
     "term" | "pwd-term")
         pwd_term
+        ;;
+    "move-to")
+        move_to
         ;;
     *)
         exit 1
