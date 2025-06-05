@@ -136,7 +136,7 @@ in
       ''
         env AQ_MGPU_NO_EXPLICIT=1
         $mod = Alt
-        bind = $mod and Shift, C, exec, foot
+        bind = $mod and Shift, C, exec, foot fish
         bind = $mod, C, exec, hyprws term
         bind = $mod, E, exec, hyprws edit
         bind = $mod, G, exec, hyprws switch
