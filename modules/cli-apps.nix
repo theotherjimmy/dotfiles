@@ -187,7 +187,6 @@ in
   programs.htop.enable = true;
   programs.direnv = {
     enable = true;
-    enableFishIntegration = true;
     stdlib = ''
       use_flake() {
           watch_file flake.nix
@@ -204,7 +203,7 @@ in
       c = "cargo";
       sv = "systemctl --user";
       psme = "pstree -h -C age -U -T $USER";
-      icat = "wezterm imgcat";
+      icat = "img2sexel";
       isvg = "rsvg-convert | icat";
       idot = let inherit (config.colors.fn "#") base00 base05; in
         ''dot -T bmp \
@@ -234,8 +233,15 @@ in
       export LESS_TERMCAP_mh=$(tput dim)
     '';
   };
-  pograms.fish = {
+  programs.fish = {
     enable = true;
+    functions = {
+      fish_prompt = ''
+        string pad -w$COLUMNS -c "─" (printf " %s ────────" (prompt_pwd))
+        printf "    ; "
+        '';
+    };
+    shellAbbrs = config.programs.bash.shellAliases;
   };
   programs.git = {
     package = pkgs.gitAndTools.gitFull;
@@ -249,7 +255,7 @@ in
       pull.rebase = true;
     };
     ignores = [ ".direnv.d" ".envrc" "shell.nix" ];
-    userEmail = "theotherjimmy@gmail.com";
+    userEmail = "jbrisson@linux.ibm.com";
     userName = "Jimmy Brisson";
   };
   programs.jq.enable = true;
@@ -317,6 +323,7 @@ in
       pkgs.graphviz
       pkgs.just
       pkgs.libnotify
+      pkgs.libsixel
       pkgs.nixpkgs-fmt
       pkgs.nix-top
       pkgs.ollama
