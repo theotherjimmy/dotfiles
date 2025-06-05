@@ -1,7 +1,5 @@
 FRE_STORE=$HOME/.local/share/lanta/desktop-names
 
-set -x
-
 rename() {
     NAME=$(fre --sorted --store "$FRE_STORE" | bemenu -p "Rename Workspace ")
     if [[ -n $NAME ]] ; then
