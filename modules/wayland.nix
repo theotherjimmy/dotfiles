@@ -167,10 +167,9 @@ in
 
         ${mkMonitor "Acer Technologies Acer K272HUL T0SAA0014200" "2560x1440" "0x0" 1 false}
         ${mkMonitor "Samsung Electric Company S27D850 HCJH901332" "2560x1440" "0x1440" 1 false}
+        ${mkMonitor "Ancor Communications Inc ASUS PB278 E5LMTF100243" "2560x1440" "2560x920" 1 false}
 
-        ${mkMonitor "Ancor Communications Inc ASUS PB278 E5LMTF100243" "2560x1440" "0x0" 1 false}
         ${mkMonitor "Samsung Display Corp. 0x4164" "3840x2400" "0x1440" 2 false}
-
         ${mkMonitor "Lenovo Group Limited TIO24Gen4 V308MBXM" "1920x1080@74.97" "2250x0" 1 true}
         ${mkMonitor "Lenovo Group Limited P24h-30 V90E1R50" "2560x1440@74.78" "-310x0" 1 false}
         animation = global, 1, 1, default
