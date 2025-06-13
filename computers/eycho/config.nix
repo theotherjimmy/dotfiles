@@ -8,6 +8,7 @@
   };
   networking.firewall.enable = false;
   networking.networkmanager.enable = true;
+  networking.hostName = "eycho";
   services.openssh.enable = true;
   services.fluidd.enable = true;
   services.moonraker = {
@@ -57,7 +58,8 @@
   services.avahi = {
     enable = true;
     openFirewall = true;
-    nssmdns = true;
+    nssmdns4 = true;
+    nssmdns6 = true;
     publish = {
       enable = true;
       addresses = true;
