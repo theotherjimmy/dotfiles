@@ -1,17 +1,17 @@
 { config, lib, pkgs, ... }:
 
 let
-  orcaslicer-version = "2.2.0-beta";
+  orcaslicer-version = "2.3.0";
   orcaslicer-src = pkgs.fetchurl rec {
     version = orcaslicer-version;
-    url = "https://github.com/SoftFever/OrcaSlicer/releases/download/v${version}/OrcaSlicer_Linux_Ubuntu2004_V${version}.AppImage";
-    hash = "sha256-SSg50dp9Js6M5CCSqsbACs9hYlc2TcMdyfCfOl8/kJo=";
+    url = "https://github.com/SoftFever/OrcaSlicer/releases/download/v${version}/OrcaSlicer_Linux_AppImage_Ubuntu2404_V${version}.AppImage";
+    hash = "sha256-E+QL8nTwAS6DIlOfwIw2fIboPm3jrCBJaNoOMmNLMnA=";
   };
   orcaslicer = pkgs.appimageTools.wrapType2 {
     pname = "orcaSlicer";
     version = orcaslicer-version;
     src = orcaslicer-src;
-    extraPkgs = (pkgs: with pkgs; [ webkitgtk ]);
+    extraPkgs = (pkgs: with pkgs; [ webkitgtk_4_1 ]);
   };
   c = config.colors.fn "#";
 in

@@ -107,8 +107,10 @@ in
   };
   services.mako = {
     enable = true;
-    borderRadius = 5;
-    borderSize = 2;
+    settings = {
+      border-radius = 5;
+      border-size = 2;
+    };
   };
   services.network-manager-applet.enable = true;
   services.udiskie = {
