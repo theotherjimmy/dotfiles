@@ -27,8 +27,8 @@ let
     in
     ''-i -W 0.5 -c -l 30 --fixed-height -R 5 ${color-arg-string}'';
   tofi-run = ''BEMENU_OPTS="${bemenu-options}" ${pkgs.bemenu}/bin/bemenu-run'';
-  term = "${pkgs.foot}/bin/foot";
-  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  term = lib.getExe pkgs.foot;
+  hyprctl = lib.getExe config.wayland.windowManager.hyprland.package;
   hyprmenu = pkgs.writers.writeBashBin "hyprmenu" ''
     ${tofi-run}
   '';
