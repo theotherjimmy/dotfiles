@@ -53,10 +53,29 @@ cur_pwd() {
         | cut -d: -s -f 2-
 }
 
+split_hostname() {
+    if [[ $1 == @* ]] ; then
+        HOST=$(echo "$1" | cut -d: -f 1)
+        echo "${HOST:1}"
+    fi
+}
+
+split_remote_pwd() {
+    if [[ $1 == @* ]] ; then
+        echo "$1" | cut -d: -s -f 2
+    fi
+}
+
 pwd_term() {
     CUR_WS_PWD=$(cur_pwd)
-    if [[ $CUR_WS_PWD == @* ]] ; then
-        exec $term -- ssh "${CUR_WS_PWD:1}"
+    HOST=$(split_hostname "$CUR_WS_PWD")
+    if [[ -n "$HOST" ]] ; then
+        REMOTE_PWD=$(split_remote_pwd "$CUR_WS_PWD")
+        if [[ -n $REMOTE_PWD ]] ; then
+            exec $term -- ssh -t "${HOST}" "cd \"$REMOTE_PWD\" ; \$SHELL"
+        else
+            exec $term -- ssh "${HOST}"
+        fi
     elif [[ -e $CUR_WS_PWD ]] ; then
         exec $term -D "$CUR_WS_PWD" fish
     else
@@ -66,16 +85,15 @@ pwd_term() {
 
 pwd_edit() {
     CUR_WS_PWD=$(cur_pwd)
-    if [[ $CUR_WS_PWD == @* ]] ; then
-        HOST="${CUR_WS_PWD:1}"
+    HOST=$(split_hostname "$CUR_WS_PWD")
+    if [[ -n "$HOST" ]] ; then
         ACTUAL_CWD=~/.mnt/"$HOST"
         mkdir -p "$ACTUAL_CWD"
-        if mountpoint "$ACTUAL_CWD" ; then
-            exec $term -D "$ACTUAL_CWD" -- edit
-        else
-            exec $term -D "$ACTUAL_CWD" -- bash -c \
-                "sshfs \"$HOST\": \"$ACTUAL_CWD\" ; edit"
+        if ! mountpoint "$ACTUAL_CWD" ; then
+            sshfs "$HOST": "$ACTUAL_CWD"
         fi
+        REMOTE_PWD=$(split_remote_pwd "$CUR_WS_PWD")
+        exec $term -D "$ACTUAL_CWD"/"$REMOTE_PWD" -- edit
     elif [[ -e $CUR_WS_PWD ]] ; then
         exec $term -D "$CUR_WS_PWD" edit
     else
