@@ -51,6 +51,7 @@ in
     pkgs.wl-clipboard-rs
     pkgs.wayvnc
     pkgs.wlvncc
+    pkgs.shikane
   ];
   programs.waybar = {
     enable = true;
@@ -124,6 +125,134 @@ in
       pkgs.xdg-desktop-portal-hyprland
     ];
   };
+  services.shikane = {
+    enable = true;
+    settings = {
+      profile = [
+       {
+         name = "work-home";
+         output = [
+           {
+             match = "eDP-1";
+             enable = true;
+             mode = "3840x2400@60Hz";
+             position = { x = 0; y = 1440; };
+             scale = 2.0;
+           }
+           {
+             enable = true;
+             search = [ "m=S27D850" "s=HCJH901332" ];
+             mode = "2560x1440@59.951Hz";
+             position = { x = 1920; y = 1440; };
+           }
+           {
+             enable = true;
+             search = ["m=Acer K272HUL" "s=T0SAA0014200" ];
+             mode = "2560x1440@59.951Hz";
+             position = { x = 1920; y = 0; };
+           }
+         ];
+       }
+       {
+         name = "work-home-but-the-dock-is-a-piece-of-shit";
+         output = [
+           {
+             match = "eDP-1";
+             enable = true;
+             mode = "3840x2400@60Hz";
+             position = { x = 0; y = 1440; };
+             scale = 2.0;
+           }
+           {
+             enable = true;
+             search = [ "m=S27D850" "s=HCJH901332" ];
+             mode = "2560x1440@59.951Hz";
+             position = { x = 1920; y = 1440; };
+           }
+           {
+             enable = false;
+             search = ["m=No Monitor"];
+           }
+         ];
+       }
+       {
+         name = "work-home-but-the-dock-is-a-piece-of-shit";
+         output = [
+           {
+             match = "eDP-1";
+             enable = true;
+             mode = "3840x2400@60Hz";
+             position = { x = 0; y = 1440; };
+             scale = 2.0;
+           }
+           {
+             enable = true;
+             search = [ "m=S27D850" "s=HCJH901332" ];
+             mode = "2560x1440@59.951Hz";
+             position = { x = 1920; y = 1440; };
+           }
+         ];
+       }
+       {
+         name = "office";
+         output = [
+           {
+             match = "eDP-1";
+             enable = true;
+             mode = "3840x2400@60Hz";
+             position = { x = 0; y = 1440; };
+             scale = 2.0;
+           }
+           {
+             enable = true;
+             search = [ "m=P24h-30" "s=V90E1R50" ];
+             mode = "2560x1440@74.78Hz";
+             position = { x = 0; y = 0; };
+           }
+           {
+             enable = true;
+             search = [ "m=TIO24Gen4" "s=V308MBXM" ];
+             mode = "1920x1080@74.97";
+             position = { x = 2560; y = 0; };
+           }
+         ];
+       }
+       {
+         name = "houston";
+         output = [
+           { # Top
+             enable = true;
+             search = [ "m=LG HDR 4K" "s=410NTFAAN987" ];
+             mode = "3840x2160@60Hz";
+             position = { x = 0; y = 0; };
+           }
+           { # Bottom
+             match = "eDP-1";
+             enable = true;
+             mode = "3840x2400@60Hz";
+             position = { x = 960; y = 2160; };
+             scale = 2.0;
+           }
+           { # Right
+             enable = true;
+             search = [ "m=LA2405" "s=CN41221D84" ];
+             mode = "1920x1200@59.95Hz";
+             position = { x = 3840; y = 600; };
+           }
+         ];
+       }
+       {
+         name = "builtin-monitor-only";
+         output = [
+           {
+             match = "eDP-1";
+             enable = true;
+           }
+         ];
+       }
+     ];
+    };
+  };
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig =
@@ -167,13 +296,6 @@ in
         bindm = $mod, mouse:272, movewindow
         bindm = $mod, mouse:273, resizewindow
 
-        ${mkMonitor "Acer Technologies Acer K272HUL T0SAA0014200" "2560x1440" "0x0" 1 false}
-        ${mkMonitor "Samsung Electric Company S27D850 HCJH901332" "2560x1440" "0x1440" 1 false}
-        ${mkMonitor "Ancor Communications Inc ASUS PB278 E5LMTF100243" "2560x1440" "2560x920" 1 false}
-
-        ${mkMonitor "Samsung Display Corp. 0x4164" "3840x2400" "0x1440" 2 false}
-        ${mkMonitor "Lenovo Group Limited TIO24Gen4 V308MBXM" "1920x1080@74.97" "2250x0" 1 true}
-        ${mkMonitor "Lenovo Group Limited P24h-30 V90E1R50" "2560x1440@74.78" "-310x0" 1 false}
         animation = global, 1, 1, default
         animation = workspaces, 1, 1, default, fade
 
