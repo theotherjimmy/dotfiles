@@ -22,6 +22,10 @@
 
     devshell.url = "github:numtide/devshell/main";
     devshell.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixgl.url = "github:nix-community/nixGL";
+    nixgl.inputs.nixpkgs.follows = "nixpkgs";
+    nixgl.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs =
@@ -33,7 +37,7 @@
     , hyprland
     , deploy
     , devshell
-    ,
+    , nixgl
     }:
     let
       local-overlay = final: prior:
@@ -79,10 +83,14 @@
       overlays = [
         devshell.overlays.default
         local-overlay
+        nixgl.overlay
       ];
       pkgs = import nixpkgs {
         inherit system;
         inherit overlays;
+        config = {
+          allowUnfree = true;
+        };
       };
     in
     {
@@ -94,7 +102,10 @@
       formatter = pkgs.nixpkgs-fmt;
       packages.homeConfigurations."jimbri01" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./modules/top-level.nix ];
+        modules = [
+          ./modules/top-level.nix
+          { home.packages = [ pkgs.nixgl.nixGLIntel ]; }
+        ];
       };
     }));
 }
