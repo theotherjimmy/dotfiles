@@ -49,6 +49,7 @@
             ./computers/${hostName}/config.nix
             ./computers/${hostName}/hardware.nix
             home-manager.nixosModules.home-manager
+            ./computers/common.nix
           ] ++ nixpkgs.lib.optional (includeUser) ({ ... }: {
             home-manager = {
               useGlobalPkgs = true;
