@@ -242,6 +242,24 @@ in
          ];
        }
        {
+         name = "houston-alt";
+         output = [
+           {
+             match = "eDP-1";
+             enable = true;
+             mode = "3840x2400@60Hz";
+             position = { x = 0; y = 1440; };
+             scale = 2.0;
+           }
+           {
+             enable = true;
+             search = [ "m=VG34VQL3A" "s=SCLMDW019741" ];
+             mode = "3440x1440@99.98Hz";
+             position = { x = -760; y = 0; };
+           }
+         ];
+       }
+       {
          name = "builtin-monitor-only";
          output = [
            {
@@ -274,6 +292,8 @@ in
         bind = $mod and Shift, G, exec, hyprws move-to
         bind = $mod, N, workspace, empty
         bind = $mod, N, exec, hyprws rename
+        bind = $mod, M, layoutmsg, addmaster
+        bind = $mod and Shift, M, layoutmsg, removemaster
         bind = $mod and Shift, N, movetoworkspace, empty
         bind = $mod and Shift, N, exec, hyprws rename
         bind = $mod, R, exec, hyprws rename
