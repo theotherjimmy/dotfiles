@@ -72,7 +72,6 @@
   };
   services.fwupd.enable = true;
 
-  services.earlyoom.enable = true;
   services.openssh.enable = true;
   services.lorri.enable = true;
   services.xserver = {
@@ -135,8 +134,13 @@
 
   programs.steam.enable = true;
   programs.dconf.enable = true;
+  programs.hyprland.enable = true;
 
   services.getty.autologinUser = "jimbri01";
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "jimbri01";
+  };
 
   # Zram is fast
   zramSwap = {

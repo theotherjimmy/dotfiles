@@ -1,5 +1,6 @@
 FRE_STORE=$HOME/.local/share/lanta/desktop-names
 
+# Rename Workspace
 rename() {
     NAME=$(fre --sorted --store "$FRE_STORE" | bemenu -p "Rename Workspace ")
     if [[ -n $NAME ]] ; then
@@ -10,6 +11,7 @@ rename() {
     fi
 }
 
+# Select a workspace by name
 select_ws() {
     hyprctl workspaces -j \
         | jq -r '.[] | @text "\(.id) \(.name)"' \
@@ -17,6 +19,7 @@ select_ws() {
         | awk '{print $1}'
 }
 
+# Select and move window to a workspace by name
 switch() {
     NAME=$(select_ws)
     if [[ -n $NAME ]] ; then
@@ -24,6 +27,7 @@ switch() {
     fi
 }
 
+# Select and move to a workspace by name
 move_to() {
     NAME=$(select_ws)
     if [[ -n $NAME ]] ; then
@@ -31,10 +35,17 @@ move_to() {
     fi
 }
 
+# Find (git) projects within home directory
+find_projects() {
+    top_level=$(env -C "$HOME" fd -t d -d 1 .)
+    env -C "$HOME" fd -t d '^\.git$' -H "$top_level" --format '{//}' | sort
+}
+
+# Set the working directory or ssh host of the current workspace
 set_pwd() {
     SELECTED=$( \
         {
-            env -C "$HOME" fd -d 2 -t d &
+            find_projects &
             awk '$1=="Host" { print "@" $2 }' ~/.ssh/config
         } \
         | bemenu -p "Set Workspace PWD")
@@ -47,12 +58,14 @@ set_pwd() {
     fi
 }
 
+# Get the current workspace's working dir or host
 cur_pwd() {
     hyprctl activeworkspace -j \
         | jq -r '.name' \
         | cut -d: -s -f 2-
 }
 
+# Split off a hostname if there is one
 split_hostname() {
     if [[ $1 == @* ]] ; then
         HOST=$(echo "$1" | cut -d: -f 1)
@@ -60,12 +73,14 @@ split_hostname() {
     fi
 }
 
+# Split off the remote working directory when present
 split_remote_pwd() {
     if [[ $1 == @* ]] ; then
         echo "$1" | cut -d: -s -f 2
     fi
 }
 
+# Start a terminal in the workspace's working place
 pwd_term() {
     CUR_WS_PWD=$(cur_pwd)
     HOST=$(split_hostname "$CUR_WS_PWD")
@@ -83,6 +98,7 @@ pwd_term() {
     fi
 }
 
+# Start an editor selecting files in the current working place
 pwd_edit() {
     CUR_WS_PWD=$(cur_pwd)
     HOST=$(split_hostname "$CUR_WS_PWD")
@@ -101,6 +117,7 @@ pwd_edit() {
     fi
 }
 
+# Select subcommand
 case "$1" in
     "rename")
         rename

@@ -335,6 +335,7 @@ in
             kb_layout = us,us
             kb_variant = dvp,
             kb_options = caps:escape
+            float_switch_override_focus = 0
         }
 
         master {
