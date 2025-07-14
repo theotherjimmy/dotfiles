@@ -37,8 +37,8 @@ move_to() {
 
 # Find (git) projects within home directory
 find_projects() {
-    top_level=$(env -C "$HOME" fd -t d -d 1 .)
-    env -C "$HOME" fd -t d '^\.git$' -H "$top_level" --format '{//}' | sort
+    readarray -t top_level < <(env -C "$HOME" fd -t d -d 1 .)
+    env -C "$HOME" fd -t d '^\.git$' --format '{//}' -H "${top_level[@]}" | sort
 }
 
 # Set the working directory or ssh host of the current workspace
