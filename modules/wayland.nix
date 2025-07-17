@@ -5,7 +5,7 @@ let
     let
       c = config.colors.fn "#";
       colors = {
-        tf = c.base0B;
+        tf = c.base09;
         tb = c.base02;
         ff = c.base08;
         fb = c.base02;
@@ -324,11 +324,11 @@ in
             border_size = 3
             gaps_out = 0
             col.inactive_border = ${colors.base02}
-            col.active_border = ${colors.base0B}
+            col.active_border = ${colors.base09}
         }
 
         decoration {
-            rounding = 10
+            rounding = 0
         }
 
         input {
