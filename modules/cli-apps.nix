@@ -237,7 +237,9 @@ in
     enable = true;
     functions = {
       fish_prompt = ''
-        string pad -w$COLUMNS -c "─" (printf " %s ────────" (prompt_pwd))
+        set_color -r brred
+        printf "   %s \n" (prompt_pwd)
+        set_color normal
         printf "    ; "
         '';
     };
