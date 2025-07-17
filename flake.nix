@@ -13,9 +13,6 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
-
     deploy.url = "github:serokell/deploy-rs";
     deploy.inputs.nixpkgs.follows = "nixpkgs";
     deploy.inputs.utils.follows = "flake-utils";
@@ -34,7 +31,6 @@
     , flake-utils
     , home-manager
     , rust-overlay
-    , hyprland
     , deploy
     , devshell
     , nixgl
