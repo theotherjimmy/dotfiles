@@ -342,7 +342,6 @@ in
             mfact = 0.4
             new_on_active = after
         }
-        workspace = m:desc:Ancor Communications Inc ASUS PB278 E5LMTF100243, layoutopt:orientation:top
 
         misc {
             key_press_enables_dpms = true
