@@ -260,6 +260,29 @@ in
          ];
        }
        {
+         name = "nixboi";
+         output = [
+           {
+             enable = true;
+             search = [ "m=S27D850" "s=HCJH901332" ];
+             mode = "2560x1440@59.951Hz";
+             position = { x = 0; y = 0; };
+           }
+           {
+             enable = true;
+             search = ["m=Acer K272HUL" "s=T0SAA0014200" ];
+             mode = "2560x1440@59.951Hz";
+             position = { x = 2560; y = 0; };
+           }
+           {
+             enable = true;
+             search = [ "m=VG34VQL3A" "s=SCLMDW019741" ];
+             mode = "3440x1440@165.00Hz";
+             position = { x = 860; y = 1440; };
+           }
+         ];
+       }
+       {
          name = "builtin-monitor-only";
          output = [
            {
