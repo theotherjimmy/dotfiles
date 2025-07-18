@@ -2,7 +2,12 @@ profile-dir := "/nix/var/nix/profiles/per-user/$USER"
 find-gen:= "home-manager-generation"
 
 d computer:
-    deploy .#{{computer}} -s --ssh-user root
+    #!/usr/bin/env bash
+    if [[ "{{computer}}" == "$(hostname)" ]] ; then
+        deploy .#{{computer}} -s --interactive-sudo true
+    else
+        deploy .#{{computer}} -s --ssh-user root
+    fi
 
 switch: build
     ./result/activate
