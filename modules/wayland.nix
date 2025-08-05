@@ -218,44 +218,20 @@ in
          ];
        }
        {
-         name = "houston";
+         name = "houston-bedroom";
          output = [
-           { # Top
-             enable = true;
-             search = [ "m=LG HDR 4K" "s=410NTFAAN987" ];
-             mode = "3840x2160@60Hz";
-             position = { x = 0; y = 0; };
-           }
            { # Bottom
              match = "eDP-1";
              enable = true;
              mode = "3840x2400@60Hz";
-             position = { x = 960; y = 2160; };
-             scale = 2.0;
+             position = { x = 0; y = 1200; };
+             scale = 1.5;
            }
-           { # Right
+           { # Top
              enable = true;
              search = [ "m=LA2405" "s=CN41221D84" ];
              mode = "1920x1200@59.95Hz";
-             position = { x = 3840; y = 600; };
-           }
-         ];
-       }
-       {
-         name = "houston-alt";
-         output = [
-           {
-             match = "eDP-1";
-             enable = true;
-             mode = "3840x2400@60Hz";
-             position = { x = 0; y = 1440; };
-             scale = 2.0;
-           }
-           {
-             enable = true;
-             search = [ "m=VG34VQL3A" "s=SCLMDW019741" ];
-             mode = "3440x1440@99.98Hz";
-             position = { x = -760; y = 0; };
+             position = { x = 320; y = 0; };
            }
          ];
        }
@@ -307,7 +283,7 @@ in
         '';
       in
       ''
-        env AQ_MGPU_NO_EXPLICIT=1
+        env = AQ_DRM_DEVICES,/dev/dri/card5
         $mod = Alt
         bind = $mod and Shift, C, exec, foot fish
         bind = $mod, C, exec, hyprws term
@@ -370,6 +346,10 @@ in
 
         misc {
             key_press_enables_dpms = true
+        }
+
+        debug {
+            disable_logs = false
         }
       '';
   };
