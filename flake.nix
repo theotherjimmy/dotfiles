@@ -100,7 +100,10 @@
         inherit pkgs;
         modules = [
           ./modules/top-level.nix
-          { home.packages = [ pkgs.nixgl.nixGLIntel ]; }
+          {
+            home.packages = [ pkgs.nixgl.nixGLIntel ];
+            home.entertainment = false;
+          }
         ];
       };
     }));

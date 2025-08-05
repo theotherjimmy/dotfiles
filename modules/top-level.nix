@@ -5,6 +5,7 @@
     ./font.nix
     ./gui-apps.nix
     ./cli-apps.nix
+    ./entertainment.nix
   ];
   home = {
     homeDirectory = lib.mkForce "/home/jimbri01";

@@ -14,6 +14,14 @@ let
     extraPkgs = (pkgs: with pkgs; [ webkitgtk_4_1 ]);
   };
   c = config.colors.fn "#";
+  launch-ferdium = pkgs.writers.writeBashBin "launch-ferdium" ''
+    ferdium_opts="ferdium --ozone-platform=wayland"
+    if [[ -n "$(type nixGLIntel)" ]] ; then
+      exec nixGLIntel $ferdium_opts
+    else
+      exec $ferdium_opts
+    fi
+  '';
 in
 {
   home.packages = [
@@ -24,11 +32,8 @@ in
     pkgs.gamescope
     pkgs.r2modman
     pkgs.protontricks
-    (pkgs.steam.override {
-      extraProfile = ''
-        unset VK_ICD_FILENAMES
-        export VK_ICD_FILENAMES=`realpath /run/opengl-driver/share`/vulkan/icd.d/radeon_icd.x86_64.json:`realpath /run/opengl-driver-32/share`/vulkan/icd.d/radeon_icd.i686.json'';
-    })
+    pkgs.ferdium
+    launch-ferdium
   ];
   programs.foot = {
     enable = true;
