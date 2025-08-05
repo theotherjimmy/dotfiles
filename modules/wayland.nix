@@ -288,6 +288,7 @@ in
            {
              match = "eDP-1";
              enable = true;
+             scale = 1.5;
            }
          ];
        }
