@@ -97,9 +97,15 @@ in
   };
   services.mako = {
     enable = true;
-    settings = {
-      border-radius = 5;
+    settings = let c = config.colors.fn "#"; in {
+      border-radius = 0;
       border-size = 2;
+      border-color = c.base0D;
+      background-color = c.base00;
+      text-color = c.base07;
+      icons = true;
+      default-timeout = 10000;
+      anchor = "top-center";
     };
   };
   services.network-manager-applet.enable = true;
