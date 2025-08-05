@@ -75,34 +75,23 @@ in
           hwmon-path = "/sys/devices/platform/coretemp.0/hwmon/hwmon9/temp1_input";
           tooltip = false;
         };
+        tray.spacing = 5;
         wireplumber.format = "Vol: {volume}";
         battery.format = "Bat: {capacity}%";
       };
     };
     style = let c = config.colors.fn "#"; in ''
       * {
-          padding: 0 10px;
           border: none;
-          border-radius: 10;
           font-size: 18px;
       }
       window#waybar {
           background: transparent;
       }
-      .modules-left {
-          padding: 0 10px;
-          border: 2px solid ${c.base0D};
+      .module {
+          border: 2px solid ${c.base02};
           background-color: ${c.base00};
-      }
-      .modules-center {
           padding: 0 10px;
-          border: 2px solid ${c.base09};
-          background-color: ${c.base00};
-      }
-      .modules-right {
-          padding: 0 10px;
-          border: 2px solid ${c.base0E};
-          background-color: ${c.base00};
       }
     '';
   };
