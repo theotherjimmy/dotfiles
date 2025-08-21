@@ -278,13 +278,13 @@ in
         '';
       in
       ''
-        env = AQ_DRM_DEVICES,/dev/dri/card5
         $mod = Alt
         bind = $mod and Shift, C, exec, foot fish
         bind = $mod, C, exec, hyprws term
         bind = $mod, E, exec, hyprws edit
         bind = $mod, G, exec, hyprws switch
         bind = $mod and Shift, G, exec, hyprws move-to
+        bind = $mod and Control, G, workspace, previous
         bind = $mod, N, workspace, empty
         bind = $mod, N, exec, hyprws rename
         bind = $mod, M, layoutmsg, addmaster
@@ -308,6 +308,8 @@ in
         bind = $mod and Shift, Return, fullscreen, 0
         bind = $mod and Shift, S, exec, sleep 1 && hyprctl dispatch dpms off
         bind = $mod and Control, S, exec, systemctl suspend
+        bind = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
+        bind = ,XF86MonBrightnessUp, exec, brightnessctl s +10%
         bindm = $mod, mouse:272, movewindow
         bindm = $mod, mouse:273, resizewindow
 
