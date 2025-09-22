@@ -54,6 +54,7 @@
     group = "klipper";
     configFile = ./kalico.cfg;
     package = pkgs.kalico;
+    logFile = "/var/lib/klipper/klipper.log";
   };
   services.avahi = {
     enable = true;
