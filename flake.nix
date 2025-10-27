@@ -103,6 +103,7 @@
           {
             home.packages = [ pkgs.nixgl.nixGLIntel ];
             home.entertainment = false;
+            home.sessionVariables.GBM_BACKENDS_PATH = "${pkgs.mesa}/lib/gbm";
           }
         ];
       };
