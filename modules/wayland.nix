@@ -52,7 +52,17 @@ in
     pkgs.wayvnc
     pkgs.wlvncc
     pkgs.shikane
+    pkgs.niri
   ];
+  xdg.configFile."niri/config.kdl".source = let
+    c = config.colors.fn "#";
+  in pkgs.substitute {
+    src = ./niri-config.kdl;
+    substitutions = [
+      "--replace" "@active@" c.base09
+      "--replace" "@inactive@" c.base02
+    ];
+  };
   programs.waybar = {
     enable = true;
     systemd.enable = true;
