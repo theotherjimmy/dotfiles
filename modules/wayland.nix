@@ -44,6 +44,12 @@ in
         BEMENU_OPTS = bemenu-options;
       };
     })
+    (pkgs.callPackage ../pkgs/niriws.nix {
+      runtimeEnv = {
+        inherit term;
+        BEMENU_OPTS = bemenu-options;
+      };
+    })
     pkgs.sshfs
     pkgs.bemenu
     hyprmenu
