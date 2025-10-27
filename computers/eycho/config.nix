@@ -33,7 +33,7 @@
     };
   };
   hardware = {
-    opengl = {
+    graphics = {
       enable = true;
     };
   };
@@ -68,11 +68,11 @@
     };
   };
   # Totally a server, not some ewaste laptop.
-  services.logind = {
-    lidSwitch = "ignore";
-    lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = "ignore";
-    suspendKey = "ignore";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "ignore";
+    HandleLidSwitchDocked = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleSuspendKey = "ignore";
   };
   services.nginx = {
     enable = true;

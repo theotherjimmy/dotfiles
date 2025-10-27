@@ -70,12 +70,14 @@
     pulse.enable = true;
     wireplumber.enable = true;
   };
-  services.fwupd.enable = true;
+  services.fwupd.enable = false;
 
   services.openssh.enable = true;
   services.lorri.enable = true;
   services.xserver = {
     enable = true;
+    # Don't start lightdm, it's aweful
+    displayManager.startx.enable = true;
     xkb.layout = "us";
     xkb.variant = "dvp";
     videoDrivers = [ "modesetting" "amdgpu" ];
