@@ -3,7 +3,7 @@
 {
   description = "A bland config";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/e2642aa7d5a15eae586932a56f4294934f959c14";
 
     flake-utils.url = "github:numtide/flake-utils";
 
