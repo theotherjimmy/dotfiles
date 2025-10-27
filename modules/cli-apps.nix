@@ -345,6 +345,7 @@ in
       pkgs.yad
       pkgs.bc
       pkgs.wget
+      pkgs.zip
       pkgs.unzip
       pkgs.p7zip
       pkgs.innoextract
