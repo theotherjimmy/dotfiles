@@ -106,8 +106,12 @@ in
       }
       .module {
           border: 2px solid ${c.base02};
-          background-color: ${c.base00};
+          background: ${c.base00};
           padding: 0 10px;
+          color: ${c.base07};
+      }
+      #workspaces button {
+          color: ${c.base07};
       }
     '';
   };
