@@ -12,7 +12,7 @@ rename() {
 # Select a workspace by name
 select_ws() {
     niri msg --json workspaces \
-        | jq -r '.[] | @text "\(.id) \(.name)"' \
+        | jq -r '.[] | select(.active_window_id != null or .name != null) | @text "\(.id) \(.name)"' \
         | bemenu -p "Switch To " \
         | awk '{print $1}'
 }
@@ -29,7 +29,9 @@ switch() {
 move_to() {
     NAME=$(select_ws)
     if [[ -n $NAME ]] ; then
-      niri msg action focus-workspace "$NAME"
+      MON=$(niri msg -j focused-output | jq -r '.name')
+      echo '{"Action":{"FocusWorkspace":{"reference":{"Id":'"$NAME"'}}}}' | socat STDIO "$NIRI_SOCKET"
+      niri msg action move-workspace-to-monitor "$MON"
     fi
 }
 
@@ -40,7 +42,7 @@ find_projects() {
 }
 
 cur_workspace_name() {
-    niri msg --json workspaces | jq -r '.[] | select(.is_active) |.name'
+    niri msg --json workspaces | jq -r '.[] | select(.is_focused) |.name'
 }
 
 # Set the working directory or ssh host of the current workspace

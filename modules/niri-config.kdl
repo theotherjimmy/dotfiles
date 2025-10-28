@@ -54,6 +54,8 @@ binds {
     Mod+W hotkey-overlay-title="Rename the current workspace" { spawn "niriws" "rename"; }
     Mod+Shift+W hotkey-overlay-title="Set the working directory" { spawn "niriws" "set-pwd"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Mod+G hotkey-overlay-title="Move workspace, across all displays" { spawn "niriws" "move-to"; }
+    Mod+Shift+G hotkey-overlay-title="Move focused window to workspace" { spawn "niriws" "switch"; }
 
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
@@ -65,14 +67,14 @@ binds {
 
     Mod+D { close-window; }
 
-    Mod+Left  { focus-column-left; }
-    Mod+Down  { focus-window-down; }
-    Mod+Up    { focus-window-up; }
-    Mod+Right { focus-column-right; }
-    Mod+H     { focus-column-left; }
-    Mod+J     { focus-window-down; }
-    Mod+K     { focus-window-up; }
-    Mod+L     { focus-column-right; }
+    Mod+Left  { focus-column-or-monitor-left; }
+    Mod+Down  { focus-window-or-monitor-down; }
+    Mod+Up    { focus-window-or-monitor-up; }
+    Mod+Right { focus-column-or-monitor-right; }
+    Mod+H     { focus-column-or-monitor-left; }
+    Mod+J     { focus-window-or-monitor-down; }
+    Mod+K     { focus-window-or-monitor-up; }
+    Mod+L     { focus-column-or-monitor-right; }
 
     Mod+Ctrl+Left  { move-column-left; }
     Mod+Ctrl+Down  { move-window-down; }
@@ -82,13 +84,6 @@ binds {
     Mod+Ctrl+J     { move-window-down; }
     Mod+Ctrl+K     { move-window-up; }
     Mod+Ctrl+L     { move-column-right; }
-
-    // Alternative commands that move across workspaces when reaching
-    // the first or last window in a column.
-    // Mod+J     { focus-window-or-workspace-down; }
-    // Mod+K     { focus-window-or-workspace-up; }
-    // Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
-    // Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
 
     Mod+Home { focus-column-first; }
     Mod+End  { focus-column-last; }

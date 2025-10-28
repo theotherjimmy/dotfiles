@@ -59,6 +59,7 @@ in
     pkgs.wlvncc
     pkgs.shikane
     pkgs.niri
+    pkgs.xwayland-satellite
   ];
   xdg.configFile."niri/config.kdl".source = let
     c = config.colors.fn "#";
@@ -78,7 +79,7 @@ in
         position = "bottom";
         height = 30;
         modules-left = [ "cpu" "memory" "temperature" "battery" ];
-        modules-center = [ "hyprland/workspaces" ];
+        modules-center = [ "hyprland/workspaces" "niri/workspaces" ];
         modules-right = [ "wireplumber" "tray" "clock" ];
         clock.format = "{:%A %F %H:%M}";
         cpu.format = "{min_frequency:0.1f}Ghz ⇋ {max_frequency:0.1f}Ghz";
@@ -86,6 +87,9 @@ in
         "hyprland/workspaces" = {
           format = "{name}";
           active-only = true;
+        };
+        "niri/workspaces" = {
+          current-only = true;
         };
         temperature = {
           hwmon-path = "/sys/devices/platform/coretemp.0/hwmon/hwmon9/temp1_input";
@@ -132,6 +136,15 @@ in
   services.udiskie = {
     enable = true;
     tray = "always";
+  };
+  services.swayidle = {
+    enable = true;
+    timeouts = [
+      {
+        timeout = 60;
+        command = "${pkgs.niri}/bin/niri msg action power-off-monitors";
+      }
+    ];
   };
   xdg.portal = {
     enable = true;
