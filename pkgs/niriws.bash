@@ -30,8 +30,8 @@ move_to() {
     NAME=$(select_ws)
     if [[ -n $NAME ]] ; then
       MON=$(niri msg -j focused-output | jq -r '.name')
+      echo '{"Action":{"MoveWorkspaceToMonitor":{"output":"'"$MON"'","reference":{"Id":'"$NAME"'}}}}' | socat STDIO "$NIRI_SOCKET"
       echo '{"Action":{"FocusWorkspace":{"reference":{"Id":'"$NAME"'}}}}' | socat STDIO "$NIRI_SOCKET"
-      niri msg action move-workspace-to-monitor "$MON"
     fi
 }
 
