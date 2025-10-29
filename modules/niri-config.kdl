@@ -56,6 +56,8 @@ binds {
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
     Mod+G hotkey-overlay-title="Move workspace, across all displays" { spawn "niriws" "move-to"; }
     Mod+Shift+G hotkey-overlay-title="Move focused window to workspace" { spawn "niriws" "switch"; }
+    Mod+N hotkey-overlay-title="Make a new workspace; name it" { spawn "niriws" "new-ws"; }
+    Mod+Shift+N hotkey-overlay-title="Clear workspace name" { unset-workspace-name; }
 
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }

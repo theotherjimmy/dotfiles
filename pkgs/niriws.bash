@@ -138,6 +138,10 @@ case "$1" in
     "move-to")
         move_to
         ;;
+    "new-ws")
+        niri msg action focus-workspace 255
+        rename
+        ;;
     *)
         exit 1
         ;;
