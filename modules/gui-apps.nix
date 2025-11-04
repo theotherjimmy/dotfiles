@@ -20,8 +20,9 @@ in
   programs.foot = {
     enable = true;
     settings.main = {
-      font = "${config.font.name}NerdFontMono:size=${toString config.font.em}";
+      font = "${config.font.font-conf-name}:size=${toString config.font.em}";
       dpi-aware = "yes";
+      line-height = config.font.line-height;
     };
     settings.colors = let c = config.colors.fn ""; in {
       foreground = c.base05;

@@ -77,7 +77,7 @@ in
       mainBar = {
         layer = "top";
         position = "bottom";
-        height = 30;
+        height = 40;
         modules-left = [ "cpu" "memory" "temperature" "battery" ];
         modules-center = [ "hyprland/workspaces" "niri/workspaces" ];
         modules-right = [ "wireplumber" "tray" "clock" ];
@@ -103,7 +103,8 @@ in
     style = let c = config.colors.fn "#"; in ''
       * {
           border: none;
-          font-size: 18px;
+          font-size: ${toString config.font.px}px;
+          font-family: ${config.font.font-conf-name};
       }
       window#waybar {
           background: transparent;
