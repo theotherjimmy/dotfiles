@@ -2,20 +2,10 @@
 
 let
   c = config.colors.fn "#";
-  launch-ferdium = pkgs.writers.writeBashBin "launch-ferdium" ''
-    ferdium_opts="ferdium --ozone-platform=wayland"
-    if [[ -n "$(type nixGLIntel)" ]] ; then
-      exec nixGLIntel $ferdium_opts
-    else
-      exec $ferdium_opts
-    fi
-  '';
 in
 {
   home.packages = [
     pkgs.wezterm
-    pkgs.ferdium
-    launch-ferdium
   ];
   programs.foot = {
     enable = true;
