@@ -207,8 +207,8 @@ in
          name = "work-home";
          output = [
            (m.builtin.at 0 1440)
-           (m.samsung.at 1920 1440)
-           (m.acer.at 1920 0)
+           (m.samsung.at (1920 - 320) 0)
+           (m.asus.at 1920 1440)
          ];
        }
        {
