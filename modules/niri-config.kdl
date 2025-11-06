@@ -15,20 +15,32 @@ input {
 }
 
 layout {
-    gaps 10
+    gaps 0
+    struts {
+        top 0
+        bottom 0
+        left 10
+        right 10
+    }
     center-focused-column "never"
+    always-center-single-column
     preset-column-widths {
         proportion 0.33333
         proportion 0.5
         proportion 0.66667
     }
     default-column-width { proportion 0.5; }
-    focus-ring {
-        width 2
+    border {
+        width 3
         active-color "@active@"
         inactive-color "@inactive@"
     }
+    focus-ring {
+        off
+    }
+    background-color "transparent"
 }
+
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 animations {
     slowdown 0.5
@@ -42,6 +54,17 @@ window-rule {
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
+}
+
+layer-rule {
+    match namespace="^wallpaper$"
+    place-within-backdrop true
+}
+
+overview {
+    workspace-shadow {
+        off
+    }
 }
 
 binds {

@@ -60,6 +60,7 @@ in
     pkgs.shikane
     pkgs.niri
     pkgs.xwayland-satellite
+    pkgs.swww
   ];
   xdg.configFile."niri/config.kdl".source = let
     c = config.colors.fn "#";
