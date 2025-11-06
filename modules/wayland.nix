@@ -158,145 +158,100 @@ in
   services.shikane = {
     enable = true;
     settings = {
-      profile = [
+      profile = let
+        backing = {
+          builtin = {
+            match = "eDP-1";
+            enable = true;
+            mode = "3840x2400@60Hz";
+            scale = 2.0;
+          };
+          samsung = {
+            enable = true;
+            search = [ "m=S27D850" "s=HCJH901332" ];
+            mode = "2560x1440@59.951Hz";
+          };
+          acer = {
+            enable = true;
+            search = ["m=Acer K272HUL" "s=T0SAA0014200" ];
+            mode = "2560x1440@59.951Hz";
+          };
+          thinkvision = {
+            enable = true;
+            search = [ "m=P24h-30" "s=V90E1R50" ];
+            mode = "2560x1440@74.78Hz";
+          };
+          thinkcenter ={
+            enable = true;
+            search = [ "m=TIO24Gen4" "s=V308MBXM" ];
+            mode = "1920x1080@74.97";
+          };
+          hp = {
+            enable = true;
+            search = [ "m=LA2405" "s=CN41221D84" ];
+            mode = "1920x1200@59.95Hz";
+          };
+          asus = {
+            enable = true;
+            search = [ "m=VG34VQL3A" "s=SCLMDW019741" ];
+            mode = "3440x1440@165.00Hz";
+          };
+          no-monitor = { search = ["m=No Monitor"]; };
+        };
+        m = lib.attrsets.mapAttrs (name: val: {
+          at = x: y: val // { position = { x = x; y = y; }; };
+          off = val // { enable = false; };
+        }) backing;
+      in [
        {
          name = "work-home";
          output = [
-           {
-             match = "eDP-1";
-             enable = true;
-             mode = "3840x2400@60Hz";
-             position = { x = 0; y = 1440; };
-             scale = 2.0;
-           }
-           {
-             enable = true;
-             search = [ "m=S27D850" "s=HCJH901332" ];
-             mode = "2560x1440@59.951Hz";
-             position = { x = 1920; y = 1440; };
-           }
-           {
-             enable = true;
-             search = ["m=Acer K272HUL" "s=T0SAA0014200" ];
-             mode = "2560x1440@59.951Hz";
-             position = { x = 1920; y = 0; };
-           }
+           (m.builtin.at 0 1440)
+           (m.samsung.at 1920 1440)
+           (m.acer.at 1920 0)
          ];
        }
        {
          name = "work-home-but-the-dock-is-a-piece-of-shit";
          output = [
-           {
-             match = "eDP-1";
-             enable = true;
-             mode = "3840x2400@60Hz";
-             position = { x = 0; y = 1440; };
-             scale = 2.0;
-           }
-           {
-             enable = true;
-             search = [ "m=S27D850" "s=HCJH901332" ];
-             mode = "2560x1440@59.951Hz";
-             position = { x = 1920; y = 1440; };
-           }
-           {
-             enable = false;
-             search = ["m=No Monitor"];
-           }
+           (m.builtin.at 0 1440)
+           (m.samsung.at 1920 1440)
+           m.no-monitor.off
          ];
        }
        {
          name = "work-home-but-the-dock-is-a-piece-of-shit";
          output = [
-           {
-             match = "eDP-1";
-             enable = true;
-             mode = "3840x2400@60Hz";
-             position = { x = 0; y = 1440; };
-             scale = 2.0;
-           }
-           {
-             enable = true;
-             search = [ "m=S27D850" "s=HCJH901332" ];
-             mode = "2560x1440@59.951Hz";
-             position = { x = 1920; y = 1440; };
-           }
+           (m.builtin.at 0 1440)
+           (m.samsung.at 1920 1440)
          ];
        }
        {
          name = "office";
          output = [
-           {
-             match = "eDP-1";
-             enable = true;
-             mode = "3840x2400@60Hz";
-             position = { x = 0; y = 1440; };
-             scale = 2.0;
-           }
-           {
-             enable = true;
-             search = [ "m=P24h-30" "s=V90E1R50" ];
-             mode = "2560x1440@74.78Hz";
-             position = { x = 0; y = 0; };
-           }
-           {
-             enable = true;
-             search = [ "m=TIO24Gen4" "s=V308MBXM" ];
-             mode = "1920x1080@74.97";
-             position = { x = 2560; y = 0; };
-           }
+           (m.builtin.at 0 1440)
+           (m.thinkvision.at 0 0)
+           (m.thinkcenter.at 2560 0)
          ];
        }
        {
          name = "houston-bedroom";
          output = [
-           { # Bottom
-             match = "eDP-1";
-             enable = true;
-             mode = "3840x2400@60Hz";
-             position = { x = 0; y = 1200; };
-             scale = 1.5;
-           }
-           { # Top
-             enable = true;
-             search = [ "m=LA2405" "s=CN41221D84" ];
-             mode = "1920x1200@59.95Hz";
-             position = { x = 320; y = 0; };
-           }
+           (m.builtin.at 0 1200)
+           (m.hp.at 320 0)
          ];
        }
        {
          name = "nixboi";
          output = [
-           {
-             enable = true;
-             search = [ "m=S27D850" "s=HCJH901332" ];
-             mode = "2560x1440@59.951Hz";
-             position = { x = 0; y = 0; };
-           }
-           {
-             enable = true;
-             search = ["m=Acer K272HUL" "s=T0SAA0014200" ];
-             mode = "2560x1440@59.951Hz";
-             position = { x = 2560; y = 0; };
-           }
-           {
-             enable = true;
-             search = [ "m=VG34VQL3A" "s=SCLMDW019741" ];
-             mode = "3440x1440@165.00Hz";
-             position = { x = 860; y = 1440; };
-           }
+           (m.samsung.at 0 0)
+           (m.acer.at 2560 0)
+           (m.asus.at 860 1440)
          ];
        }
        {
          name = "builtin-monitor-only";
-         output = [
-           {
-             match = "eDP-1";
-             enable = true;
-             scale = 2;
-           }
-         ];
+         output = [(m.builtin.at 0 0)];
        }
      ];
     };
