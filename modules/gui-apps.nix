@@ -34,6 +34,7 @@ in
       bright6 = c.base0F;
       bright7 = c.base07;
     };
+    settings.csd.preferred = "none";
   };
   programs.zathura = {
     enable = true;
