@@ -271,26 +271,7 @@ in
   services.ssh-agent.enable = true;
   home.packages =
     let
-      edit = pkgs.writers.writeBashBin "edit" ''
-        if [[ $# > 0 ]]; then
-          files=$@
-        else
-          files=$(sk -m)
-          if [[ $? != 0 ]] ; then
-            exit 1
-          fi
-        fi
-        ws=$(hyprctl activeworkspace -j | jq -r ".name" | cut -d: -f 1)
-        if [[ $ws != "" ]] ; then
-          if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
-            exec kak -c $ws $files
-          else
-            exec kak -s $ws $files
-          fi
-        else
-          exec kak $files
-        fi
-      '';
+      edit = pkgs.callPackage ../pkgs/edit.nix {};
       rgl = pkgs.writers.writeBashBin "rgl" ''
         rg -p $@ | less -RF
       '';
