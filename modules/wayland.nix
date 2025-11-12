@@ -28,22 +28,12 @@ let
     ''-i -W 0.5 -c -l 30 --fixed-height -R 5 ${color-arg-string}'';
   tofi-run = ''BEMENU_OPTS="${bemenu-options}" ${pkgs.bemenu}/bin/bemenu-run'';
   term = lib.getExe pkgs.foot;
-  hyprctl = lib.getExe config.wayland.windowManager.hyprland.package;
   hyprmenu = pkgs.writers.writeBashBin "hyprmenu" ''
     ${tofi-run}
-  '';
-  hypr-screenoff = pkgs.writers.writeBashBin "hypr-screenoff" ''
-    sleep 1 && ${hyprctl} dispatch dpms off
   '';
 in
 {
   home.packages = [
-    (pkgs.callPackage ../pkgs/hyprws.nix {
-      runtimeEnv = {
-        inherit term;
-        BEMENU_OPTS = bemenu-options;
-      };
-    })
     (pkgs.callPackage ../pkgs/niriws.nix {
       runtimeEnv = {
         inherit term;
@@ -80,15 +70,11 @@ in
         position = "bottom";
         height = 40;
         modules-left = [ "cpu" "memory" "temperature" "battery" ];
-        modules-center = [ "hyprland/workspaces" "niri/workspaces" ];
+        modules-center = [ "niri/workspaces" ];
         modules-right = [ "wireplumber" "tray" "clock" ];
         clock.format = "{:%A %F %H:%M}";
         cpu.format = "{min_frequency:0.1f}Ghz ⇋ {max_frequency:0.1f}Ghz";
         memory.format = "{used:0.1f}G/{total:0.1f}G";
-        "hyprland/workspaces" = {
-          format = "{name}";
-          active-only = true;
-        };
         "niri/workspaces" = {
           current-only = true;
         };
