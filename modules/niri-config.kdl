@@ -15,10 +15,10 @@ input {
 }
 
 layout {
-    gaps 0
+    gaps 10
     struts {
-        top 0
-        bottom 0
+        top -10
+        bottom -10
         left 10
         right 10
     }
