@@ -152,7 +152,6 @@ in
     enable = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
     ];
   };
   services.shikane = {
@@ -255,89 +254,5 @@ in
        }
      ];
     };
-  };
-  wayland.windowManager.hyprland = {
-    enable = true;
-    extraConfig =
-      let
-        colors = config.colors.fn "0xff";
-        foot = "${pkgs.foot}" /bin/foot;
-        mkMonitor = desc: res: loc: scale: rotate: lib.strings.trim ''
-          monitor=desc:${desc},${res},${loc},${toString scale},bitdepth,8${lib.strings.optionalString rotate ",transform,1"}
-          workspace = m[desc:${desc}], layoutopt:orientation:${if rotate then "top" else "center"}
-        '';
-      in
-      ''
-        $mod = Alt
-        bind = $mod and Shift, C, exec, foot fish
-        bind = $mod, C, exec, hyprws term
-        bind = $mod, E, exec, hyprws edit
-        bind = $mod, G, exec, hyprws switch
-        bind = $mod and Shift, G, exec, hyprws move-to
-        bind = $mod and Control, G, workspace, previous
-        bind = $mod, N, workspace, empty
-        bind = $mod, N, exec, hyprws rename
-        bind = $mod, M, layoutmsg, addmaster
-        bind = $mod and Shift, M, layoutmsg, removemaster
-        bind = $mod and Shift, N, movetoworkspace, empty
-        bind = $mod and Shift, N, exec, hyprws rename
-        bind = $mod, R, exec, hyprws rename
-        bind = $mod and Shift, R, exec, hyprws set-pwd
-        bind = $mod, P, exec, hyprmenu
-        bind = $mod, H, movefocus, l
-        bind = $mod, J, movefocus, d
-        bind = $mod, K, movefocus, u
-        bind = $mod, L, movefocus, r
-        bind = $mod, F, togglefloating,
-        bind = $mod and Shift, H, swapwindow, l
-        bind = $mod and Shift, J, swapwindow, d
-        bind = $mod and Shift, K, swapwindow, u
-        bind = $mod and Shift, L, swapwindow, r
-        bind = $mod, D, killactive,
-        bind = $mod, Return, fullscreen, 1
-        bind = $mod and Shift, Return, fullscreen, 0
-        bind = $mod and Shift, S, exec, sleep 1 && hyprctl dispatch dpms off
-        bind = $mod and Control, S, exec, systemctl suspend
-        bind = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
-        bind = ,XF86MonBrightnessUp, exec, brightnessctl s +10%
-        bindm = $mod, mouse:272, movewindow
-        bindm = $mod, mouse:273, resizewindow
-
-        animation = global, 1, 1, default
-        animation = workspaces, 1, 1, default, fade
-
-        general {
-            layout = master
-            border_size = 3
-            gaps_out = 0
-            col.inactive_border = ${colors.base02}
-            col.active_border = ${colors.base09}
-        }
-
-        decoration {
-            rounding = 0
-        }
-
-        input {
-            kb_layout = us,us
-            kb_variant = dvp,
-            kb_options = caps:escape
-            float_switch_override_focus = 0
-        }
-
-        master {
-            orientation = center
-            mfact = 0.4
-            new_on_active = after
-        }
-
-        misc {
-            key_press_enables_dpms = true
-        }
-
-        debug {
-            disable_logs = false
-        }
-      '';
   };
 }
