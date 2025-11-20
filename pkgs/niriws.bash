@@ -22,6 +22,7 @@ switch() {
     NAME=$(select_ws)
     if [[ -n $NAME ]] ; then
       niri msg action move-window-to-workspace "$NAME"
+      echo '{"Action":{"MoveWindowToWorkspace":{"focus":true,"reference":{"Id":'"$NAME"'}}}}' | socat STDIO "$NIRI_SOCKET"
     fi
 }
 
