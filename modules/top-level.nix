@@ -12,10 +12,7 @@
     username = "jimbri01";
     stateVersion = "22.11";
   };
-  font.name = "OpenDyslexicM";
-  font.pkg-name = "open-dyslexic";
   font.em = 10;
-  font.line-height = 14; /* ???? I don't understand why this is needed */
   colors.theme = "zenburn";
   xsession.enable = false;
   systemd.user.startServices = true;
