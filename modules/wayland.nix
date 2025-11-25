@@ -223,7 +223,7 @@ in
          name = "houston-bedroom";
          output = [
            (m.builtin.at 0 1200)
-           (m.hp.at 320 0)
+           (m.hp.at 0 0)
          ];
        }
        {
