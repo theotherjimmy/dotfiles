@@ -10,10 +10,7 @@ d computer:
     fi
 
 switch: build
-    ./result/activate
-
-build:
-    nix build -L .#homeConfigurations."jimbri01".activationPackage
+    nh home switch ./
 
 rollback num="0":
     {{profile-dir}}/home-manager-{{num}}-link/activate

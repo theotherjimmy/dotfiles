@@ -184,6 +184,7 @@ in
         }
       '';
   };
+  programs.nh.enable = true;
   programs.htop.enable = true;
   programs.direnv = {
     enable = true;
