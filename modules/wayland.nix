@@ -194,8 +194,15 @@ in
        {
          name = "work-home";
          output = [
-           (m.builtin.at 0 1440)
+           m.builtin.off
            (m.samsung.at (1920 - 320) 0)
+           (m.asus.at 1920 1440)
+         ];
+       }
+       {
+         name = "work-home";
+         output = [
+           m.builtin.off
            (m.asus.at 1920 1440)
          ];
        }
