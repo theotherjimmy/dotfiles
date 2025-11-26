@@ -23,6 +23,9 @@
     nixgl.url = "github:nix-community/nixGL";
     nixgl.inputs.nixpkgs.follows = "nixpkgs";
     nixgl.inputs.flake-utils.follows = "flake-utils";
+
+    niri.url = "github:sodiboo/niri-flake";
+    niri.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -34,6 +37,7 @@
     , deploy
     , devshell
     , nixgl
+    , niri
     }:
     let
       local-overlay = final: prior:
@@ -54,7 +58,15 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.jimbri01 = import ./modules/top-level.nix;
+              users.jimbri01 = {...}: {
+                imports = [
+                  niri.homeModules.niri
+                  ./modules/top-level.nix
+                ];
+              };
+              extraSpecialArgs.extraModules = [
+                niri.homeModules.niri
+              ];
             };
           });
         };
@@ -99,6 +111,7 @@
       packages.homeConfigurations."jimbri01" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
+          niri.homeModules.niri
           ./modules/top-level.nix
           {
             home.packages = [ pkgs.nixgl.nixGLIntel ];
