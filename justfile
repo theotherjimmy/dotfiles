@@ -9,7 +9,7 @@ d computer:
         deploy .#{{computer}} -s --ssh-user root
     fi
 
-switch: build
+switch:
     nh home switch ./
 
 rollback num="0":
