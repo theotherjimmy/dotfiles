@@ -39,7 +39,9 @@ move_to() {
 # Find (git) projects within home directory
 find_projects() {
     readarray -t top_level < <(env -C "$HOME" fd -t d -d 1 .)
-    env -C "$HOME" fd -t d '^\.git$' --format '{//}' -H "${top_level[@]}" | sort
+    env -C "$HOME" fd -t d '^\.git$' --format '{//}' -H "${top_level[@]}"
+    env -C "$HOME" fd -t f '^\.subproject$' --format '{//}' -H -I "${top_level[@]}"
+    awk '$1=="Host" { print "@" $2 }' ~/.ssh/config
 }
 
 cur_workspace_name() {
@@ -48,15 +50,13 @@ cur_workspace_name() {
 
 # Set the working directory or ssh host of the current workspace
 set_pwd() {
-    SELECTED=$( \
-        {
-            find_projects &
-            awk '$1=="Host" { print "@" $2 }' ~/.ssh/config
-        } \
-        | bemenu -p "Set Workspace PWD")
+    SELECTED=$(find_projects | env LC_ALL=C sort | bemenu -p "Set Workspace PWD")
     if [[ -n $SELECTED ]] ; then
       PREFIX=$(cur_workspace_name | cut -d: -f 1)
       if [[ -n $PREFIX ]] ; then
+          if [[ "$PREFIX" == "null" ]] ; then
+              PREFIX=$(basename "$SELECTED")
+          fi
           niri msg action set-workspace-name "$PREFIX:$SELECTED"
       fi
     fi

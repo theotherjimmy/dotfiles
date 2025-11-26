@@ -257,7 +257,7 @@ in
       core.editor = "edit";
       pull.rebase = true;
     };
-    ignores = [ ".direnv.d" ".envrc" "shell.nix" ];
+    ignores = [ ".direnv.d" ".envrc" "shell.nix" ".subproject" ];
     userEmail = "jbrisson@linux.ibm.com";
     userName = "Jimmy Brisson";
   };
