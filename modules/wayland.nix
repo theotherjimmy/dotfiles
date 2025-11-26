@@ -48,10 +48,13 @@ in
     pkgs.wayvnc
     pkgs.wlvncc
     pkgs.shikane
-    pkgs.niri
     pkgs.xwayland-satellite
     pkgs.swww
   ];
+  programs.niri = {
+    enable = true;
+    package = pkgs.niri;
+  };
   xdg.configFile."niri/config.kdl".source = let
     c = config.colors.fn "#";
   in pkgs.substitute {
