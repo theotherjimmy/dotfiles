@@ -276,7 +276,7 @@ in
     let
       edit = pkgs.callPackage ../pkgs/edit.nix {};
       rgl = pkgs.writers.writeBashBin "rgl" ''
-        rg -p $@ | less -RF
+        rg -p "$@" | less -RF
       '';
     in
     [
