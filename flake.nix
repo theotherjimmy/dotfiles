@@ -3,11 +3,11 @@
 {
   description = "A bland config";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/e2642aa7d5a15eae586932a56f4294934f959c14";
+    nixpkgs.url = "github:nixos/nixpkgs";
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    home-manager.url = "github:rycee/home-manager/master";
+    home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     rust-overlay.url = "github:oxalica/rust-overlay";
@@ -24,6 +24,9 @@
     nixgl.inputs.nixpkgs.follows = "nixpkgs";
     nixgl.inputs.flake-utils.follows = "flake-utils";
 
+    stylix.url = "github:nix-community/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+
     niri.url = "github:sodiboo/niri-flake";
     niri.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -37,6 +40,7 @@
     , deploy
     , devshell
     , nixgl
+    , stylix
     , niri
     }:
     let
@@ -60,6 +64,7 @@
               useUserPackages = true;
               users.jimbri01 = {...}: {
                 imports = [
+                  stylix.homeModules.stylix
                   niri.homeModules.niri
                   ./modules/top-level.nix
                 ];
@@ -111,6 +116,7 @@
       packages.homeConfigurations."jimbri01" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
+          stylix.homeModules.stylix
           niri.homeModules.niri
           ./modules/top-level.nix
           {

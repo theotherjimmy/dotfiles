@@ -42,9 +42,8 @@ with lib; {
     pkgs.nerd-fonts."${config.font.pkg-name}"
     # Noto fonts used as backup for now
     pkgs.noto-fonts
-    pkgs.noto-fonts-emoji
+    pkgs.noto-fonts-color-emoji
     pkgs.noto-fonts-cjk-sans
-    pkgs.noto-fonts-extra
   ];
   config.fonts.fontconfig.enable = true;
 }

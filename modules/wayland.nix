@@ -1,67 +1,37 @@
-{ config, pkgs, lib, ... }:
-
-let
-  bemenu-options =
-    let
-      c = config.colors.fn "#";
-      colors = {
-        tf = c.base09;
-        tb = c.base02;
-        ff = c.base08;
-        fb = c.base02;
-        cf = c.base07;
-        cb = c.base02;
-        nf = c.base07;
-        nb = c.base02;
-        af = c.base07;
-        ab = c.base02;
-        hf = c.base0D;
-        hb = c.base03;
-        sf = c.base0D;
-        sb = c.base02;
-      };
-      color-args = lib.attrsets.mapAttrsToList
-        (arg: val: ''--${arg} ${val}'')
-        colors;
-      color-arg-string = lib.strings.concatStringsSep " " color-args;
-    in
-    ''-i -W 0.5 -c -l 30 --fixed-height -R 5 ${color-arg-string}'';
-  tofi-run = ''BEMENU_OPTS="${bemenu-options}" ${pkgs.bemenu}/bin/bemenu-run'';
-  term = lib.getExe pkgs.foot;
-  hyprmenu = pkgs.writers.writeBashBin "hyprmenu" ''
-    ${tofi-run}
-  '';
-in
-{
+{ config, pkgs, lib, ... }: {
   home.packages = [
     (pkgs.callPackage ../pkgs/niriws.nix {
       runtimeEnv = {
-        inherit term;
-        BEMENU_OPTS = bemenu-options;
+        term = lib.getExe pkgs.foot;
       };
     })
     pkgs.sshfs
-    pkgs.bemenu
-    hyprmenu
     pkgs.helvum
     pkgs.wl-clipboard-rs
-    pkgs.wayvnc
     pkgs.wlvncc
     pkgs.shikane
     pkgs.xwayland-satellite
     pkgs.swww
   ];
+  programs.bemenu = {
+    enable = true;
+    settings = {
+      width-factor = 0.5;
+      ignorecase = true;
+      list = "30 down";
+    };
+  };
   programs.niri = {
     enable = true;
     package = pkgs.niri;
   };
   xdg.configFile."niri/config.kdl".source = let
-    c = config.colors.fn "#";
+    c = config.lib.stylix.colors;
   in pkgs.substitute {
     src = ./niri-config.kdl;
     substitutions = [
-      "--replace" "@active@" c.base09
-      "--replace" "@inactive@" c.base02
+      "--replace" "@active@" "#${c.base0A}"
+      "--replace" "@inactive@" "#${c.base03}"
     ];
   };
   programs.waybar = {
@@ -90,34 +60,21 @@ in
         battery.format = "Bat: {capacity}%";
       };
     };
-    style = let c = config.colors.fn "#"; in ''
-      * {
-          border: none;
-          font-size: ${toString config.font.px}px;
-          font-family: ${config.font.font-conf-name};
-      }
+    style = ''
       window#waybar {
           background: transparent;
       }
-      .module {
-          border: 2px solid ${c.base02};
-          background: ${c.base00};
-          padding: 0 10px;
-          color: ${c.base07};
-      }
-      #workspaces button {
-          color: ${c.base07};
-      }
     '';
+  };
+  stylix.targets.waybar = {
+    enableLeftBackColors = true;
+    enableRightBackColors = true;
   };
   services.mako = {
     enable = true;
-    settings = let c = config.colors.fn "#"; in {
+    settings = {
       border-radius = 0;
       border-size = 2;
-      border-color = c.base0D;
-      background-color = c.base00;
-      text-color = c.base07;
       icons = true;
       default-timeout = 10000;
       anchor = "top-center";

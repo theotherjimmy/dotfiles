@@ -130,7 +130,7 @@ in
       kak-luar
     ];
     extraConfig =
-      with (config.colors.fn "rgb:"); ''
+      with lib.attrsets.mapAttrs (_: s: "rgb:${s}") config.lib.stylix.colors; ''
         face global value ${base09}
         face global type ${base0A}+b
         face global identifier ${base08}
@@ -206,7 +206,7 @@ in
       psme = "pstree -h -C age -U -T $USER";
       icat = "img2sexel";
       isvg = "rsvg-convert | icat";
-      idot = let inherit (config.colors.fn "#") base00 base05; in
+      idot = with lib.attrsets.mapAttrs (_: c: "#${c}") config.lib.stylix.colors;
         ''dot -T bmp \
           -Gbgcolor="${base00}" \
           -Gcolor="${base05}" \
@@ -247,19 +247,21 @@ in
     shellAbbrs = config.programs.bash.shellAliases;
   };
   programs.git = {
-    package = pkgs.gitAndTools.gitFull;
+    package = pkgs.gitFull;
     enable = true;
-    aliases = {
-      ds = "diff --staged";
-      ap = "add -p";
-    };
-    extraConfig = {
+    settings = {
       core.editor = "edit";
       pull.rebase = true;
+      aliases = {
+        ds = "diff --staged";
+        ap = "add -p";
+      };
+      user = {
+        email = "jbrisson@linux.ibm.com";
+        name = "Jimmy Brisson";
+      };
     };
     ignores = [ ".direnv.d" ".envrc" "shell.nix" ".subproject" ];
-    userEmail = "jbrisson@linux.ibm.com";
-    userName = "Jimmy Brisson";
   };
   programs.jq.enable = true;
   programs.man.enable = true;
