@@ -278,20 +278,10 @@ in
       rgl = pkgs.writers.writeBashBin "rgl" ''
         rg -p $@ | less -RF
       '';
-      git-ip-review = pkgs.writeShellScriptBin "git-ip-review" ''
-        rev=$(git rev-parse --abbrev-ref HEAD)
-        if [ "HEAD" == $rev ] ; then
-          echo "Error: detached HEAD; Refusing to push an ip review"
-          exit 1
-        else
-          git push arm $rev:refs/for/master/$rev
-        fi
-      '';
     in
     [
       edit
       rgl
-      git-ip-review
       pkgs.aspell
       pkgs.aspellDicts.en
       pkgs.bashInteractive
