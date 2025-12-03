@@ -13,14 +13,7 @@
     pkgs.xwayland-satellite
     pkgs.swww
   ];
-  programs.bemenu = {
-    enable = true;
-    settings = {
-      width-factor = 0.5;
-      ignorecase = true;
-      list = "30 down";
-    };
-  };
+  programs.rofi.enable = true;
   programs.niri = {
     enable = true;
     package = pkgs.niri;

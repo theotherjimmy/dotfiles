@@ -68,7 +68,7 @@ binds {
     Mod+T hotkey-overlay-title="Open a Terminal: foot" { spawn "niriws" "term"; }
     Mod+Shift+T hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
     Mod+E hotkey-overlay-title="Open an Editor" { spawn "niriws" "edit"; }
-    Mod+P hotkey-overlay-title="Run an Application" { spawn "bemenu-run"; }
+    Mod+P hotkey-overlay-title="Run an Application" { spawn "rofi" "-show" "run"; }
     Mod+W hotkey-overlay-title="Rename the current workspace" { spawn "niriws" "rename"; }
     Mod+Shift+W hotkey-overlay-title="Set the working directory" { spawn "niriws" "set-pwd"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }

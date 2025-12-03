@@ -2,7 +2,7 @@ FRE_STORE=$HOME/.local/share/lanta/desktop-names
 
 # Rename Workspace
 rename() {
-    NAME=$(fre --sorted --store "$FRE_STORE" | bemenu -p "Rename Workspace ")
+    NAME=$(fre --sorted --store "$FRE_STORE" | rofi -dmenu -p "Rename Workspace ")
     if [[ -n $NAME ]] ; then
       niri msg action set-workspace-name "$NAME"
       fre --add "$NAME" --store "$FRE_STORE"
@@ -13,7 +13,7 @@ rename() {
 select_ws() {
     niri msg --json workspaces \
         | jq -r '.[] | select(.active_window_id != null or .name != null) | @text "\(.id) \(.name)"' \
-        | bemenu -p "Switch To " \
+        | rofi -dmenu -i -p "Switch To " \
         | awk '{print $1}'
 }
 
@@ -50,7 +50,7 @@ cur_workspace_name() {
 
 # Set the working directory or ssh host of the current workspace
 set_pwd() {
-    SELECTED=$(find_projects | env LC_ALL=C sort | bemenu -p "Set Workspace PWD")
+    SELECTED=$(find_projects | env LC_ALL=C sort | rofi -dmenu -i -p "Set Workspace PWD")
     if [[ -n $SELECTED ]] ; then
       PREFIX=$(cur_workspace_name | cut -d: -f 1)
       if [[ -n $PREFIX ]] ; then
