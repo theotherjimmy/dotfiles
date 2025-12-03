@@ -143,7 +143,7 @@
           asus = {
             enable = true;
             search = [ "m=VG34VQL3A" "s=SCLMDW019741" ];
-            mode = "3440x1440@165.00Hz";
+            mode = "3440x1440@119.991Hz";
           };
           no-monitor = { search = ["m=No Monitor"]; };
         };
