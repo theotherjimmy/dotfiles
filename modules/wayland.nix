@@ -36,8 +36,7 @@
         position = "bottom";
         height = 40;
         modules-left = [ "cpu" "memory" "temperature" "battery" ];
-        modules-center = [ "niri/workspaces" ];
-        modules-right = [ "wireplumber" "tray" "clock" ];
+        modules-right = [ "niri/workspaces" "wireplumber" "tray" "clock" ];
         clock.format = "{:%A %F %H:%M}";
         cpu.format = "{min_frequency:0.1f}Ghz ⇋ {max_frequency:0.1f}Ghz";
         memory.format = "{used:0.1f}G/{total:0.1f}G";
@@ -56,6 +55,15 @@
     style = ''
       window#waybar {
           background: transparent;
+      }
+      #battery {
+          border-top-right-radius: 30px;
+          padding-right: 15px;
+      }
+      #workspaces button {
+          border-radius: 0px;
+          border-top-left-radius: 30px;
+          padding-left: 15px;
       }
     '';
   };
