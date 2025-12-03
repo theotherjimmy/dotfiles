@@ -35,7 +35,7 @@
         layer = "top";
         position = "bottom";
         height = 40;
-        modules-left = [ "cpu" "memory" "temperature" "battery" ];
+        modules-left = [ "memory" "temperature" "battery" "cpu" ];
         modules-right = [ "niri/workspaces" "wireplumber" "tray" "clock" ];
         clock.format = "{:%A %F %H:%M}";
         cpu.format = "{min_frequency:0.1f}Ghz ⇋ {max_frequency:0.1f}Ghz";
@@ -56,7 +56,7 @@
       window#waybar {
           background: transparent;
       }
-      #battery {
+      #cpu {
           border-top-right-radius: 30px;
           padding-right: 15px;
       }
