@@ -3,7 +3,7 @@
 {
   description = "A bland config";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -109,7 +109,7 @@
     {
       devShell = pkgs.devshell.mkShell {
         motd = "";
-        packages = [ pkgs.deploy-rs ];
+        packages = [ pkgs.deploy-rs pkgs.nh ];
         env = [{ name = "NIX_PATH"; value = "nixpkgs=${nixpkgs}"; }];
       };
       formatter = pkgs.nixpkgs-fmt;

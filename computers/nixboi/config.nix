@@ -45,8 +45,7 @@
     graphics.enable = true;
     graphics.extraPackages = [
       pkgs.vulkan-loader
-      pkgs.amdvlk
-      pkgs.vaapiVdpau
+      pkgs.libva-vdpau-driver
       pkgs.libvdpau-va-gl
     ];
     #graphics.package = (pkgs.enableDebugging pkgs.mesa).drivers;
