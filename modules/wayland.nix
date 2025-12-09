@@ -35,7 +35,7 @@
         layer = "top";
         position = "bottom";
         height = 40;
-        modules-left = [ "memory" "temperature" "battery" "cpu" ];
+        modules-left = [ "memory" "battery" "temperature" "cpu" ];
         modules-right = [ "niri/workspaces" "wireplumber" "tray" "clock" ];
         clock.format = "{:%A %F %H:%M}";
         cpu.format = "{min_frequency:0.1f}Ghz ⇋ {max_frequency:0.1f}Ghz";
