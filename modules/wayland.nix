@@ -11,7 +11,6 @@
     pkgs.wlvncc
     pkgs.shikane
     pkgs.xwayland-satellite
-    pkgs.swww
   ];
   programs.rofi.enable = true;
   programs.niri = {
@@ -27,6 +26,7 @@
       "--replace" "@inactive@" "#${c.base03}"
     ];
   };
+  services.swww.enable = true;
   programs.waybar = {
     enable = true;
     systemd.enable = true;
