@@ -324,5 +324,6 @@ in
       pkgs.p7zip
       pkgs.innoextract
       pkgs.socat
+      pkgs.watchexec
     ];
 }
