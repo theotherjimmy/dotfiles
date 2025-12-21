@@ -1,9 +1,8 @@
+set -e
 if [[ $# -gt 0 ]]; then
   files=("$@")
 else
-  if ! readarray -t files < <(sk -m) ; then
-    exit 1
-  fi
+  readarray -t files < <(sk -m)
 fi
 ws=$(niri msg --json workspaces | jq -r '.[] | select(.is_focused) |.name' | cut -d: -f 1)
 if [[ $ws != "" ]] ; then
