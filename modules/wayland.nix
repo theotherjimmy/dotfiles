@@ -27,49 +27,20 @@
     ];
   };
   services.swww.enable = true;
-  programs.waybar = {
+  programs.ashell = {
     enable = true;
     systemd.enable = true;
     settings = {
-      mainBar = {
-        layer = "top";
-        position = "bottom";
-        height = 40;
-        modules-left = [ "memory" "battery" "temperature" "cpu" ];
-        modules-right = [ "niri/workspaces" "wireplumber" "tray" "clock" ];
-        clock.format = "{:%A %F %H:%M}";
-        cpu.format = "{min_frequency:0.1f}Ghz ⇋ {max_frequency:0.1f}Ghz";
-        memory.format = "{used:0.1f}G/{total:0.1f}G";
-        "niri/workspaces" = {
-          current-only = true;
-        };
-        temperature = {
-          hwmon-path = "/sys/devices/platform/coretemp.0/hwmon/hwmon9/temp1_input";
-          tooltip = false;
-        };
-        tray.spacing = 5;
-        wireplumber.format = "Vol: {volume}";
-        battery.format = "Bat: {capacity}%";
+      position = "Bottom";
+      modules = {
+        center = [ "Workspaces" ];
+        left = [ "SystemInfo" "Tray" ];
+        right = [ "Clock" "Privacy" "Settings" ];
       };
+      systemInfo.temperature.sensor = "coretemp Package id 0";
+      workspaces.visibilityMode = "MonitorSpecificExclusive";
+      clock.format = "%F %X";
     };
-    style = ''
-      window#waybar {
-          background: transparent;
-      }
-      #cpu {
-          border-top-right-radius: 30px;
-          padding-right: 15px;
-      }
-      #workspaces button {
-          border-radius: 0px;
-          border-top-left-radius: 30px;
-          padding-left: 15px;
-      }
-    '';
-  };
-  stylix.targets.waybar = {
-    enableLeftBackColors = true;
-    enableRightBackColors = true;
   };
   services.mako = {
     enable = true;
