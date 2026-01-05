@@ -18,7 +18,21 @@
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-bin;
-    profiles.default-release.name = "default-release";
+    profiles.default-release = {
+      name = "default-release";
+      userContent = let
+        c = config.lib.stylix.colors;
+      in ''
+        @-moz-document url-prefix("about:reader")
+        {
+            body.dark
+            {
+                    color: #${c.base05} !important;
+                    background-color: #${c.base00} !important;
+            }
+        }
+      '';
+    };
   };
   stylix.targets.firefox = {
     profileNames = ["default-release"];
