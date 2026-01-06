@@ -38,7 +38,7 @@ layout {
     focus-ring {
         off
     }
-    background-color "transparent"
+    background-color "@background@"
 }
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
@@ -62,11 +62,6 @@ window-rule {
     match app-id="firefox"
     match app-id="google-chrome"
     open-maximized-to-edges true
-}
-
-layer-rule {
-    match namespace="^wallpaper$"
-    place-within-backdrop true
 }
 
 overview {

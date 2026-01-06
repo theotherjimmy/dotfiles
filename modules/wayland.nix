@@ -24,9 +24,9 @@
     substitutions = [
       "--replace" "@active@" "#${c.base0A}"
       "--replace" "@inactive@" "#${c.base03}"
+      "--replace" "@background@" "#${c.base02}"
     ];
   };
-  services.swww.enable = true;
   programs.ashell = {
     enable = true;
     systemd.enable = true;
