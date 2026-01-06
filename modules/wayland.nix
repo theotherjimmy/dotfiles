@@ -61,7 +61,7 @@
     enable = true;
     timeouts = [
       {
-        timeout = 60;
+        timeout = 300;
         command = "${pkgs.niri}/bin/niri msg action power-off-monitors";
       }
     ];
