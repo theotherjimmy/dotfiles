@@ -57,14 +57,19 @@
             ./computers/${hostName}/config.nix
             ./computers/${hostName}/hardware.nix
             home-manager.nixosModules.home-manager
+            stylix.nixosModules.stylix
             ./computers/common.nix
           ] ++ nixpkgs.lib.optional (includeUser) ({ ... }: {
             home-manager = {
               useGlobalPkgs = true;
+              useUserPackages = true;
               users.jimbri01 = {...}: {
                 imports = [
                   stylix.homeModules.stylix
                   niri.homeModules.niri
+                  # Stylix overlay is applied via nixos
+                  # module & conflicts with useGlobalPkgs
+                  { stylix.overlays.enable = false; }
                   ./modules/top-level.nix
                 ];
               };
@@ -89,14 +94,13 @@
       ])
     // (flake-utils.lib.eachDefaultSystem (system:
     let
-      overlays = [
-        devshell.overlays.default
-        local-overlay
-        nixgl.overlay
-      ];
       pkgs = import nixpkgs {
         inherit system;
-        inherit overlays;
+        overlays = [
+          devshell.overlays.default
+          local-overlay
+          nixgl.overlay
+        ];
         config = {
           allowUnfree = true;
         };
