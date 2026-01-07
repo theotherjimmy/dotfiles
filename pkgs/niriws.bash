@@ -119,6 +119,13 @@ pwd_edit() {
     fi
 }
 
+niri-msg-pick() {
+    niri msg action 2>&1 \
+    | awk '/^  [[:alpha:]]/{ print $1 }' \
+    | rofi -dmenu -i -p "niri msg action " \
+    | xargs niri msg action
+}
+
 # Select subcommand
 case "$1" in
     "rename")
@@ -142,6 +149,9 @@ case "$1" in
     "new-ws")
         niri msg action focus-workspace 255
         rename
+        ;;
+    "msg-pick")
+        niri-msg-pick
         ;;
     *)
         exit 1
