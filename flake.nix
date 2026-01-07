@@ -61,7 +61,6 @@
           ] ++ nixpkgs.lib.optional (includeUser) ({ ... }: {
             home-manager = {
               useGlobalPkgs = true;
-              useUserPackages = true;
               users.jimbri01 = {...}: {
                 imports = [
                   stylix.homeModules.stylix
@@ -69,9 +68,6 @@
                   ./modules/top-level.nix
                 ];
               };
-              extraSpecialArgs.extraModules = [
-                niri.homeModules.niri
-              ];
             };
           });
         };
