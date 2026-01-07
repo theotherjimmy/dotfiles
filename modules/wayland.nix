@@ -37,8 +37,8 @@
         left = [ "SystemInfo" "Tray" ];
         right = [ "Clock" "Privacy" "Settings" ];
       };
-      systemInfo.temperature.sensor = "coretemp Package id 0";
-      workspaces.visibilityMode = "MonitorSpecificExclusive";
+      system_info.temperature.sensor = "coretemp Package id 0";
+      workspaces.visibility_mode = "MonitorSpecificExclusive";
       clock.format = "%F %X";
     };
   };

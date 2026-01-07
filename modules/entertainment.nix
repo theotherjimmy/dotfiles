@@ -19,7 +19,7 @@ in {
   config = lib.mkIf config.home.entertainment {
     home.packages = with pkgs; [
       orcaslicer
-      freecad-wayland
+      freecad-qt6
       freetube
       gamescope
       r2modman
