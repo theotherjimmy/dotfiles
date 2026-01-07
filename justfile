@@ -3,11 +3,7 @@ find-gen:= "home-manager-generation"
 
 d computer:
     #!/usr/bin/env bash
-    if [[ "{{computer}}" == "$(hostname)" ]] ; then
-        deploy .#{{computer}} -s --interactive-sudo true
-    else
-        deploy .#{{computer}} -s --ssh-user root
-    fi
+    deploy .#{{computer}} -s --ssh-user root
 
 switch:
     nh home switch ./
