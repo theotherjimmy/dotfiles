@@ -1,1 +1,0 @@
-{ flake = builtins.getFlake (toString ./.); }
