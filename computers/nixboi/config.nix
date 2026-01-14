@@ -9,12 +9,8 @@
   nix.package = pkgs.nixVersions.stable;
   nix.extraOptions = "experimental-features = nix-command flakes";
 
-  nixpkgs.config.allowUnfree = true;
-
   virtualisation.waydroid.enable = true;
 
-  #boot.loader.grub.enable = true;
-  #boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "v4l2loopback" ];
@@ -30,17 +26,7 @@
     hostId = "ab74eca9";
   };
   services.tailscale.enable = true;
-  console.keyMap = "dvorak-programmer";
-  console.font = "Lat2-Terminus16";
-  i18n.defaultLocale = "en_US.UTF-8";
-  time.timeZone = "America/Chicago";
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    neovim
-    linuxPackages.bpftrace
-  ];
   hardware = {
     graphics.enable = true;
     graphics.extraPackages = [
@@ -48,20 +34,9 @@
       pkgs.libva-vdpau-driver
       pkgs.libvdpau-va-gl
     ];
-    #graphics.package = (pkgs.enableDebugging pkgs.mesa).drivers;
     acpilight.enable = true;
     steam-hardware.enable = true;
     bluetooth.enable = true;
-  };
-  services.avahi = {
-    enable = true;
-    openFirewall = true;
-    nssmdns4 = true;
-    publish = {
-      enable = true;
-      addresses = true;
-      workstation = true;
-    };
   };
   services.pipewire = {
     enable = true;
@@ -70,8 +45,6 @@
     wireplumber.enable = true;
   };
   services.fwupd.enable = false;
-
-  services.openssh.enable = true;
   services.lorri.enable = true;
   services.xserver = {
     enable = true;
@@ -81,8 +54,6 @@
     xkb.variant = "dvp";
     videoDrivers = [ "modesetting" "amdgpu" ];
   };
-  # zfs already has its own scheduler. without this my(@Artturin) computer
-  # froze for a second when i nix build something.
   services.udev.extraRules = ''
     ATTRS{idVendor}=="1209" ATTRS{idProduct}=="da42", ENV{ID_MM_DEVICE_IGNORE}="1", GROUP="users"
     ATTRS{idVendor}=="0d28" ATTRS{idProduct}=="0204", ENV{ID_MM_DEVICE_IGNORE}="1", GROUP="users"
@@ -135,18 +106,12 @@
 
   programs.steam.enable = true;
   programs.dconf.enable = true;
-  programs.hyprland.enable = true;
+  programs.niri.enable = true;
 
   services.getty.autologinUser = "jimbri01";
   services.displayManager.autoLogin = {
     enable = true;
     user = "jimbri01";
-  };
-
-  # Zram is fast
-  zramSwap = {
-    enable = true;
-    swapDevices = 1;
   };
 }
 

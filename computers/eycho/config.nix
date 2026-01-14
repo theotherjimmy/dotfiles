@@ -1,15 +1,8 @@
 { config, pkgs, lib, ... }:
 {
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = lib.mkForce "dvorak-programmer";
-    useXkbConfig = true;
-  };
   networking.firewall.enable = false;
   networking.networkmanager.enable = true;
   networking.hostName = "eycho";
-  services.openssh.enable = true;
   services.fluidd.enable = true;
   services.moonraker = {
     enable = true;
@@ -56,17 +49,6 @@
     package = pkgs.kalico;
     logFile = "/var/lib/klipper/klipper.log";
   };
-  services.avahi = {
-    enable = true;
-    openFirewall = true;
-    nssmdns4 = true;
-    nssmdns6 = true;
-    publish = {
-      enable = true;
-      addresses = true;
-      workstation = true;
-    };
-  };
   # Totally a server, not some ewaste laptop.
   services.logind.settings.Login = {
     HandleLidSwitch = "ignore";
@@ -74,9 +56,7 @@
     HandleLidSwitchExternalPower = "ignore";
     HandleSuspendKey = "ignore";
   };
-  services.nginx = {
-    enable = true;
-  };
+  services.nginx.enable = true;
   environment.systemPackages = with pkgs; let
     start-klipper-screen = writers.writeBashBin "start-klipper-screen" ''
       wlr-randr --output LVDS-1 --rotate 90
@@ -84,7 +64,6 @@
     '';
   in
   [
-    kakoune
     cage
     start-klipper-screen
     wlr-randr
