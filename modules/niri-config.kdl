@@ -8,6 +8,7 @@ input {
     }
     touchpad {
         tap
+        disabled-on-external-mouse
     }
     warp-mouse-to-focus
     mod-key "Alt"
