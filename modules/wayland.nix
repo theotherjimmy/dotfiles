@@ -31,14 +31,13 @@
     enable = true;
     systemd.enable = true;
     settings = {
-      position = "Bottom";
+      position = "Top";
       modules = {
-        center = [ "Workspaces" ];
+        center = [ "Clock" ];
         left = [ "SystemInfo" "Tray" ];
-        right = [ "Clock" "Privacy" "Settings" ];
+        right = [ "Privacy" "Settings" ];
       };
       system_info.temperature.sensor = "coretemp Package id 0";
-      workspaces.visibility_mode = "MonitorSpecificExclusive";
       clock.format = "%F %X";
     };
   };
@@ -51,11 +50,6 @@
       default-timeout = 10000;
       anchor = "top-center";
     };
-  };
-  services.network-manager-applet.enable = true;
-  services.udiskie = {
-    enable = true;
-    tray = "always";
   };
   services.swayidle = {
     enable = true;
