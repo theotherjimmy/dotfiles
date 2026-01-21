@@ -150,6 +150,10 @@ case "$1" in
         niri msg action focus-workspace 255
         rename
         ;;
+    "new-ws-pwd")
+        niri msg action focus-workspace 255
+        set_pwd
+        ;;
     "msg-pick")
         niri-msg-pick
         ;;

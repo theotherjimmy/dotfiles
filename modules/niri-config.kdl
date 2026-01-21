@@ -87,6 +87,7 @@ binds {
     Mod+Control+G hotkey-overlay-title="Swap with prior workspace" { focus-workspace-previous; }
     Mod+N hotkey-overlay-title="Make a new workspace; name it" { spawn "niriws" "new-ws"; }
     Mod+Shift+N hotkey-overlay-title="Clear workspace name" { unset-workspace-name; }
+    Mod+Control+N hotkey-overlay-title="Make a new workspace; name it" { spawn "niriws" "new-ws-pwd"; }
     Mod+A hotkey-overlay-title="Run an aribtrary action" { spawn "niriws" "msg-pick"; }
 
 
