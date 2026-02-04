@@ -325,5 +325,6 @@ in
       pkgs.innoextract
       pkgs.socat
       pkgs.watchexec
+      pkgs.lm_sensors
     ];
 }
