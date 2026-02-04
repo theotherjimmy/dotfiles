@@ -39,4 +39,8 @@
     firefoxGnomeTheme.enable = true;
   };
   gtk.enable = true;
-}
+  home.packages = with pkgs; [
+    orca-slicer
+    freecad-qt6
+  ];
+ }
