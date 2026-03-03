@@ -1,0 +1,126 @@
+# Theming
+font: JetBrainsMono Nerd Font 12
+separator: " ➜ "
+border_width: 2
+corner_r: 0
+padding: 15 # Defaults to corner_r
+rows_per_column: 5 # No limit by default
+column_padding: 25 # Defaults to padding
+
+# Anchor and margin
+anchor: top # One of center, left, right, top, bottom, bottom-left, top-left, etc.
+# Only relevant when anchor is not center
+margin_right: 0
+margin_bottom: 0
+margin_left: 0
+margin_top: 0
+
+
+# Permits key bindings that conflict with compositor key bindings.
+# Default is `false`.
+inhibit_compositor_keyboard_shortcuts: true
+
+# Try to guess the correct keyboard layout to use. Default is `false`.
+auto_kbd_layout: true
+
+menu:
+  - key: "p"
+    desc: Power
+    submenu:
+      - key: "l"
+        desc: Lock
+        cmd: niri msg action power-off-monitors
+      - key: "s"
+        desc: Sleep
+        cmd: systemctl suspend
+      - key: "r"
+        desc: Reboot
+        cmd: reboot
+      - key: "o"
+        desc: Off
+        cmd: poweroff
+  - key: "d"
+    desc: Delete window
+    cmd: niri msg action close-window
+  - key: "h"
+    desc: columnate left
+    cmd: niri msg action consume-or-expel-window-left
+  - key: "l"
+    desc: columnate right
+    cmd: niri msg action consume-or-expel-window-right
+  - key: "r"
+    desc: Run command
+    cmd: rofi -show run
+  - key: "t"
+    desc: Terminal in pwd
+    cmd: niriws term
+  - key: "T"
+    desc: Terminal
+    cmd: foot
+  - key: "e"
+    desc: Editor in pwd
+    cmd: niriws edit
+  - key: "a"
+    desc: Arbitrary action
+    cmd: niriws msg-pick
+  - key: "Alt+g"
+    desc: Swap with last group
+    cmd: niri msg action focus-workspace-previous
+  - key: "g"
+    desc: Group
+    submenu:
+      - key: "g"
+        desc: Switch groups
+        cmd: niriws move-to
+      - key: "G"
+        desc: Move Focussed window to group
+        cmd: niriws switch
+      - key: "n"
+        desc: New group
+        cmd: niriws new-ws
+      - key: "N"
+        desc: New group from pwd
+        cmd: niriws new-ws-pwd
+      - key: "w"
+        desc: Rename current group
+        cmd: niriws rename
+      - key: "p"
+        desc: Set workspace pwd
+        cmd: niriws set-pwd
+      - key: "-"
+        desc: Remove workspace name
+        cmd: niri msg action unset-worspace-name
+  - key: "v"
+    desc: Resize
+    submenu:
+      - key: "r"
+        desc: Cycle horizontal sizes
+        cmd: niri msg action switch-preset-column-width
+      - key: "R"
+        desc: Cycle vertical sizes
+        cmd: niri msg action switch-preset-column-height
+      - key: "Ctrl+r"
+        desc: Reset vertical size
+        cmd: niri msg action reset-window-height
+      - key: "e"
+        desc: Expand to edges
+        cmd: niri msg action maximise-window-to-edges
+      - key: "f"
+        desc: Maximize focussed column
+        cmd: niri msg action maximize-column
+      - key: "F"
+        desc: Fullscreen focussed window
+        cmd: niri msg action fullscreen-window
+      - key: "c"
+        desc: Center visible windows
+        cmd: niri msg action center-visible-columns
+      - key: "C"
+        desc: Center focussed column
+        cmd: niri msg action center-column
+      - key: "v"
+        desc: Toggle floating
+        cmd: niri msg action toggle-window-floating
+      - key: "V"
+        desc: Toggle focus between floating and tiling
+        cmd: niri msg action switch-focus-between-floating-and-tiling
+

@@ -11,12 +11,23 @@
     pkgs.wlvncc
     pkgs.shikane
     pkgs.xwayland-satellite
+    pkgs.wlr-which-key
   ];
   programs.rofi.enable = true;
   programs.niri = {
     enable = true;
     package = pkgs.niri;
   };
+  xdg.configFile."wlr-which-key/config.yaml".source = let
+    c = config.lib.stylix.colors;
+  in pkgs.concatText "wlr-which-key config" [
+    (pkgs.writeText "wlr-which-key colors" ''
+      background: "#${c.base01}"
+      color: "#${c.base05}"
+      border: "#${c.base0A}"
+    '')
+    ./wlr-which-key-config.yaml
+  ];
   xdg.configFile."niri/config.kdl".source = let
     c = config.lib.stylix.colors;
   in pkgs.substitute {
