@@ -39,7 +39,7 @@ menu:
       - key: "o"
         desc: Off
         cmd: poweroff
-  - key: "d"
+  - key: ["d", "Alt+d"]
     desc: Delete window
     cmd: niri msg action close-window
   - key: "h"
@@ -48,19 +48,16 @@ menu:
   - key: "l"
     desc: columnate right
     cmd: niri msg action consume-or-expel-window-right
-  - key: "r"
+  - key: ["r", "Alt+r"]
     desc: Run command
     cmd: rofi -show run
-  - key: "t"
-    desc: Terminal in pwd
-    cmd: niriws term
-  - key: "Alt+t"
+  - key: ["t", "Alt+t"]
     desc: Terminal in pwd
     cmd: niriws term
   - key: "T"
     desc: Terminal
     cmd: foot
-  - key: "e"
+  - key: ["e", "Alt+e"]
     desc: Editor in pwd
     cmd: niriws edit
   - key: "a"
