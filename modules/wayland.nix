@@ -137,28 +137,6 @@
          ];
        }
        {
-         name = "work-home";
-         output = [
-           m.builtin.off
-           (m.asus.at 1920 1440)
-         ];
-       }
-       {
-         name = "work-home-but-the-dock-is-a-piece-of-shit";
-         output = [
-           (m.builtin.at 0 1440)
-           (m.samsung.at 1920 1440)
-           m.no-monitor.off
-         ];
-       }
-       {
-         name = "work-home-but-the-dock-is-a-piece-of-shit";
-         output = [
-           (m.builtin.at 0 1440)
-           (m.samsung.at 1920 1440)
-         ];
-       }
-       {
          name = "office";
          output = [
            (m.builtin.at 0 1440)
@@ -177,7 +155,7 @@
          name = "nixboi";
          output = [
            (m.samsung.at 0 0)
-           (m.acer.at 2560 0)
+           /* (m.acer.at 2560 0) */
            (m.asus.at 860 1440)
          ];
        }
