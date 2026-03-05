@@ -54,6 +54,9 @@ menu:
   - key: "t"
     desc: Terminal in pwd
     cmd: niriws term
+  - key: "Alt+t"
+    desc: Terminal in pwd
+    cmd: niriws term
   - key: "T"
     desc: Terminal
     cmd: foot
