@@ -13,18 +13,37 @@
     pkgs.xwayland-satellite
     pkgs.wlr-which-key
   ];
-  programs.rofi.enable = true;
+  programs.rofi = {
+    enable = true;
+    extraConfig.location = 2;
+    theme.window.border = 2;
+    theme.window.border-color = let
+      inherit (config.lib.formats.rasi) mkLiteral;
+      mkRgba =
+        opacity': color:
+        let
+          c = config.lib.stylix.colors;
+          r = c."${color}-rgb-r";
+          g = c."${color}-rgb-g";
+          b = c."${color}-rgb-b";
+        in
+        mkLiteral "rgba ( ${r}, ${g}, ${b}, ${opacity'} % )";
+      mkRgb = mkRgba "100";
+    in mkRgb "base0A";
+  };
   programs.niri = {
     enable = true;
     package = pkgs.niri;
   };
   xdg.configFile."wlr-which-key/config.yaml".source = let
-    c = config.lib.stylix.colors;
+    c = config.lib.stylix.colors.withHashtag;
+    font = config.stylix.fonts;
   in pkgs.concatText "wlr-which-key config" [
     (pkgs.writeText "wlr-which-key colors" ''
-      background: "#${c.base01}"
-      color: "#${c.base05}"
-      border: "#${c.base0A}"
+      background: "${c.base01}"
+      color: "${c.base05}"
+      border: "${c.base0A}"
+      font: ${font.monospace.name} ${toString font.sizes.popups}
     '')
     ./wlr-which-key-config.yaml
   ];
