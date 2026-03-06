@@ -16,6 +16,17 @@ input {
     mod-key-nested "Super"
 }
 
+cursor {
+    hide-when-typing
+    hide-after-inactive-ms 3000
+}
+
+gestures {
+    hot-corners {
+        off
+    }
+}
+
 layout {
     gaps 10
     struts {
