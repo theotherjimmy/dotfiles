@@ -6,7 +6,6 @@
       };
     })
     pkgs.sshfs
-    pkgs.helvum
     pkgs.wl-clipboard-rs
     pkgs.wlvncc
     pkgs.shikane
