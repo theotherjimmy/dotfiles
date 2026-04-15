@@ -38,6 +38,12 @@ menu:
       - key: "o"
         desc: Off
         cmd: poweroff
+  - key: ["f", "Alt+f"]
+    desc: Maximize focussed column
+    cmd: niri msg action maximize-column
+  - key: "F"
+    desc: Fullscreen focussed window
+    cmd: niri msg action fullscreen-window
   - key: ["d", "Alt+d"]
     desc: Delete window
     cmd: niri msg action close-window
