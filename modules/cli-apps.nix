@@ -247,6 +247,7 @@ in
     shellAbbrs = config.programs.bash.shellAliases;
   };
   programs.git = {
+    signing.format = null;
     package = pkgs.gitFull;
     enable = true;
     settings = {
