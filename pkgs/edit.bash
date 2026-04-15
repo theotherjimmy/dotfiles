@@ -1,10 +1,22 @@
 set -e
+
+getws() {
+    if [[ -n $SSH_CLIENT ]]; then
+        cut -d ' ' -f 1 <<< "$SSH_CLIENT" | tr '.' '-'
+    elif [[ -n $NIRI_SOCKET ]]; then
+        niri msg --json workspaces \
+        | jq -r '.[] | select(.is_focused) |.name' \
+        | cut -d: -f 1
+    fi
+}
+ws=$(getws)
+
 if [[ $# -gt 0 ]]; then
   files=("$@")
 else
   readarray -t files < <(sk -m)
 fi
-ws=$(niri msg --json workspaces | jq -r '.[] | select(.is_focused) |.name' | cut -d: -f 1)
+
 if [[ $ws != "" ]] ; then
   if [[ -e $XDG_RUNTIME_DIR/kakoune/$ws ]] ; then
     exec kak -c "$ws" "${files[@]}"
