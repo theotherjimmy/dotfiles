@@ -1,9 +1,9 @@
 set -e
 
 getws() {
-    if [[ -n $SSH_CLIENT ]]; then
+    if [[ -v SSH_CLIENT ]]; then
         cut -d ' ' -f 1 <<< "$SSH_CLIENT" | tr '.' '-'
-    elif [[ -n $NIRI_SOCKET ]]; then
+    elif [[ -v NIRI_SOCKET ]]; then
         niri msg --json workspaces \
         | jq -r '.[] | select(.is_focused) |.name' \
         | cut -d: -f 1
