@@ -149,9 +149,9 @@
        {
          name = "work-home";
          output = [
-           m.builtin.off
-           (m.samsung.at (1920 - 320) 0)
-           (m.asus.at 1920 1440)
+           (m.builtin.at 4280 1680)
+           (m.samsung.at 0 0)
+           (m.asus.at 840 1440)
          ];
        }
        {
