@@ -126,6 +126,18 @@ niri-msg-pick() {
     | xargs niri msg action
 }
 
+outputs() {
+  jq -r -f /dev/stdin <(niri msg --json outputs) <<- END
+	[.[]] | sort_by(.name) | .[] |
+	"\(.name): \(.make) \(.model) \(.serial)\n  "
+	+ if .logical then
+	  "\(.logical.width)x\(.logical.height) at \(.logical.x),\(.logical.y) scale \(.logical.scale) \(.logical.transform)"
+	else
+	  "off"
+	end
+END
+}
+
 # Select subcommand
 case "$1" in
     "rename")
@@ -156,6 +168,9 @@ case "$1" in
         ;;
     "msg-pick")
         niri-msg-pick
+        ;;
+    "outputs")
+        outputs
         ;;
     *)
         exit 1
