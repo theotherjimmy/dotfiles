@@ -9,6 +9,7 @@
     pkgs.wl-clipboard-rs
     pkgs.wlvncc
     pkgs.shikane
+    pkgs.wdisplays
     pkgs.xwayland-satellite
     pkgs.wlr-which-key
   ];
