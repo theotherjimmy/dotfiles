@@ -174,7 +174,7 @@
          name = "nixboi";
          output = [
            (m.samsung.at 0 0)
-           /* (m.acer.at 2560 0) */
+           (m.acer.at 2560 0)
            (m.asus.at 860 1440)
          ];
        }
