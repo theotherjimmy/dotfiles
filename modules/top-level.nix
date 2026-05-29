@@ -15,6 +15,10 @@
   stylix = {
     enable = true;
     autoEnable = true;
+    fonts.monospace = {
+      package = pkgs.iosevka-comfy.comfy-wide-motion-fixed;
+      name = "Iosevka Comfy Wide Motion Fixed";
+    };
     base16Scheme =
       #"${pkgs.base16-schemes}/share/themes/embers.yaml" # Very Desat
       #"${pkgs.base16-schemes}/share/themes/mountain.yaml" # black metal but good
