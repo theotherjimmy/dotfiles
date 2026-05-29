@@ -89,14 +89,14 @@ pwd_term() {
     if [[ -n "$HOST" ]] ; then
         REMOTE_PWD=$(split_remote_pwd "$CUR_WS_PWD")
         if [[ -n $REMOTE_PWD ]] ; then
-            exec $term -- ssh -t "${HOST}" "cd \"$REMOTE_PWD\" ; \$SHELL"
+            exec $term -e ssh -t "${HOST}" "cd \"$REMOTE_PWD\" ; \$SHELL"
         else
-            exec $term -- ssh "${HOST}"
+            exec $term -e ssh "${HOST}"
         fi
     elif [[ -e $CUR_WS_PWD ]] ; then
-        exec $term -D "$CUR_WS_PWD" fish
+        exec $term -w "$CUR_WS_PWD" -e fish
     else
-        exec $term fish
+        exec $term -e fish
     fi
 }
 
@@ -111,11 +111,11 @@ pwd_edit() {
             sshfs "$HOST": "$ACTUAL_CWD"
         fi
         REMOTE_PWD=$(split_remote_pwd "$CUR_WS_PWD")
-        exec $term -D "$ACTUAL_CWD"/"$REMOTE_PWD" -- edit
+        exec $term -w "$ACTUAL_CWD"/"$REMOTE_PWD" -e edit
     elif [[ -e $CUR_WS_PWD ]] ; then
-        exec $term -D "$CUR_WS_PWD" edit
+        exec $term -w "$CUR_WS_PWD" -e edit
     else
-        exec $term edit
+        exec $term -e edit
     fi
 }
 

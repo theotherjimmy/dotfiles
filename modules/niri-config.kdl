@@ -69,6 +69,7 @@ window-rule {
 
 window-rule {
     match app-id="foot"
+    match app-id="rio"
     default-column-width {
         proportion 0.33333
     }

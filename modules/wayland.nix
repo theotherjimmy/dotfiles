@@ -2,7 +2,7 @@
   home.packages = [
     (pkgs.callPackage ../pkgs/niriws.nix {
       runtimeEnv = {
-        term = lib.getExe pkgs.foot;
+        term = lib.getExe pkgs.rio;
       };
     })
     pkgs.sshfs

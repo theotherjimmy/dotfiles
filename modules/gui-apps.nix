@@ -1,7 +1,12 @@
 { config, lib, pkgs, ... }: {
-  programs.foot = {
+  fonts.fontconfig.enable = true;
+  programs.rio = {
     enable = true;
-    settings.csd.preferred = "none";
+    settings = {
+      effects.trail-cursor = true;
+      bell.visual = true;
+      window.decorations = "Disabled";
+    };
   };
   programs.zathura = {
     enable = true;
