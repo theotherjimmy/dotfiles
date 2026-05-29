@@ -33,7 +33,7 @@ in
       };
       showMatching = true;
       showWhitespace = {
-        enable = true;
+        enable = false;
         space = " ";
       };
       ui.assistant = "none";
