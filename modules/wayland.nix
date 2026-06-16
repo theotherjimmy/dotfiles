@@ -146,23 +146,34 @@
           at = x: y: val // { position = { x = x; y = y; }; };
           off = val // { enable = false; };
         }) backing;
-      in [
-       {
+        allow-missing = missing-monitor: config: config // {
+          output = lib.lists.filter (mon: if missing-monitor ? search then
+            (mon.search or []) != missing-monitor.search
+          else
+            (mon.match or "") != missing-monitor.match
+          ) config.output;
+        };
+        work-home = {
          name = "work-home";
          output = [
            (m.builtin.at 4280 1680)
            (m.samsung.at 0 0)
            (m.asus.at 840 1440)
          ];
-       }
-       {
+       };
+       office = {
          name = "office";
          output = [
            (m.builtin.at 0 1440)
            (m.thinkvision.at 0 0)
            (m.thinkcenter.at 2560 0)
          ];
-       }
+       };
+      in [
+       work-home
+       (allow-missing m.samsung.off work-home)
+       office
+       (allow-missing m.thinkcenter.off office)
        {
          name = "houston-bedroom";
          output = [
