@@ -108,11 +108,11 @@
             match = "eDP-1";
             enable = true;
             mode = "3840x2400@60Hz";
-            scale = 2.0;
+            scale = 1.5;
           };
           samsung = {
             enable = true;
-            search = [ "m=S27D850" "s=HCJH901332" ];
+            search = [ "m=S27D850" ];
             mode = "2560x1440@59.951Hz";
           };
           acer = {
