@@ -3,7 +3,6 @@
   programs.rio = {
     enable = true;
     settings = {
-      effects.trail-cursor = true;
       bell.visual = true;
       window.decorations = "Disabled";
       renderer.backend = "Webgpu";
