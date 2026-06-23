@@ -285,6 +285,8 @@ in
       rgl
       pkgs.aspell
       pkgs.aspellDicts.en
+      pkgs.android-tools
+      pkgs.fdroidcl
       pkgs.bashInteractive
       pkgs.cargo-flamegraph
       pkgs.direnv
