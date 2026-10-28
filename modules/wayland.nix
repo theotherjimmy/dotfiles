@@ -15,7 +15,7 @@
   ];
   programs.rofi = {
     enable = true;
-    extraConfig.location = 2;
+    settings.location = 2;
     theme.window.border = 2;
     theme.window.border-color = let
       inherit (config.lib.formats.rasi) mkLiteral;

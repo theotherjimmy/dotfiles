@@ -317,8 +317,6 @@ in
       pkgs.tmux
       pkgs.xe
       pkgs.xdg-user-dirs
-      pkgs.xdotool
-      pkgs.xorg.xwininfo
       pkgs.yad
       pkgs.bc
       pkgs.wget
