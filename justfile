@@ -5,6 +5,10 @@ d computer:
     #!/usr/bin/env bash
     deploy .#{{computer}} -s --ssh-user root
 
+b computer:
+    #!/usr/bin/env bash
+    deploy .#{{computer}} -s --ssh-user root --boot
+
 switch:
     nh home switch ./
 
