@@ -89,7 +89,7 @@
     (nixpkgs.lib.foldr nixpkgs.lib.recursiveUpdate { }
       [
         (mkComputer "nixboi" true)
-        (mkComputer "tablet" true)
+        (mkComputer "tablet" false)
         (mkComputer "eycho" false)
       ])
     // (flake-utils.lib.eachDefaultSystem (system:
