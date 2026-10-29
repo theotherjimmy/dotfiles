@@ -63,12 +63,13 @@
     settings = {
       position = "Top";
       modules = {
-        center = [ "Clock" ];
+        center = [ "Tempo" ];
         left = [ "SystemInfo" "Tray" ];
         right = [ "Privacy" "Settings" ];
       };
       system_info.temperature.sensor = "coretemp Package id 0";
-      clock.format = "%F %X";
+      tempo.clock_format = "%F %X";
+      tempo.weather_location = "Current";
     };
   };
   services.mako = {
